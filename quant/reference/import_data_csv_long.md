@@ -1,4 +1,4 @@
-# Import Analysis Results from Long Format CSV Files
+# Import analysis results from long-format CSV files
 
 This function imports analysis results from CSV files in long table
 format, where each row represents a unique observation of a
@@ -24,7 +24,9 @@ import_data_csv_long(
 
 - data:
 
-  A `MRMhubExperiment` object to which the imported data will be added.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object to which the imported data will be added.
 
 - path:
 
@@ -62,7 +64,9 @@ import_data_csv_long(
 
 ## Value
 
-A `MRMhubExperiment` object containing the imported data.
+A
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object containing the imported data.
 
 ## Details
 
@@ -115,6 +119,20 @@ The `na_strings` parameter allows specifying character strings that
 should be interpreted as `NA`, ensuring proper handling of missing
 values.
 
+## Identifier normalization
+
+All imported identifiers are whitespace-normalized on import: leading
+and trailing spaces are removed and internal runs of whitespace are
+collapsed to a single space (for example `"QC 01"` becomes `"QC 01"`).
+Raw-data file extensions (`.mzML`, `.d`, `.raw`, `.wiff`, `.wiff2`,
+`.lcd`, `.chrom`, case-insensitive) are stripped from `analysis_id`.
+
+The same normalization is applied to both the data and the metadata,
+which is what lets an `analysis_id` typed into metadata match the one
+derived from a data-file name instead of silently failing to join. A
+consequence is that two identifiers differing only by whitespace
+collapse to one and are then reported as duplicates.
+
 ## Examples
 
 ``` r
@@ -138,47 +156,18 @@ mexp <- import_data_csv_long(
   column_mapping = col_map,
   import_metadata = TRUE
 )
-#> ! Following unrecognized columns present in the data and were ignored: "internal_standard", "time_stamp", "batch", "sample_type", "precursor_mz", "product_mz", "collision_energy", "polarity", "rt_apex", "area_normalized", "concentration", "height", "fwhm", "rt_int_start", and "rt_int_end".
-#> ! Use argument `column_mapping` to define column mapping.
-#> ✔ Imported 3 analyses with 4 features
-#> ℹ `feature_area` selected as default feature intensity. Modify with `set_intensity_var()`.
+#> ! The following unrecognized columns were present in the data and were ignored: "internal_standard", "time_stamp", "batch", "sample_type", "precursor_mz", "product_mz", "collision_energy", "polarity", "rt_apex", "area_normalized", "concentration", "height", "fwhm", "rt_int_start", and "rt_int_end". Use `column_mapping` to map them.
+#> ✔ Imported 3 analyses with 4 features.
+#> ℹ feature_area selected as default feature intensity. Modify with `set_intensity_var()`.
 #> ✔ Analysis metadata associated with 3 analyses.
 #> ✔ Feature metadata associated with 4 features.
 #> ℹ Analysis order was based on `analysis_order` column of imported data. Use `set_analysis_order` to change the order.
 
 print(mexp)
 #> 
-#> ── MRMhubExperiment ────────────────────────────────────────────────────────────
-#> Title:
-#> 
-#> Processing status: Annotated raw AREA values
-#> 
-#> ── Annotated Raw Data ──
-#> 
-#> • Analyses: 3
-#> • Features: 4
-#> • Raw signal used for processing: `feature_area`
-#> 
-#> ── Metadata ──
-#> 
-#> • Analyses/samples: ✔
-#> • Features/analytes: ✔
-#> • Internal standards: ✖
-#> • Response curves: ✖
-#> • Calibrants/QC concentrations: ✖
-#> • Study samples: ✖
-#> 
-#> ── Processing Status ──
-#> 
-#> • Isotope corrected: ✖
-#> • ISTD normalized: ✖
-#> • ISTD quantitated: ✖
-#> • Drift corrected variables: ✖
-#> • Batch corrected variables: ✖
-#> • Feature filtering applied: ✖
-#> 
-#> ── Exclusion of Analyses and Features ──
-#> 
-#> • Analyses manually excluded (`analysis_id`): ✖
-#> • Features manually excluded (`feature_id`): ✖
+#> ── MRMhubExperiment:  ──────────────────────────────────────────────────────────
+#> NA | 3 analyses and 4 features | signal: feature_area
+#> Last step: Annotated raw AREA values
+#> Normalized ✖ Quantitated ✖ Drift/batch ✖ Filtered ✖
+#> ℹ Use `mrmhub_status()` for the full processing and metadata report
 ```

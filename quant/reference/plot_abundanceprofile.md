@@ -1,4 +1,4 @@
-# Plot Abundance Profile
+# Plot abundance profile
 
 Creates a profile plot showing the abundance distribution of features
 across different classes.
@@ -28,7 +28,7 @@ plot_abundanceprofile(
   x_label = NA,
   y_axis_position = "right",
   segment_width = 0.25,
-  font_base_size = 8,
+  font_base_size = NULL,
   grid_major_color = "grey50",
   grid_major_linewidth = 0.1,
   grid_minor_color = "grey50",
@@ -40,7 +40,7 @@ plot_abundanceprofile(
 
 - data:
 
-  A MRMhubExperiment object.
+  A `MRMhubExperiment` object.
 
 - variable:
 
@@ -72,7 +72,7 @@ plot_abundanceprofile(
   A named character vector specifying feature classes, their order, and
   color. The order of the vector determines the y-axis order.
   Alternatively, can be a single string: `lipidomics` to use a default
-  theme comprising mapping for lipid classes frequently measured in
+  theme comprising a mapping for lipid classes frequently measured in
   lipidomics methods. When using the default theme, set
   `drop_empty_classes = TRUE` to avoid showing classes not present in
   the data. If `NA` (default), the default theme is used.
@@ -107,13 +107,16 @@ plot_abundanceprofile(
 
 - include_feature_filter:
 
-  A character or regex pattern to filter features by `feature_id`. If a
-  vector is supplied, features matching any pattern will be included.
+  Feature(s) to include by `feature_id`, as a character vector. Each
+  element is matched exactly when it names an existing feature,
+  otherwise treated as a regex; elements combine with OR. A full ID
+  (e.g. `"S1P d18:0 [M>60]"`) needs no escaping, while patterns like
+  `"PC|PE"` still work. `NA` or `""` ignores the filter.
 
 - exclude_feature_filter:
 
-  A character or regex pattern to exclude features by `feature_id`. If a
-  vector is supplied, features matching any pattern will be excluded.
+  Feature(s) to exclude by `feature_id`, matched the same way as
+  `include_feature_filter`. `NA` or `""` ignores the filter.
 
 - analysis_range:
 
@@ -159,7 +162,13 @@ plot_abundanceprofile(
 
 - font_base_size:
 
-  A numeric value for the base font size. Default is 8.
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
 
 - grid_major_color:
 

@@ -1,11 +1,11 @@
-# Retrieve Calibration Regression Results
+# Retrieve QC bias and variability metrics
 
-This function retrieves calibration curve regression results from a
-`MRMhubExperiment` object. It returns a summary of quality control (QC)
-metrics for specified QC samples. including bias, absolute bias, and
-intra-assay coefficient of variation (CV). The standard deviation of
-bias and percentage bias are also included unless the it is `NA` for all
-analytes, i.e. when no replicates were measured.
+This function retrieves quality control (QC) bias and variability
+metrics from a `MRMhubExperiment` object. It returns a summary of QC
+metrics for specified QC samples, including bias, absolute bias, and
+intra-assay coefficient of variation (CV). The standard deviation of the
+concentration ratio is also included unless it is `NA` for all analytes,
+i.e. when no replicates were measured.
 
 ## Usage
 
@@ -21,7 +21,9 @@ get_qc_bias_variability(
   with_bias = TRUE,
   with_bias_abs = FALSE,
   with_conc_ratio = FALSE,
-  with_cv_intra = TRUE
+  with_cv_intra = TRUE,
+  with_conc_out_of_range = TRUE,
+  summary_table = FALSE
 )
 ```
 
@@ -29,8 +31,10 @@ get_qc_bias_variability(
 
 - data:
 
-  A `MRMhubExperiment` object containing the dataset and necessary
-  annotations for calibration analysis.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object containing the dataset and necessary annotations for
+  calibration analysis.
 
 - qc_types:
 
@@ -63,7 +67,7 @@ get_qc_bias_variability(
 
 - with_conc_target:
 
-  Logical. If `TRUE`, includes target (know) concentration of the QC
+  Logical. If `TRUE`, includes target (known) concentration of the QC
   sample in the results. Defaults to `TRUE`.
 
 - with_bias:
@@ -79,12 +83,29 @@ get_qc_bias_variability(
 - with_conc_ratio:
 
   Logical. If `TRUE`, includes the ratio of measured to target
-  concentration in the results. Defaults to `TRUE`.
+  concentration in the results. Defaults to `FALSE`.
 
 - with_cv_intra:
 
   Logical. If `TRUE`, includes intra-assay coefficient of variation (CV)
-  for the in the results. Defaults to `TRUE`.
+  in the results. Defaults to `TRUE`.
+
+- with_conc_out_of_range:
+
+  Logical. If `TRUE` (and the dataset carries the
+  `feature_conc_out_of_range` flag from
+  [`quantify_by_calibration()`](https://slinghub.github.io/MRMhub/quant/reference/quantify_by_calibration.md)),
+  includes the fraction of replicate measurements whose concentration
+  fell outside the calibrated range (`frac_conc_out_of_range`). Defaults
+  to `TRUE`.
+
+- summary_table:
+
+  Logical. If `TRUE`, round the numeric metric columns to 3 significant
+  figures for display (the integer replicate count `n` is left intact).
+  This is a presentation view for reporting; the values are **rounded**,
+  so do not use it for downstream computation. Defaults to `FALSE`
+  (full, unrounded metrics).
 
 ## Value
 

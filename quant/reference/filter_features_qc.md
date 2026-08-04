@@ -1,4 +1,4 @@
-# Feature Filtering Based on QC Criteria
+# Feature filtering based on QC criteria
 
 Filters a dataset based on quality control (QC) criteria, including
 intensity, coefficient of variation (CV), signal-to-blank ratios,
@@ -61,7 +61,8 @@ filter_features_qc(
 
 - data:
 
-  MRMhubExperiment object.
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object.
 
 - clear_existing:
 
@@ -192,7 +193,7 @@ filter_features_qc(
 
 - min.rsquare.response:
 
-  Minimum R-squared value for the response curves. Default is `NA`.
+  Minimum R² value for the response curves. Default is `NA`.
 
 - min.slope.response:
 
@@ -218,13 +219,13 @@ filter_features_qc(
 
 - max.dratio.mad.conc.bqc:
 
-  Maximum allowed D-ratio (MAD of BQC / MAD of SPL) using mean absolute
-  deviation for BQC samples. Default is `NA`.
+  Maximum allowed D-ratio (MAD of BQC / MAD of SPL) using median
+  absolute deviation for BQC samples. Default is `NA`.
 
 - max.dratio.mad.conc.tqc:
 
-  Maximum allowed D-ratio (MAD of TQC / MAD of SPL) using mean absolute
-  deviation for TQC samples. Default is `NA`.
+  Maximum allowed D-ratio (MAD of TQC / MAD of SPL) using median
+  absolute deviation for TQC samples. Default is `NA`.
 
 - max.dratio.sd.normint.bqc:
 
@@ -239,17 +240,18 @@ filter_features_qc(
 - max.dratio.mad.normint.bqc:
 
   Maximum allowed D-ratio (MAD of normalized intensity in BQC / MAD of
-  SPL) using mean absolute deviation. Default is `NA`.
+  SPL) using median absolute deviation. Default is `NA`.
 
 - max.dratio.mad.normint.tqc:
 
   Maximum allowed D-ratio (MAD of normalized intensity in TQC / MAD of
-  SPL) using mean absolute deviation. Default is `NA`.
+  SPL) using median absolute deviation. Default is `NA`.
 
 ## Value
 
-The input MRMhubExperiment object with the feature filtering criteria
-applied.
+The input
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object with the feature filtering criteria applied.
 
 ## Details
 

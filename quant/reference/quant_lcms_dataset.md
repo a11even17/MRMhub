@@ -1,4 +1,4 @@
-# LC-MS Dataset with External Calibration Curve and Metadata
+# LC-MS dataset with external calibration curve and metadata
 
 This demo dataset is included for use in function examples and user
 testing. It is a subset of an LC-MS analysis of plasma steroids,
@@ -17,7 +17,7 @@ A `MRMhubExperiment` object with the following data and metadata:
 
 - dataset_orig:
 
-  Original data (peak datas).
+  Original data (peak data).
 
 - dataset:
 

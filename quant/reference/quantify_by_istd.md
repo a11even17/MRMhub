@@ -1,8 +1,9 @@
-# Calculate Analyte Concentrations Using Internal Standards
+# Calculate analyte concentrations using internal standards
 
 This function calculates analyte concentrations based on internal
-standard (ISTD) normalized intensities and the corresponding spiked-in
-ISTD amount, normalized by the sample amount.
+standard (ISTD) normalized intensities, the corresponding spiked-in ISTD
+amount, and the per-feature response factor (`response_factor`, from the
+feature metadata), normalized by the sample amount.
 
 ## Usage
 
@@ -19,7 +20,9 @@ quantify_by_istd(
 
 - data:
 
-  A `MRMhubExperiment` object
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - concentration_unit:
 
@@ -42,10 +45,17 @@ quantify_by_istd(
 
 ## Value
 
-A `MRMhubExperiment` object with the calculated analyte concentrations
-added to the `dataset` table in the `feature_conc` column.
+A
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object with the calculated analyte concentrations added to the `dataset`
+table in the `feature_conc` column (and the intermediate
+`feature_pmol_total`).
 
 ## Details
+
+The ISTD used for quantitation is taken from the `quant_istd_feature_id`
+column, which is currently always derived from the feature's
+normalization ISTD (`istd_feature_id`).
 
 By default, concentrations are returned in molar units (e.g., µmol/L).
 To return concentrations in mass units (e.g., µg/L), set
@@ -69,7 +79,8 @@ calculated concentrations will be in µmol/L. If
 `concentration_unit = "mass"`, the concentrations will be in `µg/L`.
 
 The calculated concentrations are added to the `dataset` table as a new
-column named `feature_conc`..
+column named `feature_conc`, along with the intermediate total amount
+per analysis in `feature_pmol_total`.
 
 ## See also
 

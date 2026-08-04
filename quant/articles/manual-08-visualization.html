@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Visualisation Functions • mrmhub</title>
+<title>Visualisation functions • mrmhub</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Visualisation Functions">
+<meta property="og:title" content="Visualisation functions">
 <meta name="description" content="Reference for the MRMhub plotting functions, grouped by workflow stage,
 with the canonical argument forms and customisation guidance.
 ">
@@ -33,7 +33,7 @@ with the canonical argument forms and customisation guidance.
 
     <a class="navbar-brand me-2" href="../index.html">mrmhub</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,68 +45,67 @@ with the canonical argument forms and customisation guidance.
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-get-started" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Get Started</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-get-started">
-<li><a class="dropdown-item" href="../articles/manual-00-installation.html">Installation</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-00-first-analysis.html">Your First Analysis (5 min)</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-00-key-concepts.html">Key Concepts &amp; Glossary</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-09-troubleshooting.html">Troubleshooting &amp; FAQ</a></li>
+<li><a class="dropdown-item" href="../articles/manual-01-key-concepts.html">MRMhub overview</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/manual-00-installation.html">Installation</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-13-getting-started-r-quarto.html">Getting started with R and Quarto notebooks</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-02-getting-started-mrmhub.html">Getting started with MRMhub</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-12-workflow-builder.html">Using the workflow builder</a></li>
   </ul>
 </li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorials</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials">
-<li><a class="dropdown-item" href="../articles/tutorial-01-prep-data.html">Preparing &amp; importing data</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-02-basic-workflow.html">Basic MRMhub workflow</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-03-lipidomics-workflow.html">Lipidomics (full workflow)</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-04-drift-correction.html">Drift correction</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-05-run-scatter.html">RunScatter plots</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-06-batch-correction.html">Batch correction</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-07-calibration-reference.html">Calibration by reference sample</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-08-multi-batch.html">Multi-batch study</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-09-pca-exploration.html">QC exploration with PCA</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-10-metadata-validation.html">Validating metadata</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial-11-interference-correction.html">Interference correction</a></li>
+<li><h6 class="dropdown-header" data-toc-skip>Example workflows</h6></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-03-lipidomics-workflow.html">Lipidomics</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-06-external-calibration.html">Quantitative assay with external calibration</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Recipes</h6></li>
-    <li><a class="dropdown-item" href="../articles/recipe-01-ext-calibration-qc.html">External calibration &amp; QC</a></li>
-    <li><a class="dropdown-item" href="../articles/recipe-02-custom-qc-report.html">Custom QC report</a></li>
-    <li><a class="dropdown-item" href="../articles/recipe-03-mztab-export.html">Import &amp; export mzTab-M</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-01-prep-data.html">Preparing and importing data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Data processing</h6></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-11-interference-correction.html">Correcting isotopic interference</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-04-drift-correction.html">Drift and batch correction</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-07-calibration-reference.html">Calibration by a reference sample</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-05-run-scatter.html">Exploring QC: RunScatter and PCA</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial-08-export-formats.html">Exporting results</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-manual" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Manual</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-manual">
-<li><h6 class="dropdown-header" data-toc-skip>Concepts &amp; Design</h6></li>
-    <li><a class="dropdown-item" href="../articles/manual-00-design-overview.html">Design Overview</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-00-integrator-vs-quant.html">INTEGRATOR vs QUANT</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-00-sample-types.html">Sample Types &amp; QC Roles</a></li>
+<li><a class="dropdown-item" href="../articles/manual-index.html">Manual (all pages)</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Data Model</h6></li>
-    <li><a class="dropdown-item" href="../articles/manual-01-data-structure.html">Data Structures</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-02-data-identifiers.html">Data Identifiers</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-03-feature-variables.html">Feature Variables</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-04-mrmhub-experiment.html">MRMhubExperiment Object</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Getting started</h6></li>
+    <li><a class="dropdown-item" href="../articles/manual-00-installation.html">Installation</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-01-key-concepts.html">MRMhub overview</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Import &amp; Metadata</h6></li>
-    <li><a class="dropdown-item" href="../articles/manual-05a-which-importer.html">Import &amp; prepare data files</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-05-data-import.html">Data Import</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-05b-data-file-structures.html">Data File Structures</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-06-metadata-import.html">Metadata Import</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-06a-metadata-table-structures.html">Metadata Table Structures</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Preparing and running</h6></li>
+    <li><a class="dropdown-item" href="../articles/manual-04-data-import.html">Importing analytical data</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-05-metadata.html">Metadata tables &amp; matching</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-12-interference-correction.html">Isotopic interference correction</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-07-corrections.html">Drift and batch correction</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-11-quarto-workflows.html">Quarto workflows</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Corrections</h6></li>
-    <li><a class="dropdown-item" href="../articles/manual-07-drift-batch-correction.html">Drift &amp; Batch Correction</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-08-visualization.html">Visualisation functions</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Reference</h6></li>
-    <li><a class="dropdown-item" href="../articles/manual-11-cheatsheet.html">Function Cheatsheet</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-08-visualization.html">Visualisation Functions</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-10-design-decisions.html">Design Decisions</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-02-data-object.html">The MRMhubExperiment data object</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-13-function-map.html">Function map</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-14-glossary.html">Glossary</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-03-design-decisions.html">Design decisions</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-06-sample-types.html">Sample types &amp; QC roles</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-09-ai-assistants.html">Getting help from an AI assistant</a></li>
+    <li><a class="dropdown-item" href="../articles/manual-10-troubleshooting.html">Troubleshooting &amp; FAQ</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
       </ul>
 <ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link" href="../articles/manual-10-troubleshooting.html">Help</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">NEWS</a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://slinghub.github.io/MRMhub/">← MRMhub home</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://slinghub.github.io/MRMhub/integrator/">INTEGRATOR ↗</a></li>
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
@@ -123,20 +122,23 @@ with the canonical argument forms and customisation guidance.
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.svg" class="logo" alt=""><h1>Visualisation Functions</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Visualisation functions</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/SLINGhub/MRMhub/blob/development/vignettes/articles/manual-08-visualization.Rmd" class="external-link"><code>vignettes/articles/manual-08-visualization.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/SLINGhub/MRMhub/blob/main/vignettes/articles/manual-08-visualization.Rmd" class="external-link"><code>vignettes/articles/manual-08-visualization.Rmd</code></a></small>
       <div class="d-none name"><code>manual-08-visualization.Rmd</code></div>
     </div>
 
     
     
+<p class="page-kind page-kind-manual">
+Manual
+</p>
 <p>MRMhub provides plotting functions covering every stage of the
 workflow. All functions return <code>ggplot2</code> objects (or, for
 paged outputs, a list of <code>ggplot2</code> objects), so the standard
 ggplot2 grammar can be used to further customise titles, themes, scales,
-and facets. This reference groups the functions by the workflow stage at
+and facets. The functions below are grouped by the workflow stage at
 which they are most useful.</p>
 <div class="section level3">
 <h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
@@ -233,12 +235,12 @@ which they are most useful.</p>
 <td>RT vs chain length / unsaturation</td>
 </tr>
 <tr class="odd">
-<td><code><a href="../reference/plot_qc_matrixeffects.html">plot_qc_matrixeffects()</a></code></td>
+<td><code><a href="../reference/plot_matrixeffects.html">plot_matrixeffects()</a></code></td>
 <td>Method check</td>
 <td>Matrix-effect QC</td>
 </tr>
 <tr class="even">
-<td><code><a href="../reference/plot_qc_interferences.html">plot_qc_interferences()</a></code></td>
+<td><code><a href="../reference/plot_interference_correction.html">plot_interference_correction()</a></code></td>
 <td>Interference correction</td>
 <td>QC overview for interference annotations</td>
 </tr>
@@ -250,7 +252,7 @@ which they are most useful.</p>
 </h2>
 <div class="section level3">
 <h3 id="plot_runsequence-sequence-overview">
-<code>plot_runsequence()</code> — sequence overview<a class="anchor" aria-label="anchor" href="#plot_runsequence-sequence-overview"></a>
+<code>plot_runsequence()</code>: sequence overview<a class="anchor" aria-label="anchor" href="#plot_runsequence-sequence-overview"></a>
 </h3>
 <p>The run-sequence plot summarises the acquisition design: QC type
 positions, batch boundaries, and the analysis timeline. It is an
@@ -272,7 +274,7 @@ number.</p>
 </h2>
 <div class="section level3">
 <h3 id="plot_runscatter-values-vs-analysis-order">
-<code>plot_runscatter()</code> — values vs analysis order<a class="anchor" aria-label="anchor" href="#plot_runscatter-values-vs-analysis-order"></a>
+<code>plot_runscatter()</code>: values vs analysis order<a class="anchor" aria-label="anchor" href="#plot_runscatter-values-vs-analysis-order"></a>
 </h3>
 <p>The primary plot for drift and batch QC. Plots a feature variable
 (intensity, normalised intensity, concentration) against the analysis
@@ -294,7 +296,7 @@ feature lists.</p>
 </div>
 <div class="section level3">
 <h3 id="plot_abundanceprofile-feature-abundance-distribution">
-<code>plot_abundanceprofile()</code> — feature abundance
+<code>plot_abundanceprofile()</code>: feature abundance
 distribution<a class="anchor" aria-label="anchor" href="#plot_abundanceprofile-feature-abundance-distribution"></a>
 </h3>
 <p>Shows the abundance distribution of each feature, grouped by class.
@@ -315,7 +317,7 @@ lists) and <code>qc_types</code> must specify a single QC type.</p>
 </h2>
 <div class="section level3">
 <h3 id="plot_rla_boxplot-relative-log-abundance-per-analysis">
-<code>plot_rla_boxplot()</code> — relative log-abundance per
+<code>plot_rla_boxplot()</code>: relative log-abundance per
 analysis<a class="anchor" aria-label="anchor" href="#plot_rla_boxplot-relative-log-abundance-per-analysis"></a>
 </h3>
 <p>A boxplot per analysis of
@@ -330,7 +332,7 @@ bias.</p>
 </div>
 <div class="section level3">
 <h3 id="plot_normalization_qc-before-vs-after-comparison">
-<code>plot_normalization_qc()</code> — before-vs-after
+<code>plot_normalization_qc()</code>: before-vs-after
 comparison<a class="anchor" aria-label="anchor" href="#plot_normalization_qc-before-vs-after-comparison"></a>
 </h3>
 <p>Compares pre- and post-normalisation values for QC samples in three
@@ -353,12 +355,12 @@ increase typically indicates an incorrect ISTD pairing.</p>
 </h2>
 <div class="section level3">
 <h3 id="plot_pca-score-plot">
-<code>plot_pca()</code> — score plot<a class="anchor" aria-label="anchor" href="#plot_pca-score-plot"></a>
+<code>plot_pca()</code>: score plot<a class="anchor" aria-label="anchor" href="#plot_pca-score-plot"></a>
 </h3>
 <p>Two-dimensional PCA score plot with confidence ellipses grouped by
 <code>qc_type</code>, <code>batch_id</code>, or <code>"none"</code>. See
-<a href="tutorial-09-pca-exploration.html">QC Exploration with PCA</a>
-for an interpretation walk-through.</p>
+<a href="tutorial-05-run-scatter.html">QC exploration with PCA</a> for
+an interpretation walk-through.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pca.html">plot_pca</a></span><span class="op">(</span><span class="va">mexp</span>,</span>
 <span>         variable          <span class="op">=</span> <span class="st">"norm_intensity"</span>,</span>
@@ -367,7 +369,7 @@ for an interpretation walk-through.</p>
 </div>
 <div class="section level3">
 <h3 id="plot_pca_loading-loadings">
-<code>plot_pca_loading()</code> — loadings<a class="anchor" aria-label="anchor" href="#plot_pca_loading-loadings"></a>
+<code>plot_pca_loading()</code>: loadings<a class="anchor" aria-label="anchor" href="#plot_pca_loading-loadings"></a>
 </h3>
 <p>Loadings on the first two PCs. Features at the extremes drive sample
 separation; a single feature dominating PC1 should be inspected with
@@ -379,7 +381,7 @@ separation; a single feature dominating PC1 should be inspected with
 </div>
 <div class="section level3">
 <h3 id="plot_feature_correlations-correlation-heatmap">
-<code>plot_feature_correlations()</code> — correlation heatmap<a class="anchor" aria-label="anchor" href="#plot_feature_correlations-correlation-heatmap"></a>
+<code>plot_feature_correlations()</code>: correlation heatmap<a class="anchor" aria-label="anchor" href="#plot_feature_correlations-correlation-heatmap"></a>
 </h3>
 <p>Pairwise correlation matrix across features, useful for identifying
 redundant transitions and flagging candidate isobaric interferences.</p>
@@ -394,7 +396,7 @@ redundant transitions and flagging candidate isobaric interferences.</p>
 </h2>
 <div class="section level3">
 <h3 id="plot_qcmetrics_comparison-pairwise-qc-metric-scatter">
-<code>plot_qcmetrics_comparison()</code> — pairwise QC-metric
+<code>plot_qcmetrics_comparison()</code>: pairwise QC-metric
 scatter<a class="anchor" aria-label="anchor" href="#plot_qcmetrics_comparison-pairwise-qc-metric-scatter"></a>
 </h3>
 <p>Plots one QC metric against another, computed across features. The
@@ -419,7 +421,7 @@ typically a misassigned ISTD.</p>
 <div class="section level3">
 <h3 id="plot_qc_summary_byclass-plot_qc_summary_overall-filter-outcome">
 <code>plot_qc_summary_byclass()</code> /
-<code>plot_qc_summary_overall()</code> — filter outcome<a class="anchor" aria-label="anchor" href="#plot_qc_summary_byclass-plot_qc_summary_overall-filter-outcome"></a>
+<code>plot_qc_summary_overall()</code>: filter outcome<a class="anchor" aria-label="anchor" href="#plot_qc_summary_byclass-plot_qc_summary_overall-filter-outcome"></a>
 </h3>
 <p>After <code><a href="../reference/filter_features_qc.html">filter_features_qc()</a></code>, these two functions
 summarise how many features passed each filter rule, broken down by
@@ -435,7 +437,7 @@ feature class (<code>_byclass</code>) or aggregated
 </h2>
 <div class="section level3">
 <h3 id="plot_calibrationcurves-calibration-fits">
-<code>plot_calibrationcurves()</code> — calibration fits<a class="anchor" aria-label="anchor" href="#plot_calibrationcurves-calibration-fits"></a>
+<code>plot_calibrationcurves()</code>: calibration fits<a class="anchor" aria-label="anchor" href="#plot_calibrationcurves-calibration-fits"></a>
 </h3>
 <p>After <code><a href="../reference/quantify_by_calibration.html">quantify_by_calibration()</a></code>, plots calibration
 response vs concentration with the fitted model, the calibration points,
@@ -450,7 +452,7 @@ with <code>fit_overwrite = "linear"</code> or
 </div>
 <div class="section level3">
 <h3 id="plot_responsecurves-rqc-linearity">
-<code>plot_responsecurves()</code> — RQC linearity<a class="anchor" aria-label="anchor" href="#plot_responsecurves-rqc-linearity"></a>
+<code>plot_responsecurves()</code>: RQC linearity<a class="anchor" aria-label="anchor" href="#plot_responsecurves-rqc-linearity"></a>
 </h3>
 <p>Plots feature response across an RQC dilution series. The fitted
 slope and R² values report on the linearity of the assay in the range of
@@ -466,7 +468,7 @@ summary.</p>
 </h2>
 <div class="section level3">
 <h3 id="plot_rt_vs_chain-retention-time-vs-chain-length-lipidomics">
-<code>plot_rt_vs_chain()</code> — retention time vs chain length
+<code>plot_rt_vs_chain()</code>: retention time vs chain length
 (lipidomics)<a class="anchor" aria-label="anchor" href="#plot_rt_vs_chain-retention-time-vs-chain-length-lipidomics"></a>
 </h3>
 <p>For lipidomics methods using class-based chromatography, plots RT
@@ -476,33 +478,291 @@ linear relationship within a class point to mis-identified features.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_rt_vs_chain.html">plot_rt_vs_chain</a></span><span class="op">(</span><span class="va">mexp</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="plot_qc_matrixeffects-matrix-effect-overview">
-<code>plot_qc_matrixeffects()</code> — matrix-effect overview<a class="anchor" aria-label="anchor" href="#plot_qc_matrixeffects-matrix-effect-overview"></a>
+<h3 id="plot_matrixeffects-matrix-effect-overview">
+<code>plot_matrixeffects()</code>: matrix-effect overview<a class="anchor" aria-label="anchor" href="#plot_matrixeffects-matrix-effect-overview"></a>
 </h3>
 <p>Compares ISTD response in matrix-containing QCs against solvent-only
 injections to flag matrix-effect outliers.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_qc_matrixeffects.html">plot_qc_matrixeffects</a></span><span class="op">(</span><span class="va">mexp</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_matrixeffects.html">plot_matrixeffects</a></span><span class="op">(</span><span class="va">mexp</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="plot_qc_interferences-interference-annotations">
-<code>plot_qc_interferences()</code> — interference annotations<a class="anchor" aria-label="anchor" href="#plot_qc_interferences-interference-annotations"></a>
+<h3 id="plot_interference_correction-interference-annotations">
+<code>plot_interference_correction()</code>: interference
+annotations<a class="anchor" aria-label="anchor" href="#plot_interference_correction-interference-annotations"></a>
 </h3>
 <p>QC overview for features with interference annotations (see <a href="tutorial-11-interference-correction.html">Interference
-Correction</a>).</p>
+correction</a>).</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_qc_interferences.html">plot_qc_interferences</a></span><span class="op">(</span><span class="va">mexp</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_interference_correction.html">plot_interference_correction</a></span><span class="op">(</span><span class="va">mexp</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="customisation-and-export">Customisation and export<a class="anchor" aria-label="anchor" href="#customisation-and-export"></a>
 </h2>
+<p>Text size, legend placement and legend sizing are controlled directly
+through shared arguments (<code>font_base_size</code>,
+<code>legend_position</code>, <code>legend_size</code>, and, on the core
+QC plots, <code>strip_text_size</code>, <code>show_legend_title</code>,
+<code>legend_bg_alpha</code>); paged and faceted plots size their text
+and points automatically from <code>cols_page</code>. See <a href="#customising-plots">Customising plots</a> for the full argument
+reference.</p>
+<div class="section level3">
+<h3 id="customising-plots">Customising plots<a class="anchor" aria-label="anchor" href="#customising-plots"></a>
+</h3>
+<p>Every <code>plot_*()</code> function returns a <code>ggplot2</code>
+object built from a shared house theme (faint grey gridlines, a thin
+panel border, dark-navy facet strips). A small set of arguments exposes
+the common appearance choices, so a balanced figure usually comes from
+the plotting call alone, without a trailing
+<code>+ theme(...)</code>.</p>
+<div class="section level4">
+<h4 id="the-shared-arguments">The shared arguments<a class="anchor" aria-label="anchor" href="#the-shared-arguments"></a>
+</h4>
+<p>Every plotting function accepts the three common arguments. The
+higher-use QC plots (<code><a href="../reference/plot_pca.html">plot_pca()</a></code>,
+<code><a href="../reference/plot_pca_loading.html">plot_pca_loading()</a></code>, <code><a href="../reference/plot_runscatter.html">plot_runscatter()</a></code>,
+<code><a href="../reference/plot_rla_boxplot.html">plot_rla_boxplot()</a></code>, <code><a href="../reference/plot_normalization_qc.html">plot_normalization_qc()</a></code>
+and <code><a href="../reference/plot_qcmetrics_comparison.html">plot_qcmetrics_comparison()</a></code>) accept further arguments
+for finer legend and facet control.</p>
+<table class="table">
+<colgroup>
+<col width="34%">
+<col width="37%">
+<col width="27%">
+</colgroup>
+<thead><tr class="header">
+<th>Argument</th>
+<th>Applies to</th>
+<th>Effect</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>font_base_size</code></td>
+<td>all plots</td>
+<td>Base font size in points; all plot text scales proportionally</td>
+</tr>
+<tr class="even">
+<td><code>legend_position</code></td>
+<td>all plots</td>
+<td>Legend placement (keyword, corner, or coordinate)</td>
+</tr>
+<tr class="odd">
+<td><code>legend_size</code></td>
+<td>all plots</td>
+<td>Scales the whole legend: text, title, key and plotted symbols</td>
+</tr>
+<tr class="even">
+<td><code>show_legend_title</code></td>
+<td>all plots</td>
+<td>
+<code>FALSE</code> hides the legend title</td>
+</tr>
+<tr class="odd">
+<td><code>title</code></td>
+<td>all plots</td>
+<td>A string sets the plot title; <code>NULL</code>/<code>NA</code> show
+none</td>
+</tr>
+<tr class="even">
+<td><code>strip_text_size</code></td>
+<td>faceted plots</td>
+<td>Facet strip label size</td>
+</tr>
+<tr class="odd">
+<td><code>strip_bg_color</code></td>
+<td>faceted plots</td>
+<td>Facet strip background fill (strip text auto-contrasts
+light/dark)</td>
+</tr>
+<tr class="even">
+<td><code>legend_bg_alpha</code></td>
+<td>core QC plots</td>
+<td>Opacity of a white background box behind an inside legend</td>
+</tr>
+<tr class="odd">
+<td><code>aspect_ratio</code></td>
+<td><code><a href="../reference/plot_pca.html">plot_pca()</a></code></td>
+<td>Panel aspect ratio; default <code>1</code> (square score plot)</td>
+</tr>
+</tbody>
+</table>
+<p>Arguments left at their default (<code>NULL</code>, or the
+per-function default) leave that aspect of the plot at the house
+setting. Setting one overrides only that property.</p>
+</div>
+<div class="section level4">
+<h4 id="setting-defaults-for-a-whole-notebook">Setting defaults for a whole notebook<a class="anchor" aria-label="anchor" href="#setting-defaults-for-a-whole-notebook"></a>
+</h4>
+<p>The same appearance choices can be made once, for every subsequent
+plot, with <code><a href="../reference/mrmhub_set_plot_defaults.html">mrmhub_set_plot_defaults()</a></code>, convenient when a
+document targets a particular medium (a smaller base font and point size
+for a dense multi-panel report, say) and the choice should apply
+throughout without repeating it on each call.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mrmhub_set_plot_defaults.html">mrmhub_set_plot_defaults</a></span><span class="op">(</span>font_base_size <span class="op">=</span> <span class="fl">8</span>, point_size <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
+<p>The resolution order for every argument is: a value passed explicitly
+to a plotting function wins, then the global default set here, then the
+function’s built-in default (including the automatic
+<code>cols_page</code> sizing on faceted plots). A one-off call
+therefore still overrides the global setting:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># uses the global font_base_size = 8 set above</span></span>
+<span><span class="fu"><a href="../reference/plot_pca.html">plot_pca</a></span><span class="op">(</span><span class="va">mexp</span>, variable <span class="op">=</span> <span class="st">"norm_intensity"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># this single plot overrides it</span></span>
+<span><span class="fu"><a href="../reference/plot_pca.html">plot_pca</a></span><span class="op">(</span><span class="va">mexp</span>, variable <span class="op">=</span> <span class="st">"norm_intensity"</span>, font_base_size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/mrmhub_get_plot_defaults.html">mrmhub_get_plot_defaults()</a></code> reports the active settings
+and <code><a href="../reference/mrmhub_reset_plot_defaults.html">mrmhub_reset_plot_defaults()</a></code> clears them. The defaults
+are ordinary R options (<code>mrmhub.font_base_size</code> and so on),
+so they can also be scoped to a single section with
+<code><a href="https://withr.r-lib.org/reference/with_options.html" class="external-link">withr::local_options()</a></code> rather than set for the whole
+session. The arguments that can be set globally are
+<code>font_base_size</code>, <code>point_size</code>,
+<code>legend_position</code>, <code>legend_size</code>,
+<code>show_legend_title</code>, <code>strip_bg_color</code>, and the
+<code>units</code> and <code>dpi</code> used by <code><a href="../reference/save_plot.html">save_plot()</a></code>
+(see <a href="#setting-the-unit-and-resolution-once">Setting the unit
+and resolution once</a>). Figure width and height are deliberately not
+settable globally: the physical size of a saved figure should be
+readable from the call that writes it.</p>
+</div>
+<div class="section level4">
+<h4 id="placing-the-legend">Placing the legend<a class="anchor" aria-label="anchor" href="#placing-the-legend"></a>
+</h4>
+<p><code>legend_position</code> accepts the standard ggplot2 keywords,
+four corner shortcuts for a legend drawn inside the panel, or a raw
+coordinate.</p>
+<table class="table">
+<colgroup>
+<col width="46%">
+<col width="53%">
+</colgroup>
+<thead><tr class="header">
+<th>Value</th>
+<th>Result</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>
+<code>"right"</code>, <code>"left"</code>, <code>"top"</code>,
+<code>"bottom"</code>
+</td>
+<td>Legend outside the panel on that side</td>
+</tr>
+<tr class="even">
+<td><code>"none"</code></td>
+<td>No legend</td>
+</tr>
+<tr class="odd">
+<td>
+<code>"inside-tr"</code>, <code>"inside-tl"</code>,
+<code>"inside-br"</code>, <code>"inside-bl"</code>
+</td>
+<td>Inside the panel, anchored to that corner</td>
+</tr>
+<tr class="even">
+<td><code>c(x, y)</code></td>
+<td>Inside the panel at that coordinate
+(<code>0</code>–<code>1</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>All plots default to <code>"right"</code>. For a legend drawn inside
+the panel over the points, a translucent background box
+(<code>legend_bg_alpha</code>) keeps it readable:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_normalization_qc.html">plot_normalization_qc</a></span><span class="op">(</span><span class="va">mexp</span>,</span>
+<span>  before_norm_var <span class="op">=</span> <span class="st">"intensity"</span>,</span>
+<span>  after_norm_var  <span class="op">=</span> <span class="st">"norm_intensity"</span>,</span>
+<span>  plot_type       <span class="op">=</span> <span class="st">"diff"</span>,</span>
+<span>  legend_position <span class="op">=</span> <span class="st">"inside-br"</span>,</span>
+<span>  legend_bg_alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="sizing-text-and-symbols">Sizing text and symbols<a class="anchor" aria-label="anchor" href="#sizing-text-and-symbols"></a>
+</h4>
+<p><code>font_base_size</code> is the single text knob: increasing it
+scales axis text, titles, strip labels and the legend together.
+<code>legend_size</code> scales the legend independently: its text,
+title, key box, and the plotted symbol (the glyph in the key, which a
+plain <code>legend.key.size</code> does not resize). A value of
+<code>3</code> or less is read as a multiplier of
+<code>font_base_size</code>; a larger value is an absolute point size.
+<code>strip_text_size</code> follows the same convention for facet
+labels.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_rt_vs_chain.html">plot_rt_vs_chain</a></span><span class="op">(</span><span class="va">mexp</span>,</span>
+<span>  font_base_size  <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  legend_position <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>  legend_size     <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>     <span class="co"># legend text and glyphs at 6 * 0.8 pt</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="automatic-sizing-on-paged-and-faceted-plots">Automatic sizing on paged and faceted plots<a class="anchor" aria-label="anchor" href="#automatic-sizing-on-paged-and-faceted-plots"></a>
+</h4>
+<p>Plots that lay panels out in a grid (<code><a href="../reference/plot_runscatter.html">plot_runscatter()</a></code>,
+<code><a href="../reference/plot_responsecurves.html">plot_responsecurves()</a></code>,
+<code><a href="../reference/plot_qcmetrics_comparison.html">plot_qcmetrics_comparison()</a></code>,
+<code><a href="../reference/plot_normalization_qc.html">plot_normalization_qc()</a></code> and
+<code><a href="../reference/plot_rt_vs_chain.html">plot_rt_vs_chain()</a></code>) size their text and points from the
+number of facet columns, since column count is the main driver of panel
+size. With <code>autoscale = TRUE</code> (the default),
+<code>font_base_size</code> and <code>point_size</code> left unset are
+filled from <code>cols_page</code>:</p>
+<table class="table">
+<thead><tr class="header">
+<th><code>cols_page</code></th>
+<th><code>font_base_size</code></th>
+<th><code>point_size</code></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1–2</td>
+<td>9</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>7</td>
+<td>0.7</td>
+</tr>
+<tr class="odd">
+<td>4–5</td>
+<td>6</td>
+<td>0.5</td>
+</tr>
+<tr class="even">
+<td>6 or more</td>
+<td>5</td>
+<td>0.4</td>
+</tr>
+</tbody>
+</table>
+<p>A value passed explicitly always wins, so autoscaling only fills what
+is left unset:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 3-column page: text and points sized automatically</span></span>
+<span><span class="fu"><a href="../reference/plot_runscatter.html">plot_runscatter</a></span><span class="op">(</span><span class="va">mexp</span>, variable <span class="op">=</span> <span class="st">"norm_intensity"</span>, cols_page <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># keep the automatic font, but set the point size by hand</span></span>
+<span><span class="fu"><a href="../reference/plot_runscatter.html">plot_runscatter</a></span><span class="op">(</span><span class="va">mexp</span>, variable <span class="op">=</span> <span class="st">"norm_intensity"</span>, cols_page <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                point_size <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></span></code></pre></div>
+<p>Setting <code>autoscale = FALSE</code> ignores the grid and uses the
+single-plot defaults (<code>font_base_size = 11</code>,
+<code>point_size = 1.5</code>) for anything left unset. Single-panel
+plots such as <code><a href="../reference/plot_pca.html">plot_pca()</a></code> and
+<code><a href="../reference/plot_matrixeffects.html">plot_matrixeffects()</a></code> use <code>font_base_size = 11</code>
+by default.</p>
+</div>
+</div>
 <div class="section level3">
 <h3 id="ggplot2-layering">ggplot2 layering<a class="anchor" aria-label="anchor" href="#ggplot2-layering"></a>
 </h3>
-<p>All functions return <code>ggplot2</code> objects, so themes, scales,
-and titles can be appended in the usual way.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p>All functions return <code>ggplot2</code> objects, so anything the
+arguments above do not cover (bespoke themes, scales, titles) can be
+appended in the usual way, and a trailing <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme()</a></code> overrides
+the house theme.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_runscatter.html">plot_runscatter</a></span><span class="op">(</span><span class="va">mexp</span>, variable <span class="op">=</span> <span class="st">"norm_intensity"</span>, qc_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BQC"</span>, <span class="st">"SPL"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">9</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Normalised intensity (BQC vs SPL)"</span><span class="op">)</span></span></code></pre></div>
@@ -510,30 +770,162 @@ and titles can be appended in the usual way.</p>
 <div class="section level3">
 <h3 id="saving-plots">Saving plots<a class="anchor" aria-label="anchor" href="#saving-plots"></a>
 </h3>
-<p>For a single plot:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p><code><a href="../reference/save_plot.html">save_plot()</a></code> writes any plot to a file at a defined
+physical size and resolution. Sizes are given in <code>mm</code> by
+default, matching how journals specify figure widths, and
+<code>cm</code>, <code>in</code>, <code>pt</code> and <code>px</code>
+are also accepted.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_pca.html">plot_pca</a></span><span class="op">(</span><span class="va">mexp</span>,</span>
 <span>              variable <span class="op">=</span> <span class="st">"norm_intensity"</span>,</span>
 <span>              qc_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BQC"</span>, <span class="st">"SPL"</span><span class="op">)</span>,</span>
 <span>              ellipse_variable <span class="op">=</span> <span class="st">"batch_id"</span><span class="op">)</span></span>
-<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"figures/pca_batch.png"</span>, <span class="va">p</span>, width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">6</span>, dpi <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span></code></pre></div>
+<span></span>
+<span><span class="fu"><a href="../reference/save_plot.html">save_plot</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"figures/pca_batch.pdf"</span>, width <span class="op">=</span> <span class="fl">180</span>, height <span class="op">=</span> <span class="fl">120</span><span class="op">)</span></span></code></pre></div>
+<p>The same figure can be written in several formats in one call. Give a
+path without an extension and list the formats; each file gets the
+matching extension.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/save_plot.html">save_plot</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"figures/pca_batch"</span>, format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pdf"</span>, <span class="st">"png"</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">180</span>, height <span class="op">=</span> <span class="fl">120</span><span class="op">)</span></span></code></pre></div>
+<p>The plot is returned visibly, so piping into <code><a href="../reference/save_plot.html">save_plot()</a></code>
+still renders the figure in the notebook and saving needs no separate
+line:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pca.html">plot_pca</a></span><span class="op">(</span><span class="va">mexp</span>, variable <span class="op">=</span> <span class="st">"norm_intensity"</span>, ellipse_variable <span class="op">=</span> <span class="st">"batch_id"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/save_plot.html">save_plot</a></span><span class="op">(</span><span class="st">"figures/pca_batch.pdf"</span>, width <span class="op">=</span> <span class="fl">180</span>, height <span class="op">=</span> <span class="fl">120</span><span class="op">)</span></span></code></pre></div>
+<p>In a script or a loop, where re-drawing a dense figure is wasted
+work, <code>show_plot = FALSE</code> skips it and returns the written
+paths instead:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/save_plot.html">save_plot</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"figures/pca_batch.pdf"</span>, width <span class="op">=</span> <span class="fl">180</span>, height <span class="op">=</span> <span class="fl">120</span>,</span>
+<span>                   show_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>(With <code>show_plot = TRUE</code> the paths are still available, as
+the <code>"paths"</code> attribute of the returned plot.)</p>
+<p><code><a href="../reference/save_plot.html">save_plot()</a></code> also accepts what the plot functions return
+around a plot: the result list of <code><a href="../reference/plot_rla_boxplot.html">plot_rla_boxplot()</a></code> (it
+picks up the <code>plot</code> element), a <code>patchwork</code>
+composition, and a list of plots, which becomes a multi-page PDF.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pages</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_runscatter.html">plot_runscatter</a></span><span class="op">(</span><span class="va">mexp</span>, variable <span class="op">=</span> <span class="st">"norm_intensity"</span>, return_plots <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/save_plot.html">save_plot</a></span><span class="op">(</span><span class="va">pages</span>, <span class="st">"figures/runscatter_all.pdf"</span>, width <span class="op">=</span> <span class="fl">280</span>, height <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>          show_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="choosing-a-format">Choosing a format<a class="anchor" aria-label="anchor" href="#choosing-a-format"></a>
+</h4>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th>Purpose</th>
+<th>Format</th>
+<th>Device used</th>
+<th>Typical <code>dpi</code>
+</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Journal figure, vector (default choice)</td>
+<td><code>"pdf"</code></td>
+<td>
+<code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">grDevices::cairo_pdf</a></code>, else
+<code><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">grDevices::pdf</a></code>
+</td>
+<td>n/a</td>
+</tr>
+<tr class="even">
+<td>Figure for further editing (Illustrator, Inkscape)</td>
+<td><code>"svg"</code></td>
+<td>
+<code><a href="https://svglite.r-lib.org/reference/svglite.html" class="external-link">svglite::svglite</a></code>, else <code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">grDevices::svg</a></code>
+</td>
+<td>n/a</td>
+</tr>
+<tr class="odd">
+<td>Slides, Quarto HTML, GitHub</td>
+<td><code>"png"</code></td>
+<td>
+<code><a href="https://ragg.r-lib.org/reference/agg_png.html" class="external-link">ragg::agg_png</a></code>, else <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">grDevices::png</a></code>
+</td>
+<td>150–300</td>
+</tr>
+<tr class="even">
+<td>Journal requiring raster submission</td>
+<td><code>"tiff"</code></td>
+<td>
+<code><a href="https://ragg.r-lib.org/reference/agg_tiff.html" class="external-link">ragg::agg_tiff</a></code>, else <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">grDevices::tiff</a></code>
+</td>
+<td>300–600</td>
+</tr>
+</tbody>
+</table>
+<p>Prefer a <strong>vector</strong> format for publication: text stays
+selectable and searchable, and lines stay sharp at any
+magnification.</p>
+<p>Prefer a <strong>raster</strong> format when a plot draws very many
+marks — a <code><a href="../reference/plot_runscatter.html">plot_runscatter()</a></code> page covering several thousand
+analyses, or a dense <code><a href="../reference/plot_pca.html">plot_pca()</a></code> score plot. Every point
+becomes a separate object in a PDF, so such figures produce very large
+files that are slow to open and to typeset. Saving them at 300–600 dpi
+instead keeps the file small with no visible loss.</p>
+<div class="callout callout-tip">
+<p>The optional packages <code>ragg</code> and <code>svglite</code> are
+used automatically when installed, giving better text rendering,
+system-font support and smaller SVG files. Without them the equivalent
+<code>grDevices</code> device is used and the output is still correct.
+Installing both is recommended:
+<code>install.packages(c("ragg", "svglite"))</code>.</p>
+<p>PDF output uses the cairo device wherever R was built with cairo
+support, because plain <code><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">grDevices::pdf()</a></code> writes text in a
+single-byte encoding and silently transliterates anything outside it —
+an en dash becomes <code>-</code>, and <code>≥</code> becomes
+<code>&gt;=</code>. Unit labels such as <code>µmol/L</code> and
+statistical annotations depend on those glyphs surviving.</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="setting-the-unit-and-resolution-once">Setting the unit and resolution once<a class="anchor" aria-label="anchor" href="#setting-the-unit-and-resolution-once"></a>
+</h4>
+<p><code>units</code> and <code>dpi</code> can be set for a whole
+notebook through <code><a href="../reference/mrmhub_set_plot_defaults.html">mrmhub_set_plot_defaults()</a></code>, so only
+<code>width</code> and <code>height</code> need repeating. The size
+itself is always explicit at the call site.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mrmhub_set_plot_defaults.html">mrmhub_set_plot_defaults</a></span><span class="op">(</span>units <span class="op">=</span> <span class="st">"mm"</span>, dpi <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/save_plot.html">save_plot</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"figures/pca_batch.png"</span>, width <span class="op">=</span> <span class="fl">180</span>, height <span class="op">=</span> <span class="fl">120</span><span class="op">)</span>   <span class="co"># 600 dpi</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="multi-page-pdfs">Multi-page PDFs<a class="anchor" aria-label="anchor" href="#multi-page-pdfs"></a>
+</h4>
 <p>For paged outputs (<code><a href="../reference/plot_runscatter.html">plot_runscatter()</a></code>,
-<code><a href="../reference/plot_calibrationcurves.html">plot_calibrationcurves()</a></code>), use the function’s built-in
-<code>output_pdf = TRUE</code> and <code>path</code> arguments to write
-a multi-page PDF directly, rather than iterating in user code.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code><a href="../reference/plot_calibrationcurves.html">plot_calibrationcurves()</a></code>,
+<code><a href="../reference/plot_responsecurves.html">plot_responsecurves()</a></code>,
+<code><a href="../reference/plot_feature_correlations.html">plot_feature_correlations()</a></code>), the built-in
+<code>output_pdf = TRUE</code> and <code>path</code> arguments write a
+multi-page PDF directly, rather than iterating in user code.
+<code>page_width</code> and <code>page_height</code> set the page size;
+without them an A4 page is used, oriented by
+<code>page_orientation</code>.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_runscatter.html">plot_runscatter</a></span><span class="op">(</span><span class="va">mexp</span>,</span>
-<span>                variable   <span class="op">=</span> <span class="st">"norm_intensity"</span>,</span>
-<span>                qc_types   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BQC"</span>, <span class="st">"SPL"</span><span class="op">)</span>,</span>
-<span>                output_pdf <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                path       <span class="op">=</span> <span class="st">"figures/runscatter_all.pdf"</span><span class="op">)</span></span></code></pre></div>
+<span>                variable    <span class="op">=</span> <span class="st">"norm_intensity"</span>,</span>
+<span>                qc_types    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BQC"</span>, <span class="st">"SPL"</span><span class="op">)</span>,</span>
+<span>                output_pdf  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                path        <span class="op">=</span> <span class="st">"figures/runscatter_all.pdf"</span>,</span>
+<span>                page_width  <span class="op">=</span> <span class="fl">297</span>,</span>
+<span>                page_height <span class="op">=</span> <span class="fl">210</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="combining-plots">Combining plots<a class="anchor" aria-label="anchor" href="#combining-plots"></a>
 </h3>
 <p><code>patchwork</code> composes multiple panels into a single
 figure:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p_seq</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_runsequence.html">plot_runsequence</a></span><span class="op">(</span><span class="va">mexp</span><span class="op">)</span></span>
@@ -545,24 +937,20 @@ figure:</p>
 <span><span class="va">p_seq</span> <span class="op">/</span> <span class="op">(</span><span class="va">p_pca</span> <span class="op">|</span> <span class="va">p_rla</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+<h3 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h3>
 <ul>
 <li>
-<a href="tutorial-05-run-scatter.html">Run-Scatter Plot
-(tutorial)</a> — detailed <code><a href="../reference/plot_runscatter.html">plot_runscatter()</a></code> usage</li>
+<a href="tutorial-05-run-scatter.html">Exploring QC: RunScatter and
+PCA</a>: <code><a href="../reference/plot_runscatter.html">plot_runscatter()</a></code>, <code><a href="../reference/plot_pca.html">plot_pca()</a></code> and
+outlier screening</li>
 <li>
-<a href="tutorial-09-pca-exploration.html">QC Exploration with
-PCA</a> — PCA interpretation</li>
+<a href="tutorial-04-drift-correction.html">Drift and batch
+correction (tutorial)</a>: <code><a href="../reference/plot_runscatter.html">plot_runscatter()</a></code> in
+context</li>
 <li>
-<a href="tutorial-04-drift-correction.html">Drift Correction
-(tutorial)</a> — <code><a href="../reference/plot_runscatter.html">plot_runscatter()</a></code> in context</li>
-<li>
-<a href="recipe-01-ext-calibration-qc.html">External Calibration
-&amp; QC (recipe)</a> — calibration plots in workflow</li>
-<li>
-<a href="recipe-02-custom-qc-report.html">Custom QC Report
-(recipe)</a> — combine plots in a report</li>
+<a href="tutorial-06-external-calibration.html">External calibration
+&amp; QC</a>: calibration plots in workflow</li>
 </ul>
 </div>
 </div>
@@ -577,7 +965,7 @@ PCA</a> — PCA interpretation</li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

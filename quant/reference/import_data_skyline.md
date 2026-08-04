@@ -1,4 +1,4 @@
-# Import Skyline Peak Integration Results
+# Import Skyline peak integration results
 
 This function imports tabular data files (\*.csv) exported from
 `Skyline`, containing peak integration results.
@@ -19,7 +19,9 @@ import_data_skyline(
 
 - data:
 
-  A `MRMhubExperiment` object.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object.
 
 - path:
 
@@ -48,7 +50,9 @@ import_data_skyline(
 
 ## Value
 
-A `MRMhubExperiment` object containing the imported data.
+A
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object containing the imported data.
 
 ## Details
 
@@ -83,6 +87,20 @@ format and include `Replicate Name`, `Molecule Name`, and either
 At least one feature variable, such as `Area` or `RT`, must also be
 exported.
 
+## Identifier normalization
+
+All imported identifiers are whitespace-normalized on import: leading
+and trailing spaces are removed and internal runs of whitespace are
+collapsed to a single space (for example `"QC 01"` becomes `"QC 01"`).
+Raw-data file extensions (`.mzML`, `.d`, `.raw`, `.wiff`, `.wiff2`,
+`.lcd`, `.chrom`, case-insensitive) are stripped from `analysis_id`.
+
+The same normalization is applied to both the data and the metadata,
+which is what lets an `analysis_id` typed into metadata match the one
+derived from a data-file name instead of silently failing to join. A
+consequence is that two identifiers differing only by whitespace
+collapse to one and are then reported as duplicates.
+
 ## Examples
 
 ``` r
@@ -94,44 +112,16 @@ mexp <- import_data_skyline(
   transition_id_columns = "mz",
   import_metadata = TRUE
 )
-#> ✔ Imported 6 analyses with 21 features
-#> ℹ `feature_area` selected as default feature intensity. Modify with `set_intensity_var()`.
+#> ✔ Imported 6 analyses with 21 features.
+#> ℹ feature_area selected as default feature intensity. Modify with `set_intensity_var()`.
 #> ✔ Analysis metadata associated with 6 analyses.
 #> ✔ Feature metadata associated with 21 features.
 #> ℹ Analysis order was based on `analysis_order` column of imported data. Use `set_analysis_order` to change the order.
 print(mexp)
 #> 
-#> ── MRMhubExperiment ────────────────────────────────────────────────────────────
-#> Title:
-#> 
-#> Processing status: Annotated raw AREA values
-#> 
-#> ── Annotated Raw Data ──
-#> 
-#> • Analyses: 6
-#> • Features: 21
-#> • Raw signal used for processing: `feature_area`
-#> 
-#> ── Metadata ──
-#> 
-#> • Analyses/samples: ✔
-#> • Features/analytes: ✔
-#> • Internal standards: ✖
-#> • Response curves: ✖
-#> • Calibrants/QC concentrations: ✖
-#> • Study samples: ✖
-#> 
-#> ── Processing Status ──
-#> 
-#> • Isotope corrected: ✖
-#> • ISTD normalized: ✖
-#> • ISTD quantitated: ✖
-#> • Drift corrected variables: ✖
-#> • Batch corrected variables: ✖
-#> • Feature filtering applied: ✖
-#> 
-#> ── Exclusion of Analyses and Features ──
-#> 
-#> • Analyses manually excluded (`analysis_id`): ✖
-#> • Features manually excluded (`feature_id`): ✖
+#> ── MRMhubExperiment:  ──────────────────────────────────────────────────────────
+#> NA | 6 analyses and 21 features | signal: feature_area
+#> Last step: Annotated raw AREA values
+#> Normalized ✖ Quantitated ✖ Drift/batch ✖ Filtered ✖
+#> ℹ Use `mrmhub_status()` for the full processing and metadata report
 ```

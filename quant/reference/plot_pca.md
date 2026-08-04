@@ -1,4 +1,4 @@
-# PCA Plot for Quality Control
+# PCA plot for quality control
 
 Generates a Principal Component Analysis (PCA) plot for visualizing
 samples including quality control (QC) samples. This function provides
@@ -33,9 +33,17 @@ plot_pca(
   labels_threshold_mad = 3,
   shared_labeltext_hide = NA,
   label_font_size = 3,
-  point_size = 2,
-  point_alpha = 0.8,
-  font_base_size = 8,
+  point_size = NULL,
+  point_alpha = 0.7,
+  font_base_size = NULL,
+  legend_position = NULL,
+  legend_size = NULL,
+  show_legend_title = NULL,
+  title = NULL,
+  strip_text_size = NULL,
+  strip_bg_color = NULL,
+  legend_bg_alpha = NULL,
+  aspect_ratio = 1,
   ellipse_confidence_level = 0.95,
   ellipse_linewidth = 1,
   ellipse_fill = TRUE,
@@ -48,7 +56,7 @@ plot_pca(
 
 - data:
 
-  A MRMhubExperiment object
+  A `MRMhubExperiment` object.
 
 - variable:
 
@@ -59,9 +67,9 @@ plot_pca(
 - qc_types:
 
   A character vector specifying the QC types to plot. It must contain at
-  least one element. The default is `NA`, which means any of the
-  non-blank QC types ("SPL", "TQC", "BQC", "HQC", "MQC", "LQC", "NIST",
-  "LTR") will be plotted if present in the dataset.
+  least one element. The default `NA` plots any of the non-blank QC
+  types ("SPL", "TQC", "BQC", "HQC", "MQC", "LQC", "NIST", "LTR")
+  present in the dataset.
 
 - ellipse_variable:
 
@@ -101,26 +109,23 @@ plot_pca(
 
 - include_feature_filter:
 
-  A character or regex pattern used to filter features by `feature_id`.
-  If `NA` or an empty string (`""`) is provided, the filter is ignored.
-  When a vector of length \> 1 is supplied, only features with exactly
-  these names are selected (applied individually as OR conditions).
+  Feature(s) to include by `feature_id`, as a character vector. Each
+  element is matched exactly when it names an existing feature,
+  otherwise treated as a regex; elements combine with OR. A full ID
+  (e.g. `"S1P d18:0 [M>60]"`) needs no escaping, while patterns like
+  `"PC|PE"` still work. `NA` or `""` ignores the filter.
 
 - exclude_feature_filter:
 
-  A character or regex pattern used to exclude features by `feature_id`.
-  If `NA` or an empty string (`""`) is provided, the filter is ignored.
-  When a vector of length \> 1 is supplied, only features with exactly
-  these names are excluded (applied individually as OR conditions).
+  Feature(s) to exclude by `feature_id`, matched the same way as
+  `include_feature_filter`. `NA` or `""` ignores the filter.
 
 - min_median_value:
 
-  Minimum median feature value (as determined by the `variable`) across
-  all samples from selected QC types that must be met for a feature to
-  be included in the PCA analysis. `NA` (default) means no filtering
-  will be applied. This parameter provides an fast way to exclude noisy
-  features from the analysis. However, it is recommended to use
-  `filter_data` with
+  Minimum median feature value across the selected QC-type samples
+  required for a feature to be included. `NA` (default) applies no
+  filtering. This is a fast way to exclude noisy features; for
+  principled QC-based filtering use
   [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md).
 
 - show_labels:
@@ -131,7 +136,7 @@ plot_pca(
 
 - labels_column:
 
-  A character string indicating the column to be use for the point
+  A character string indicating the column to be used for the point
   labels. Typically "analysis_id" or "analysis_order". Default is
   "analysis_id".
 
@@ -164,8 +169,64 @@ plot_pca(
 
 - font_base_size:
 
-  A numeric value indicating the base font size for plot text elements.
-  Default is 8.
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
+
+- legend_position:
+
+  Optional legend placement. One of `"right"`, `"left"`, `"top"`,
+  `"bottom"`, `"none"`; a corner keyword `"inside-tr"`, `"inside-tl"`,
+  `"inside-br"`, `"inside-bl"`; or a numeric `c(x, y)` in `[0, 1]`
+  coordinates. `NULL` (default) keeps the current placement, unless a
+  global default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md).
+
+- legend_size:
+
+  Optional single multiplier of `font_base_size` (when `<= 3`) or
+  absolute point size (when `> 3`) that scales the whole legend: text,
+  title, key and the plotted symbols. `NULL` (default) leaves the legend
+  unchanged.
+
+- show_legend_title:
+
+  Logical. `NULL` (default) keeps the legend title, unless a global
+  default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md);
+  `FALSE` hides it, `TRUE` forces it shown.
+
+- title:
+
+  Optional plot title. `NULL` (default) or `NA` shows no title; a
+  character string is shown as the title.
+
+- strip_text_size:
+
+  Optional facet strip text size, as a multiplier of `font_base_size`
+  (when `<= 3`) or an absolute point size (when `> 3`). `NULL` (default)
+  inherits from `font_base_size`.
+
+- strip_bg_color:
+
+  Optional facet strip background fill colour. The strip text colour is
+  set automatically for contrast (white on a dark fill, black on a light
+  one). `NULL` (default) keeps the house dark-navy strips.
+
+- legend_bg_alpha:
+
+  Optional opacity (`[0, 1]`) of a white legend background box, useful
+  for a readable inside legend drawn over points. `NULL` (default)
+  leaves the legend background unchanged.
+
+- aspect_ratio:
+
+  Panel aspect ratio (height/width). Default `1` gives a square score
+  plot (PC1/PC2 on the same visual scale); `NULL` leaves it free.
 
 - ellipse_confidence_level:
 
@@ -198,4 +259,21 @@ plot_pca(
 
 ## Value
 
-A ggplot object with the PCA plot
+A `ggplot` object with the PCA plot
+
+## See also
+
+Other QC plots:
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md),
+[`plot_interference_correction()`](https://slinghub.github.io/MRMhub/quant/reference/plot_interference_correction.md),
+[`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md),
+[`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md),
+[`plot_pca_loading()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca_loading.md),
+[`plot_qc_interference_impact()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_interference_impact.md),
+[`plot_qc_summary_byclass()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_byclass.md),
+[`plot_qc_summary_overall()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_overall.md),
+[`plot_qcmetrics_comparison()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qcmetrics_comparison.md),
+[`plot_rla_boxplot()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rla_boxplot.md),
+[`plot_rt_vs_chain()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rt_vs_chain.md),
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_runsequence()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runsequence.md)

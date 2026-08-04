@@ -1,6 +1,6 @@
-# (Depreciated) Import Wide CSV Files
+# (Deprecated) Import wide CSV files
 
-(Depreciated) Import Wide CSV Files
+(Deprecated) Import wide CSV files
 
 ## Usage
 
@@ -20,7 +20,8 @@ import_data_csv(
 
 - data:
 
-  MRMhubExperiment object
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - path:
 
@@ -30,7 +31,7 @@ import_data_csv(
 - variable_name:
 
   Variable type representing the values in the table. Must be one of
-  "intensity", "norm_intensity", "conc", "area", "height", "response")
+  "intensity", "norm_intensity", "conc", "area", "height", "response".
 
 - analysis_id_col:
 
@@ -40,9 +41,11 @@ import_data_csv(
 - import_metadata:
 
   Import additional metadata columns (e.g. batch ID, sample type) and
-  add to the `MRMhubExperiment` object. Only following metadata column
-  names are supported: "qc_type", "batch_id", "is_quantifier",
-  "is_istd", "analysis_order"
+  add to the
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object. Only following metadata column names are supported:
+  `"qc_type"`, `"batch_id"`, `"is_quantifier"`, `"is_istd"`,
+  `"analysis_order"`
 
 - first_feature_column:
 
@@ -55,7 +58,8 @@ import_data_csv(
 
 ## Value
 
-MRMhubExperiment object
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object
 
 ## Details
 
@@ -76,45 +80,17 @@ mexp <- import_data_csv(
  variable_name = "conc",
  import_metadata = TRUE)
 #> ! The function import_data_csv is deprecated. Please use import_data_csv_wide instead.
-#> ℹ Metadata column(s) 'qc_type, batch_id' imported. To ignore, set `import_metadata = FALSE`
-#> ✔ Imported 87 analyses with 5 features
+#> ✔ Metadata column(s) 'qc_type, batch_id' imported. To ignore, set `import_metadata = FALSE`
+#> ✔ Imported 87 analyses with 5 features.
 #> ✔ Analysis metadata associated with 87 analyses.
 #> ✔ Feature metadata associated with 5 features.
 #> ℹ Analysis order was based on `analysis_order` column of imported data. Use `set_analysis_order` to change the order.
 
 print(mexp)
 #> 
-#> ── MRMhubExperiment ────────────────────────────────────────────────────────────
-#> Title:
-#> 
-#> Processing status: Annotated raw CONC values
-#> 
-#> ── Annotated Raw Data ──
-#> 
-#> • Analyses: 87
-#> • Features: 5
-#> • Raw signal used for processing: `feature_conc`
-#> 
-#> ── Metadata ──
-#> 
-#> • Analyses/samples: ✔
-#> • Features/analytes: ✔
-#> • Internal standards: ✖
-#> • Response curves: ✖
-#> • Calibrants/QC concentrations: ✖
-#> • Study samples: ✖
-#> 
-#> ── Processing Status ──
-#> 
-#> • Isotope corrected: ✖
-#> • ISTD normalized: ✖
-#> • ISTD quantitated: ✔
-#> • Drift corrected variables: ✖
-#> • Batch corrected variables: ✖
-#> • Feature filtering applied: ✖
-#> 
-#> ── Exclusion of Analyses and Features ──
-#> 
-#> • Analyses manually excluded (`analysis_id`): ✖
-#> • Features manually excluded (`feature_id`): ✖
+#> ── MRMhubExperiment:  ──────────────────────────────────────────────────────────
+#> NA | 87 analyses and 5 features | signal: feature_conc
+#> Last step: Annotated raw CONC values
+#> Normalized ✖ Quantitated ✖ Drift/batch ✖ Filtered ✖
+#> ℹ Use `mrmhub_status()` for the full processing and metadata report
 ```

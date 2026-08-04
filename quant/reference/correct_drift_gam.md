@@ -1,4 +1,4 @@
-# Drift Correction by Generalized Additive Model (GAM) Smoothing
+# Drift correction by generalized additive model (GAM) smoothing
 
 This function corrects for run-order drifts within or across batches
 using Generalized Additive Models (GAMs). The correction uses penalized
@@ -29,12 +29,12 @@ independently for each batch if `batch_wise = TRUE`, where the median of
 the CV changes across the batch is compared with the threshold.
 
 **Note**: The function outputs a message indicating the median CV change
-and the mean absolute CV before and after correction for all samples.
+and the median absolute CV before and after correction for all samples.
 However, these metrics are experimental and should not be used as
 definitive criteria for correction (see Details below).
 
-This cubic spline method is implemented using the base R function
-[`stats::spline()`](https://rdrr.io/r/stats/splinefun.html).
+This method is implemented using penalized splines via the
+[`mgcv::gam()`](https://rdrr.io/pkg/mgcv/man/gam.html) function.
 
 ## Usage
 
@@ -63,7 +63,8 @@ correct_drift_gam(
 
 - data:
 
-  MRMhubExperiment object
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - variable:
 
@@ -110,12 +111,14 @@ correct_drift_gam(
 
 - conditional_correction:
 
-  Determines whether drift correction should be applied to all features
-  unconditionally (`TRUE`) or conditionally, based on sample CV change.
+  Determines whether drift correction is applied to all features
+  unconditionally (`FALSE`, the default) or, when `TRUE`, only
+  conditionally based on sample CV change.
 
 - recalc_trend_after:
 
-  Recalculate trend post-drift correction for `plot_qc_runscatter()`.
+  Recalculate trend post-drift correction for
+  [`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md).
   This will double calculation time.
 
 - feature_list:
@@ -125,14 +128,14 @@ correct_drift_gam(
 
 - cv_diff_threshold:
 
-  Maximum allowable change in CV ratio before and after smoothing for
-  correction to be applied.
+  Maximum allowable change (difference) in CV before and after smoothing
+  for correction to be applied.
 
 - use_original_if_fail:
 
   Determines the action when smoothing fails or results in invalid
   values for a feature. If `FALSE` (default), the result for each
-  feature will `NA` for all batches, if `TRUE`, the original data is
+  feature will be `NA` for all batches, if `TRUE`, the original data is
   kept.
 
 - show_progress:
@@ -142,17 +145,17 @@ correct_drift_gam(
 
 ## Value
 
-MRMhubExperiment object
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object
 
 ## Details
 
 In the output message, the median CV change is computed as the median of
 CV changes for all features in global correction or for features where
-the correction passed the defined CV difference treshold in case of
-conditional correction (`conditional_correction = FALSE`). For
-batch-wise correction, the change is calculated per batch, with the
-final median CV change being the median of these batch medians across
-features.
+the correction passed the defined CV difference threshold in case of
+conditional correction (`conditional_correction = TRUE`). For batch-wise
+correction, the change is calculated per batch, with the final median CV
+change being the median of these batch medians across features.
 
 This smoothing is based on Generalized Additive Models (GAM) using
 penalized splines, implemented via
@@ -160,4 +163,7 @@ penalized splines, implemented via
 
 ## See also
 
-[`mgcv::gam()`](https://rdrr.io/pkg/mgcv/man/gam.html)
+[`mgcv::gam()`](https://rdrr.io/pkg/mgcv/man/gam.html); the
+[drift-correction
+tutorial](https://slinghub.github.io/MRMhub/quant/articles/tutorial-04-drift-correction.html)
+for a worked example.

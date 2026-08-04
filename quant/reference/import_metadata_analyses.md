@@ -23,7 +23,9 @@ import_metadata_analyses(
 
 - data:
 
-  A `MRMhubExperiment` object
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - table:
 
@@ -50,7 +52,23 @@ import_metadata_analyses(
 
 ## Value
 
-An updated `MRMhubExperiment` object
+An updated
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object
+
+## Identifier normalization
+
+All imported identifiers are whitespace-normalized on import: leading
+and trailing spaces are removed and internal runs of whitespace are
+collapsed to a single space (for example `"QC 01"` becomes `"QC 01"`).
+Raw-data file extensions (`.mzML`, `.d`, `.raw`, `.wiff`, `.wiff2`,
+`.lcd`, `.chrom`, case-insensitive) are stripped from `analysis_id`.
+
+The same normalization is applied to both the data and the metadata,
+which is what lets an `analysis_id` typed into metadata match the one
+derived from a data-file name instead of silently failing to join. A
+consequence is that two identifiers differing only by whitespace
+collapse to one and are then reported as duplicates.
 
 ## Examples
 
@@ -61,8 +79,8 @@ mexp <- import_data_masshunter(
   data = mexp,
   path = file_path,
   import_metadata = FALSE)
-#> ✔ Imported 38 analyses with 31 features
-#> ℹ `feature_area` selected as default feature intensity. Modify with `set_intensity_var()`.
+#> ✔ Imported 38 analyses with 31 features.
+#> ℹ feature_area selected as default feature intensity. Modify with `set_intensity_var()`.
 
 meta_path = system.file("extdata", "MHQuant_demo_metadata_analyses.csv", package = "mrmhub")
 
@@ -74,37 +92,9 @@ mexp <- import_metadata_analyses(
 
 print(mexp)
 #> 
-#> ── MRMhubExperiment ────────────────────────────────────────────────────────────
-#> Title:
-#> 
-#> Processing status: Annotated raw AREA values
-#> 
-#> ── Annotated Raw Data ──
-#> 
-#> • Analyses: 38
-#> • Features: 31
-#> • Raw signal used for processing: `feature_area`
-#> 
-#> ── Metadata ──
-#> 
-#> • Analyses/samples: ✔
-#> • Features/analytes: ✖
-#> • Internal standards: ✖
-#> • Response curves: ✖
-#> • Calibrants/QC concentrations: ✖
-#> • Study samples: ✖
-#> 
-#> ── Processing Status ──
-#> 
-#> • Isotope corrected: ✖
-#> • ISTD normalized: ✖
-#> • ISTD quantitated: ✖
-#> • Drift corrected variables: ✖
-#> • Batch corrected variables: ✖
-#> • Feature filtering applied: ✖
-#> 
-#> ── Exclusion of Analyses and Features ──
-#> 
-#> • Analyses manually excluded (`analysis_id`): ✖
-#> • Features manually excluded (`feature_id`): ✖
+#> ── MRMhubExperiment:  ──────────────────────────────────────────────────────────
+#> NA | 38 analyses and 31 features | signal: feature_area
+#> Last step: Annotated raw AREA values
+#> Normalized ✖ Quantitated ✖ Drift/batch ✖ Filtered ✖
+#> ℹ Use `mrmhub_status()` for the full processing and metadata report
 ```

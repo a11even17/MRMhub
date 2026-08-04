@@ -1,277 +1,394 @@
-# Drift Correction (Smoothing)
+# Drift and batch correction
 
-MRMhub provides different functions for run-order drift correction,
-differing by the employed smoothing algorithm. These functions can be
-categorized into functions that are either more suited for QC or study
-sample-based drift correction.
+Tutorial Prerequisites: [Full
+workflow](https://slinghub.github.io/MRMhub/quant/articles/tutorial-03-lipidomics-workflow.md)
 
-The data must be provided via a MRMhubExperiment object, whereby raw
-data that was imported or processed data can be corrected, such as
-`intensity` or `conc` values.
+Signal intensities in a mass-spectrometry run drift with injection order
+and shift between analytical batches. MRMhub corrects run-order drift by
+smoothing a trend through reference samples, and batch effects by median
+centering. Both operate on a data variable of an `MRMhubExperiment` (raw
+intensities, normalized intensities, or concentrations) and are fitted
+on QC or study samples only, never mixed. After this tutorial you can
+select an appropriate correction method for a given QC design and apply
+drift and batch correction in the correct order.
 
-These drift correction functions have various options for customization,
-please refer the manual page on [Drift and Batch
-Correction](https://slinghub.github.io/MRMhub/quant/articles/manual-07-drift-batch-correction.md)
-for more details.
+## 1. Import data
 
-**Time:** ~15 min  \|  **Level:** Intermediate  \|  **Prerequisites:**
-[Basic
-workflow](https://slinghub.github.io/MRMhub/quant/articles/tutorial-02-basic-workflow.md)
-
-## Import data
-
-In this tutorial, we import pre-calculated raw concentration values from
-a CSV file. This file must contain a column with batch information
-(`batch_id`) if batch-wise correction should be applied, see
+We import pre-calculated raw concentration values from a CSV file.
+Batch-wise correction requires a `batch_id` column; see
 [`import_data_csv_wide()`](https://slinghub.github.io/MRMhub/quant/reference/import_data_csv_wide.md)
-for more information.
+for the expected format.
 
 ``` r
 
 library(mrmhub)
 
-myexp <- mrmhub::MRMhubExperiment()
-
-myexp <- import_data_csv_wide(
-  myexp,
+mexp <- MRMhubExperiment()
+mexp <- import_data_csv_wide(
+  mexp,
   path = "smooth-testdata.csv",
   variable_name = "conc",
-  import_metadata = TRUE)
+  import_metadata = TRUE
+)
 ```
 
-## QC-based smoothing
+## 2. QC-based drift correction
 
-We apply a QC-based drift correction using cubic spline. See
-[`correct_drift_cubicspline()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_cubicspline.md)
-for more information.
+Apply a QC-based drift correction with a cubic spline fitted through the
+batch QC samples (`BQC`). The reported change in median CV summarises
+whether the correction improved analytical precision.
 
 ``` r
 
 mexp_drift <- correct_drift_cubicspline(
-  myexp,
-  batch_wise = FALSE,
+  mexp,
   variable = "conc",
+  batch_wise = FALSE,
   ref_qc_types = "BQC",
-  recalc_trend_after = TRUE)
-#> ℹ Applying `conc` drift correction...
-#> ✔ Drift correction was applied to 3 of 3 features (across all batches).
-#> ℹ The median CV change of all features in study samples was -4.69% (range: -8.21% to 1.17%). The median absolute CV of all features decreased from 30.56% to 28.52%.
+  recalc_trend_after = TRUE
+)
 ```
 
-Next, we inspect the data before and after the correction. We observe
-that the green trendline follows the QC samples (in red). After the
-correction, the trend has been fully smoothed out, resulting in a
-straight line.
+    ✔ Drift correction was applied to 3 of 3 features (across all batches).
+
+    ℹ The median per-feature CV change of all features in study samples was -4.69% (range: -8.21% to 1.17%; a positive value means the CV increased). The median CV across all features decreased from 30.56% to 28.52%.
 
 ``` r
 
-plot_runscatter(mexp_drift, variable = "conc_before", qc_types = c("BQC", "SPL"),
-                rows_page = 1, cols_page = 3, show_trend = TRUE)
+plot_runscatter(
+  mexp_drift,
+  variable = "conc_before",
+  qc_types = c("BQC", "SPL"),
+  rows_page = 1, cols_page = 3, show_trend = TRUE
+)
 ```
 
-![RunScatter plots before and after batch correction
-](tutorial-04-drift-correction_files/figure-html/unnamed-chunk-3-1.png)
+![RunScatter of concentrations before QC-based drift
+correction](tutorial-04-drift-correction_files/figure-html/drift-cubicspline-before-1.png)
+
+Figure 1. Concentrations before QC-based drift correction; the fitted
+trend (green) follows the BQC points (red).
 
 ``` r
 
-plot_runscatter(mexp_drift, variable = "conc", qc_types = c("BQC", "SPL"),
-                rows_page = 1, cols_page = 3, show_trend = TRUE)
+plot_runscatter(
+  mexp_drift,
+  variable = "conc",
+  qc_types = c("BQC", "SPL"),
+  rows_page = 1, cols_page = 3, show_trend = TRUE
+)
 ```
 
-![RunScatter plots before and after batch correction
-](tutorial-04-drift-correction_files/figure-html/unnamed-chunk-3-2.png)
+![RunScatter of concentrations after QC-based drift
+correction](tutorial-04-drift-correction_files/figure-html/drift-cubicspline-after-1.png)
 
-## Sample trend-based smoothing
+Figure 2. Concentrations after QC-based drift correction; the BQC trend
+is flat.
 
-Above, we observe that the QC samples do not fully represent the trends
-of the study samples. This discrepancy can occur when the QC samples,
-which often based on pooled samples, differ in handling or properties
-from the study samples.
+The fitted trend (green) tracks the `BQC` points (red) before correction
+and is flat afterwards. Flattening the `BQC` trend does not, however,
+necessarily straighten the study-sample (`SPL`) trend, since pooled QCs
+can differ from the study samples in handling and matrix.
 
-We therefore apply a sample-based drift correction using gaussian kernel
-smoothing. See
-[`correct_drift_gaussiankernel()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_gaussiankernel.md)
-for more information.
+## 3. Sample-based drift correction
+
+When QC samples do not represent the study-sample trend, fit the drift
+on the study samples instead. Gaussian kernel smoothing is suited to
+this because study samples are numerous but individually noisy;
+`kernel_size` sets the smoothing window. The study-sample trend is then
+well corrected, though for this dataset the difference from the QC-based
+result above is modest.
 
 ``` r
 
 mexp_drift <- correct_drift_gaussiankernel(
-  myexp,
+  mexp,
   variable = "conc",
-  kernel_size = 10,
   batch_wise = FALSE,
   ref_qc_types = "SPL",
-  recalc_trend_after = TRUE)
-#> ℹ Applying `conc` drift correction...
-#> ✔ Drift correction was applied to 3 of 3 features (across all batches).
-#> ℹ The median CV change of all features in study samples was -6.18% (range: -11.46% to -1.49%). The median absolute CV of all features decreased from 30.56% to 25.86%.
+  kernel_size = 10,
+  recalc_trend_after = TRUE
+)
 ```
-
-Again, we inspect the data before and after the correction. We observe
-that the green trendline follows the samples (in grey). After the
-correction, the trend has been fully smoothed out, resulting in a
-straight line.
 
 ``` r
 
-plot_runscatter(mexp_drift, variable = "conc_before", qc_types = c("BQC", "SPL"),
-                rows_page = 1, cols_page = 3, show_trend = TRUE)
+plot_runscatter(
+  mexp_drift,
+  variable = "conc",
+  qc_types = c("BQC", "SPL"),
+  rows_page = 1, cols_page = 3, show_trend = TRUE
+)
 ```
 
-![RunScatter plots before and after batch correction
-](tutorial-04-drift-correction_files/figure-html/unnamed-chunk-5-1.png)
+![RunScatter after sample-based Gaussian-kernel drift
+correction](tutorial-04-drift-correction_files/figure-html/drift-gaussian-after-1.png)
 
-``` r
+Figure 3. Concentrations after sample-based Gaussian-kernel drift
+correction; the study-sample trend is flat.
 
-plot_runscatter(mexp_drift, variable = "conc", qc_types = c("BQC", "SPL"),
-                rows_page = 1, cols_page = 3, show_trend = TRUE)    
-```
+## 4. Within-batch drift correction
 
-![RunScatter plots before and after batch correction
-](tutorial-04-drift-correction_files/figure-html/unnamed-chunk-6-1.png)
-Now, the trends of the study samples appear to be fairly well corrected.
-However, in this example, the differences compared to the previous
-QC-based smoothing are not very pronounced.
-
-## Within-batch drift correction
-
-In the examples before we applied drift correction across all batches.
-However, if batch-effects are present that break the drifts, it is
-recommended to apply drift correction within each batch.
-
-We explore a within-batch drift correction using a sample-based gaussian
-kernel smoothing from above in this next example, by setting
-`batch_wise = TRUE`.
+The corrections above span all batches. When batch effects interrupt the
+drift, fit the trend within each batch by setting `batch_wise = TRUE`.
 
 ``` r
 
 mexp_drift <- correct_drift_gaussiankernel(
-  myexp,
+  mexp,
   variable = "conc",
-  kernel_size = 10,
   batch_wise = TRUE,
   ref_qc_types = "SPL",
-  recalc_trend_after = TRUE)
-#> ℹ Applying `conc` drift correction...
-#> ✔ Drift correction was applied to 3 of 3 features (batch-wise).
-#> ℹ The median CV change of all features in study samples was -1.20% (range: -1.88% to -0.61%). The median absolute CV of all features across batches decreased from 26.28% to 25.67%.
+  kernel_size = 10,
+  recalc_trend_after = TRUE
+)
 ```
-
-Now, each batch has its own trendline corresponding the trend in each
-batch of each feature. Contrary to the previous correction across
-batches, we now observe clear differences in the trends still present
-after the correction. This is an effect of the correction applied
-independently to each batch, due to different sample sizes and present
-batch effects. Therefore, it is often necessary to apply batch
-correction after batch-wise drift correction
 
 ``` r
 
-plot_runscatter(mexp_drift, variable = "conc_before", qc_types = c("BQC", "SPL"),
-                rows_page = 1, cols_page = 3, show_trend = TRUE)
-```
-
-![RunScatter plots before and after batch correction
-](tutorial-04-drift-correction_files/figure-html/unnamed-chunk-8-1.png)
-
-``` r
-
-plot_runscatter(mexp_drift, variable = "conc", qc_types = c("BQC", "SPL"),
-                rows_page = 1, cols_page = 3, show_trend = TRUE)
-```
-
-![RunScatter plots before and after batch correction
-](tutorial-04-drift-correction_files/figure-html/unnamed-chunk-8-2.png)
-
-We therefore apply a subsequent batch correction using median-centering,
-resulting in an alignment of the batches.
-
-``` r
-
-mexp_drift <- mrmhub::correct_batch_centering(
-  mexp_drift, 
-  ref_qc_types = "SPL", 
+plot_runscatter(
+  mexp_drift,
   variable = "conc",
+  qc_types = c("BQC", "SPL"),
+  rows_page = 1, cols_page = 3, show_trend = TRUE
+)
+```
+
+![RunScatter after within-batch drift correction, residual between-batch
+differences](tutorial-04-drift-correction_files/figure-html/drift-batchwise-after-1.png)
+
+Figure 4. Concentrations after within-batch drift correction; residual
+trend differences remain between batches.
+
+Clear trend differences remain between batches because each batch is
+fitted independently, so differing sample sizes and batch effects are
+not reconciled. A batch correction is therefore usually applied after
+batch-wise drift correction. Apply a subsequent batch correction by
+median centering to align the batches.
+
+``` r
+
+mexp_drift <- correct_batch_centering(
+  mexp_drift,
+  variable = "conc",
+  ref_qc_types = "SPL",
   correct_scale = TRUE
 )
-#> ℹ Adding batch correction on top of `conc` drift-correction.
-#> ✔ Batch median-centering of 6 batches was applied to drift-corrected concentrations of all 3 features.
-#> ℹ The median CV change of all features in study samples was -5.38% (range: -8.80% to -0.60%).  The median absolute CV of all features decreased from 30.00% to 25.68%.
 
-plot_runscatter(mexp_drift, variable = "conc", qc_types = c("BQC", "SPL"),
-                rows_page = 1, cols_page = 3, show_trend = TRUE)
-#> Generating plots (1 page)...
+plot_runscatter(
+  mexp_drift,
+  variable = "conc",
+  qc_types = c("BQC", "SPL"),
+  rows_page = 1, cols_page = 3, show_trend = TRUE
+)
 ```
 
-![RunScatter plots before and after batch correction
-](tutorial-04-drift-correction_files/figure-html/unnamed-chunk-9-1.png)
+![RunScatter after within-batch drift correction and batch
+centering](tutorial-04-drift-correction_files/figure-html/drift-then-batch-1.png)
 
-## Method comparison
+Figure 5. Concentrations after within-batch drift correction followed by
+median-centering batch correction; batches are aligned.
 
-`MRMhub` provides four drift correction methods. Loess and cubic spline
-are typically used with QC samples as the reference, gaussian kernel
-smoothing with study samples; a fourth method, generalized additive
-model (GAM) smoothing via
+## 5. Batch-effect correction
+
+Batch effects (systematic differences between analytical batches) are
+corrected on their own with
+[`correct_batch_centering()`](https://slinghub.github.io/MRMhub/quant/reference/correct_batch_centering.md).
+The following uses a seven-batch dataset to show the effect clearly.
+Each batch is centered on a reference QC type, here the study samples
+(`ref_qc_types = "SPL"`).
+
+``` r
+
+mexp_batch <- MRMhubExperiment()
+mexp_batch <- import_data_csv_wide(
+  mexp_batch,
+  path = "simdata-u1000-sd100_7batches.csv",
+  variable_name = "conc",
+  import_metadata = TRUE
+)
+```
+
+``` r
+
+mexp_batch <- correct_batch_centering(
+  mexp_batch,
+  variable = "conc",
+  ref_qc_types = "SPL",
+  correct_scale = FALSE
+)
+```
+
+    ! Adding batch correction to `conc` data.
+
+    ✔ Batch median-centering of 7 batches was applied to raw concentrations of all 1 features.
+
+    ℹ The median per-feature CV change of all features in study samples was -30.49% (range: -30.50% to -30.50%; a positive value means the CV increased).  The median CV across all features decreased from 44.05% to 13.56%.
+
+``` r
+
+plot_runscatter(
+  mexp_batch,
+  variable = "conc_before",
+  rows_page = 1, cols_page = 1
+)
+```
+
+![RunScatter before batch correction, batches
+offset](tutorial-04-drift-correction_files/figure-html/batch-before-1.png)
+
+Figure 6. Concentrations before batch correction; batch medians are
+offset from one another.
+
+``` r
+
+plot_runscatter(
+  mexp_batch,
+  variable = "conc",
+  rows_page = 1, cols_page = 1
+)
+```
+
+![RunScatter after median-centering batch correction, batches
+aligned](tutorial-04-drift-correction_files/figure-html/batch-after-1.png)
+
+Figure 7. Concentrations after median-centering batch correction; batch
+medians are aligned.
+
+The batches are aligned in location, but their spread still differs.
+Setting `correct_scale = TRUE` also equalises the variance between
+batches.
+
+``` r
+
+mexp_batch <- correct_batch_centering(
+  mexp_batch,
+  variable = "conc",
+  ref_qc_types = "SPL",
+  correct_scale = TRUE
+)
+
+plot_runscatter(
+  mexp_batch,
+  variable = "conc",
+  rows_page = 1, cols_page = 1
+)
+```
+
+![RunScatter after batch correction with variance
+scaling](tutorial-04-drift-correction_files/figure-html/batch-scale-1.png)
+
+Figure 8. Concentrations after batch correction with variance scaling;
+both location and spread are consistent across batches.
+
+### Alternative batch-correction methods (experimental)
+
+Besides median centering, two model-based methods are available. Both
+are experimental and require an optional package.
+
+**ComBat** (Johnson et al. 2007) applies an empirical-Bayes location and
+scale adjustment, shrinking the batch estimates across features
+(requires the `sva` package). Unlike centering and SERRF, it estimates
+batch effects from all samples; pass `covariates` to protect biology on
+unbalanced designs.
+
+``` r
+
+mexp_batch <- correct_batch_combat(
+  mexp_batch,
+  variable = "conc",
+  ref_qc_types = "SPL"
+)
+```
+
+**SERRF** (Fan et al. 2019) trains a per-feature random forest on the
+reference QCs and removes the predicted systematic error, capturing
+non-linear batch and drift effects jointly (requires the `ranger`
+package). It suits larger panels with dense QC coverage; the
+implementation adapts the `malbacR` reference (Leach et al. 2023).
+
+``` r
+
+mexp_batch <- correct_batch_serrf(
+  mexp_batch,
+  variable = "conc",
+  ref_qc_types = "SPL"
+)
+```
+
+## 6. Choosing a drift-correction method
+
+MRMhub provides four drift-correction methods. Loess and cubic spline
+are typically fitted on QC samples, Gaussian kernel on study samples; a
+fourth, GAM smoothing via
 [`correct_drift_gam()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_gam.md),
-is also available. The method comparison below summarises the typical
-use cases of the three most common — see the [Drift and Batch Correction
-(reference)](https://slinghub.github.io/MRMhub/quant/articles/manual-07-drift-batch-correction.md)
+is also available. See [Drift and batch correction
+(reference)](https://slinghub.github.io/MRMhub/quant/articles/manual-07-corrections.md)
 for the full parameter description of all four.
 
-| Method | Function | Reference samples | Typical use |
+| Method | Function | Reference | Typical use |
 |----|----|----|----|
-| Loess | [`correct_drift_loess()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_loess.md) | QC samples | Frequent QC injections; smooth trends; robust to single-point outliers |
-| Cubic Spline | [`correct_drift_cubicspline()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_cubicspline.md) | QC samples | Frequent QC injections; flexible curves; sensitive to outlier QC points |
-| Gaussian Kernel | [`correct_drift_gaussiankernel()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_gaussiankernel.md) | Study samples | Sparse QCs; only suitable for large, well-randomised sample sets |
+| Loess | [`correct_drift_loess()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_loess.md) | QC | Frequent QC injections; robust to single outlier QCs |
+| Cubic spline | [`correct_drift_cubicspline()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_cubicspline.md) | QC | Frequent QC injections; flexible, sensitive to outlier QCs |
+| Gaussian kernel | [`correct_drift_gaussiankernel()`](https://slinghub.github.io/MRMhub/quant/reference/correct_drift_gaussiankernel.md) | Study | Sparse QCs; large, well-randomised sample sets only |
 
-## Loess drift correction
-
-Loess uses locally weighted polynomial regression and is less sensitive
-to individual outlier QC points than cubic spline. The `span` parameter
-controls smoothness (higher = smoother).
+Loess uses locally weighted regression and is less sensitive to
+individual outlier QCs than a cubic spline; its `span` controls
+smoothness.
 
 ``` r
 
 mexp_drift_loess <- correct_drift_loess(
-  myexp,
+  mexp,
   variable = "conc",
   batch_wise = TRUE,
   ref_qc_types = "BQC",
-  recalc_trend_after = TRUE)
-#> ℹ Applying `conc` drift correction...
-#> ! 4 of 41 TQCs, 3 of 3 LTRs were excluded from correction as they fall outside the regions spanned by the QCs/samples used for smoothing (BQC).
-#> ✔ Drift correction was applied to 3 of 3 features (batch-wise).
-#> ℹ The median CV change of all features in study samples was 0.33% (range: 0.02% to 1.08%). The median absolute CV of all features across batches increased from 26.28% to 27.36%.
+  recalc_trend_after = TRUE
+)
 ```
 
-Inspect the result with
-[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md)
-before exporting.
+## 7. Export corrected data
 
-## Export corrected data
-
-Next, we can either continue to work with the corrected data using
-`MRMhub` functions or export the data.
+Continue processing the corrected object with MRMhub functions, or
+export the corrected variable to CSV.
 
 ``` r
 
 save_dataset_csv(
-  mexp_drift, 
-  path = "drift-batch-corrected-conc-data.csv", 
-  variable = "conc", 
+  mexp_drift,
+  path = "drift-batch-corrected-conc-data.csv",
+  variable = "conc",
   filter_data = FALSE
-  )
-#> ✔ Concentration values for 498 analyses and 3 features have been exported to 'drift-batch-corrected-conc-data.csv'.
+)
 ```
 
-## Next Steps
+    ✔ Concentration values for 498 analyses and 3 features have been exported to 'drift-batch-corrected-conc-data.csv'.
 
-- [RunScatter
-  Plot](https://slinghub.github.io/MRMhub/quant/articles/tutorial-05-run-scatter.md)
-  — visualise run order effects
-- [Batch
-  Correction](https://slinghub.github.io/MRMhub/quant/articles/tutorial-06-batch-correction.md)
-  — correct inter-batch variability
-- [Drift & Batch Correction
-  (reference)](https://slinghub.github.io/MRMhub/quant/articles/manual-07-drift-batch-correction.md)
-  — full method documentation
+## Next steps
+
+- [RunScatter and PCA QC
+  exploration](https://slinghub.github.io/MRMhub/quant/articles/tutorial-05-run-scatter.md):
+  visualise run-order and batch effects
+- [Drift and batch correction
+  (reference)](https://slinghub.github.io/MRMhub/quant/articles/manual-07-corrections.md):
+  full method documentation
+- [Calibration by a reference
+  sample](https://slinghub.github.io/MRMhub/quant/articles/tutorial-07-calibration-reference.md):
+  normalise to a reference material
+
+## References
+
+Fan, Sili, Tobias Kind, Tomas Cajka, et al. 2019. “Systematic Error
+Removal Using Random Forest for Normalizing Large-Scale Untargeted
+Lipidomics Data.” *Analytical Chemistry* 91 (5): 3590–96.
+<https://doi.org/10.1021/acs.analchem.8b05592>.
+
+Johnson, W. Evan, Cheng Li, and Ariel Rabinovic. 2007. “Adjusting Batch
+Effects in Microarray Expression Data Using Empirical Bayes Methods.”
+*Biostatistics* 8 (1): 118–27.
+<https://doi.org/10.1093/biostatistics/kxj037>.
+
+Leach, Damon L., Kelly A. Trujillo, Rachel A. Richardson, et al. 2023.
+“malbacR: A Package for Standardized Implementation of Batch Correction
+Methods for Omics Data.” *Metabolites* 13 (11): 1130.
+<https://doi.org/10.3390/metabo13111130>.

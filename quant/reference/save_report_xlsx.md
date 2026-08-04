@@ -1,4 +1,4 @@
-# Write Data Processing Report (EXCEL)
+# Write a data-processing report (Excel)
 
 Generates a data processing report from a `MRMhubExperiment` object and
 writes it to an Excel file. The report includes information on the data
@@ -13,7 +13,8 @@ save_report_xlsx(
   path,
   filtered_variable = "conc",
   normalized_variable = NA,
-  overwrite = TRUE
+  overwrite = TRUE,
+  create_dir = TRUE
 )
 ```
 
@@ -21,8 +22,9 @@ save_report_xlsx(
 
 - data:
 
-  A `MRMhubExperiment` object containing original and processed data and
-  metadata.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object containing original and processed data and metadata.
 
 - path:
 
@@ -49,6 +51,11 @@ save_report_xlsx(
   A logical value indicating whether to overwrite the file if it already
   exists. Default is `TRUE`.
 
+- create_dir:
+
+  A logical value. If `TRUE` (the default), the parent directory of
+  `path` is created if it does not yet exist.
+
 ## Value
 
 The function does not return a value. It writes the report to the
@@ -61,13 +68,13 @@ specified Excel file.
 
 - Feature_QC_metrics: Quality control metrics of all features.
 
-- QCfilt_x_StudySamples: Feature (QC)-filtered data (variable defiend
+- QCfilt_x_StudySamples: Feature (QC)-filtered data (variable defined
   via `filtered_variable`) in study samples ('SPL'). Filter have to be
   set via
   [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md).
   The *x* corresponds to the `filtered_variable` argument.
 
-- QCfilt_x_AllSamples: Feature (QC)-filtered data (variable defiend via
+- QCfilt_x_AllSamples: Feature (QC)-filtered data (variable defined via
   `filtered_variable`) in all samples. Filter have to be set via
   [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md).
   The *x* corresponds to the `filtered_variable` argument.
@@ -92,7 +99,12 @@ specified Excel file.
 - BatchInfo: Information on batches and positions of first and last
   analysis/sample in each batch
 
-\#' If certain data sets are not available, the function includes empty
+- Interferences: Derived and declared interference relationships
+  (interfering feature, contribution factor, overlap type, source) with
+  the per-feature correction impact when the correction has been
+  applied.
+
+If certain data sets are not available, the function includes empty
 tables for the corresponding dataset.
 
 Concentration corresponds to the final concentration values after

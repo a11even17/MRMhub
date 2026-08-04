@@ -1,4 +1,4 @@
-# S4 Class Representing the MRMhub Dataset
+# S4 class representing the MRMhub dataset
 
 The `MRMhubExperiment` object is the core data structure utilized within
 the MRMhub workflow, encapsulating all relevant experimental data and
@@ -20,17 +20,26 @@ processing steps, and the current status of the data.
 
   Feature variable used as default for calculations
 
+- `conc_analyte_unit`:
+
+  Unit of the analyte amount underlying `feature_conc`, set when the
+  data are quantitated. `"pmol"` or `"ng"` for ISTD quantitation (see
+  [`quantify_by_istd()`](https://slinghub.github.io/MRMhub/quant/reference/quantify_by_istd.md)),
+  or the calibrant concentration unit (e.g. `"nmol/L"`) for calibration
+  quantitation. Divided by `sample_amount_unit` by `get_conc_unit()` to
+  name the unit of `feature_conc`. `NA` when not quantitated.
+
 - `dataset_orig`:
 
-  Original imported analysis data. Required fields:
+  Original imported analysis data.
 
 - `dataset`:
 
-  Processed analysis data. Required fields:
+  Processed analysis data.
 
 - `dataset_filtered`:
 
-  Processed analysis data. Required fields:
+  QC-filtered processed analysis data.
 
 - `annot_analyses`:
 
@@ -46,19 +55,25 @@ processing steps, and the current status of the data.
 
 - `annot_responsecurves`:
 
-  Annotation of response curves (RQC). Required fields
+  Annotation of response curves (RQC).
 
 - `annot_qcconcentrations`:
 
-  Annotation of calibration curves. Required fields
+  Annotation of calibration curves.
 
 - `annot_studysamples`:
 
-  Annotation of study samples. Required fields:
+  Annotation of study samples.
 
 - `annot_batches`:
 
-  Annotation of batches. Required fields:
+  Annotation of batches.
+
+- `annot_interferences`:
+
+  Interference relationships (`feature_id`, `interference_feature_id`,
+  `interference_contribution`, `overlap_type`, `source`) feeding the
+  correction engine; derived (auto) and/or manual.
 
 - `metrics_qc`:
 
@@ -68,10 +83,6 @@ processing steps, and the current status of the data.
 
   Calibration metrics calculated from external calibration curves for
   each measured feature
-
-- `parameters_processing`:
-
-  Values of parameters used for the different processing steps
 
 - `status_processing`:
 
@@ -92,10 +103,6 @@ processing steps, and the current status of the data.
 - `is_isotope_corr`:
 
   Flag if one or more features have been isotope corrected
-
-- `has_outliers_tech`:
-
-  Flag if data has technical analysis/sample outliers
 
 - `analyses_excluded`:
 

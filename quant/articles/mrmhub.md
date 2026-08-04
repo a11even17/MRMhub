@@ -2,8 +2,8 @@
 
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![License: GPL
-v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: AGPL
+v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![R-CMD-check](https://github.com/SLINGhub/MRMhub/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/SLINGhub/MRMhub/actions/workflows/R-CMD-check.yml)
 [![Codecov test
 coverage](https://codecov.io/gh/SLINGhub/MRMhub/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SLINGhub/MRMhub?branch=main)
@@ -51,7 +51,7 @@ Install the `mrmhub` package from Github using the following command:
 
 if (!require("pak")) install.packages("pak")
 pak::pak("SLINGhub/MRMhub")
-library(mrmhub); mrmhub::check_setup()
+library(mrmhub)
 ```
 
 `pak` resolves locked packages and parallelises downloads;
@@ -103,9 +103,9 @@ contact Jonathan Tan ( <jonathan_tan@nus.edu.sg> ).
 
 - [Installation](https://slinghub.github.io/MRMhub/quant/articles/manual-00-installation.html)
   — requirements and setup
-- [Key Concepts &
-  Glossary](https://slinghub.github.io/MRMhub/quant/articles/manual-00-key-concepts.html)
+- [MRMhub
+  overview](https://slinghub.github.io/MRMhub/quant/articles/manual-01-key-concepts.html)
   — core terminology and the MRMhubExperiment object
-- [Your First
-  Analysis](https://slinghub.github.io/MRMhub/quant/articles/tutorial-00-first-analysis.html)
+- [Getting started with
+  MRMhub](https://slinghub.github.io/MRMhub/quant/articles/tutorial-02-getting-started-mrmhub.html)
   — a short end-to-end walkthrough

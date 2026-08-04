@@ -1,4 +1,4 @@
-# Plot Highly Correlated Feature Pairs
+# Plot highly correlated feature pairs
 
 Creates scatter plots for pairs of features that have correlations
 outside specified thresholds. Each pair is displayed in a separate facet
@@ -18,8 +18,6 @@ plot_feature_correlations(
   cor_min_neg = -0.99,
   log_scale = FALSE,
   sort_by_corr = TRUE,
-  rows_page = 4,
-  cols_page = 5,
   filter_data = FALSE,
   include_qualifier = FALSE,
   include_istd = FALSE,
@@ -28,16 +26,22 @@ plot_feature_correlations(
   min_median_value = NA,
   output_pdf = FALSE,
   path = NA,
+  create_dir = TRUE,
+  return_plots = FALSE,
+  rows_page = 4,
+  cols_page = 5,
   specific_page = NA,
   page_orientation = "LANDSCAPE",
-  return_plots = FALSE,
-  point_size = 1,
+  page_width = NULL,
+  page_height = NULL,
+  page_units = "mm",
+  point_size = NULL,
   point_alpha = 0.8,
   point_stroke = 0.3,
-  line_size = 0.5,
+  line_width = 0.5,
   line_color = "orange",
   line_alpha = 0.5,
-  font_base_size = 8,
+  font_base_size = NULL,
   show_progress = TRUE
 )
 ```
@@ -46,32 +50,32 @@ plot_feature_correlations(
 
 - data:
 
-  A data frame containing numeric columns for correlation analysis
+  A `MRMhubExperiment` object.
 
 - variable:
 
-  A character string indicating the variable to use for PCA analysis.
-  Must be one of: "area", "height", "intensity", "norm_intensity",
-  "response", "conc", "conc_raw", "rt", "fwhm".
+  A character string indicating the signal variable to plot. Must be one
+  of: "area", "height", "intensity", "norm_intensity", "response",
+  "conc", "conc_raw", "rt", "fwhm".
 
 - qc_types:
 
   A character vector specifying the QC types to plot. It must contain at
-  least one element. The default is `NA`, which means any of the
-  non-blank QC types ("SPL", "TQC", "BQC", "HQC", "MQC", "LQC", "QC",
-  "NIST", "LTR") will be plotted if present in the dataset.
+  least one element. The default `NA` plots any of the non-blank QC
+  types ("SPL", "TQC", "BQC", "HQC", "MQC", "LQC", "NIST", "LTR")
+  present in the dataset.
 
 - cor_min:
 
   Numeric. Minimum correlation threshold. Only feature pairs with
   positive correlations above this value will be shown. Set to Inf to
-  exclude positive corrections.
+  exclude positive correlations.
 
 - cor_min_neg:
 
-  Numeric. Minimum nagative correlation threshold. Only feature pairs
+  Numeric. Minimum negative correlation threshold. Only feature pairs
   with negative correlations above this value will be shown. Set to -Inf
-  to exclude nagative corrections.
+  to exclude negative correlations.
 
 - log_scale:
 
@@ -82,14 +86,6 @@ plot_feature_correlations(
 
   A logical value indicating whether to sort the features in the plot by
   correlation or alphabetically by feature ID. Default is `TRUE`.
-
-- rows_page:
-
-  Number of rows of plots per page.
-
-- cols_page:
-
-  Number of columns of plots per page.
 
 - filter_data:
 
@@ -109,26 +105,23 @@ plot_feature_correlations(
 
 - include_feature_filter:
 
-  A character or regex pattern used to filter features by `feature_id`.
-  If `NA` or an empty string (`""`) is provided, the filter is ignored.
-  When a vector of length \> 1 is supplied, only features with exactly
-  these names are selected (applied individually as OR conditions).
+  Feature(s) to include by `feature_id`, as a character vector. Each
+  element is matched exactly when it names an existing feature,
+  otherwise treated as a regex; elements combine with OR. A full ID
+  (e.g. `"S1P d18:0 [M>60]"`) needs no escaping, while patterns like
+  `"PC|PE"` still work. `NA` or `""` ignores the filter.
 
 - exclude_feature_filter:
 
-  A character or regex pattern used to exclude features by `feature_id`.
-  If `NA` or an empty string (`""`) is provided, the filter is ignored.
-  When a vector of length \> 1 is supplied, only features with exactly
-  these names are excluded (applied individually as OR conditions).
+  Feature(s) to exclude by `feature_id`, matched the same way as
+  `include_feature_filter`. `NA` or `""` ignores the filter.
 
 - min_median_value:
 
-  Minimum median feature value (as determined by the `variable`) across
-  all samples from selected QC types that must be met for a feature to
-  be included in the PCA analysis. `NA` (default) means no filtering
-  will be applied. This parameter provides an fast way to exclude noisy
-  features from the analysis. However, it is recommended to use
-  `filter_data` with
+  Minimum median feature value across the selected QC-type samples
+  required for a feature to be included. `NA` (default) applies no
+  filtering. This is a fast way to exclude noisy features; for
+  principled QC-based filtering use
   [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md).
 
 - output_pdf:
@@ -141,6 +134,23 @@ plot_feature_correlations(
   The file path for saving the PDF. Must be defined if `output_pdf` is
   `TRUE`.
 
+- create_dir:
+
+  A logical value. If `TRUE` (the default) and `output_pdf` is `TRUE`,
+  the parent directory of `path` is created if it does not yet exist.
+
+- return_plots:
+
+  Logical. If `TRUE`, returns the plots as a list of `ggplot` objects.
+
+- rows_page:
+
+  Number of rows of plots per page.
+
+- cols_page:
+
+  Number of columns of plots per page.
+
 - specific_page:
 
   An integer specifying a specific page to plot. If `NA` (default), all
@@ -148,11 +158,20 @@ plot_feature_correlations(
 
 - page_orientation:
 
-  Orientation of the PDF paper: `"LANDSCAPE"` or `"PORTRAIT"`.
+  Orientation of the PDF paper: `"LANDSCAPE"` or `"PORTRAIT"`. Ignored
+  when `page_width` and `page_height` are given.
 
-- return_plots:
+- page_width, page_height:
 
-  Logical. If `TRUE`, returns the plots as a list of `ggplot2` objects.
+  Size of a PDF page, in `page_units`. Both must be given together.
+  `NULL` (default) uses an A4 page of 280 x 200 mm, oriented by
+  `page_orientation`. When an explicit size is given, `page_orientation`
+  has no effect.
+
+- page_units:
+
+  Unit of `page_width` and `page_height`: `"mm"` (default), `"cm"`,
+  `"in"` or `"pt"`.
 
 - point_size:
 
@@ -169,7 +188,7 @@ plot_feature_correlations(
   A numeric value indicating the stroke width of the points. Default is
   0.3.
 
-- line_size:
+- line_width:
 
   A numeric value indicating the size of the correlation line. Default
   is 0.5.
@@ -186,8 +205,13 @@ plot_feature_correlations(
 
 - font_base_size:
 
-  A numeric value indicating the base font size for plot text elements.
-  Default is 8.
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
 
 - show_progress:
 
@@ -195,5 +219,71 @@ plot_feature_correlations(
 
 ## Value
 
-A ggplot object showing scatter plots of highly correlated feature
-pairs. Returns NULL if no correlations meet the threshold criteria.
+A `ggplot` object showing scatter plots of highly correlated feature
+pairs. Returns `NULL` if no correlations meet the threshold criteria.
+
+## Preferred formats and devices
+
+|  |  |  |  |
+|----|----|----|----|
+| Purpose | Format | Device used | Typical `dpi` |
+| Journal figure, vector (default choice) | `"pdf"` | [`grDevices::cairo_pdf`](https://rdrr.io/r/grDevices/cairo.html), else [`grDevices::pdf`](https://rdrr.io/r/grDevices/pdf.html) | n/a |
+| Figure for further editing (Illustrator, Inkscape) | `"svg"` | [`svglite::svglite`](https://svglite.r-lib.org/reference/svglite.html), else [`grDevices::svg`](https://rdrr.io/r/grDevices/cairo.html) | n/a |
+| Slides, Quarto HTML, GitHub | `"png"` | [`ragg::agg_png`](https://ragg.r-lib.org/reference/agg_png.html), else [`grDevices::png`](https://rdrr.io/r/grDevices/png.html) | 150-300 |
+| Journal requiring raster submission | `"tiff"` | [`ragg::agg_tiff`](https://ragg.r-lib.org/reference/agg_tiff.html), else [`grDevices::tiff`](https://rdrr.io/r/grDevices/png.html) | 300-600 |
+
+Prefer a **vector** format (`pdf`, `svg`) for publication: text stays
+selectable and searchable, and lines stay sharp at any magnification.
+
+Prefer a **raster** format (`png`, `tiff`) when a plot draws very many
+marks – a
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md)
+page covering several thousand analyses, or a dense
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md)
+score plot. Every point becomes a separate object in a PDF, so such
+figures produce very large files that are slow to open and to typeset.
+Saving them at 300-600 dpi instead keeps the file small with no visible
+loss.
+
+The optional packages `ragg` and `svglite` are used automatically when
+installed, giving better text rendering, system-font support and smaller
+SVG files. When they are absent the equivalent `grDevices` device is
+used and the output is still correct. Installing both is recommended:
+`install.packages(c("ragg", "svglite"))`.
+
+PDF output uses the cairo device wherever R was built with cairo support
+(`capabilities("cairo")`), because plain
+[`grDevices::pdf()`](https://rdrr.io/r/grDevices/pdf.html) writes text
+in a single-byte encoding and silently transliterates anything outside
+it – an en dash becomes `-`, `>=` replaces the proper symbol. Unit
+labels such as `umol/L` and statistical annotations routinely depend on
+those glyphs.
+
+Multi-page output from the paged plot functions
+([`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_calibrationcurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_calibrationcurves.md),
+[`plot_responsecurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_responsecurves.md),
+`plot_feature_correlations()`) is PDF only, which is the only format
+that holds many pages in one file. Use
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+for single figures in any of the other formats.
+
+## See also
+
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+to save a single figure in any format.
+
+Other QC plots:
+[`plot_interference_correction()`](https://slinghub.github.io/MRMhub/quant/reference/plot_interference_correction.md),
+[`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md),
+[`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md),
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md),
+[`plot_pca_loading()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca_loading.md),
+[`plot_qc_interference_impact()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_interference_impact.md),
+[`plot_qc_summary_byclass()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_byclass.md),
+[`plot_qc_summary_overall()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_overall.md),
+[`plot_qcmetrics_comparison()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qcmetrics_comparison.md),
+[`plot_rla_boxplot()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rla_boxplot.md),
+[`plot_rt_vs_chain()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rt_vs_chain.md),
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_runsequence()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runsequence.md)

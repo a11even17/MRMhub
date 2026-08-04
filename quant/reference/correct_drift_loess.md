@@ -1,4 +1,4 @@
-# Drift Correction by LOESS Smoothing
+# Drift correction by LOESS smoothing
 
 This function corrects for run-order drifts within or across batches
 using LOESS (Locally Estimated Scatterplot Smoothing). The correction is
@@ -43,7 +43,7 @@ independently for each batch if `batch_wise = TRUE`, where the median of
 the CV changes across the batch is compared with the threshold.
 
 **Note**: The function outputs a message indicating the median CV change
-and the mean absolute CV before and after correction for all samples.
+and the median absolute CV before and after correction for all samples.
 However, these metrics are experimental and should not be used as
 definitive criteria for correction (see Details below).
 
@@ -77,7 +77,8 @@ correct_drift_loess(
 
 - data:
 
-  MRMhubExperiment object
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - variable:
 
@@ -95,7 +96,7 @@ correct_drift_loess(
 - degree:
 
   Degree of the polynomial to be used in the loess smoothing, normally 1
-  (default) or 2
+  or 2. Default is 2.
 
 - batch_wise:
 
@@ -104,7 +105,7 @@ correct_drift_loess(
 
 - ignore_istd:
 
-  Do not apply corrections to ISTDs
+  Logical. Exclude internal standards (ISTDs) from correction if `TRUE`.
 
 - replace_previous:
 
@@ -113,14 +114,15 @@ correct_drift_loess(
 
 - conditional_correction:
 
-  Determines whether drift correction should be applied to all features
-  unconditionally (`TRUE`) or only when the difference of sample CV
-  before vs after smoothing is below the threshold specified by
-  `cv_diff_threshold`.
+  Determines whether drift correction is applied to all features
+  unconditionally (`FALSE`, the default) or, when `TRUE`, only to
+  features whose difference of sample CV before vs after smoothing is
+  below the threshold specified by `cv_diff_threshold`.
 
 - recalc_trend_after:
 
-  Recalculate trend post-drift correction for `plot_qc_runscatter()`.
+  Recalculate trend post-drift correction for
+  [`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md).
   This will double calculation time.
 
 - log_transform_internal:
@@ -128,7 +130,7 @@ correct_drift_loess(
   Log transform the data for correction when `TRUE` (the default). Note:
   log transformation is solely applied internally for smoothing, results
   will not be be log-transformed. Log transformation may result in more
-  robust smoothing that is less sensitive to outlier.
+  robust smoothing that is less sensitive to outliers.
 
 - feature_list:
 
@@ -139,7 +141,7 @@ correct_drift_loess(
 - cv_diff_threshold:
 
   This parameter defines the maximum allowable change (difference) in
-  the coefficient of variation (CV) ratio of samples before and after
+  the coefficient of variation (CV) of samples before and after
   smoothing for the correction to be applied. A value of 0 (the default)
   requires the CV to improve, while a value above 0 allows the CV to
   also become worse by a maximum of the defined difference.
@@ -148,7 +150,7 @@ correct_drift_loess(
 
   Determines the action when smoothing fails or results in invalid
   values for a feature. If `FALSE` (default), the result for each
-  feature will `NA` for all batches, if `TRUE`, the original data is
+  feature will be `NA` for all batches, if `TRUE`, the original data is
   kept.
 
 - extrapolate:
@@ -164,14 +166,20 @@ correct_drift_loess(
 
 ## Value
 
-MRMhubExperiment object
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object
 
 ## Details
 
 In the output message, the median CV change is computed as the median of
 CV changes for all features in global correction or for features where
-the correction passed the defined CV difference treshold in case of
-conditional correction (`conditional_correction = FALSE`). For
-batch-wise correction, the change is calculated per batch, with the
-final median CV change being the median of these batch medians across
-features.
+the correction passed the defined CV difference threshold in case of
+conditional correction (`conditional_correction = TRUE`). For batch-wise
+correction, the change is calculated per batch, with the final median CV
+change being the median of these batch medians across features.
+
+## See also
+
+The [drift-correction
+tutorial](https://slinghub.github.io/MRMhub/quant/articles/tutorial-04-drift-correction.html)
+for a worked example.

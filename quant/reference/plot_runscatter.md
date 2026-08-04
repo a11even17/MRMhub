@@ -1,4 +1,4 @@
-# RunScatter Plot
+# RunScatter plot
 
 The `runscatter` function visualizes raw or processed feature signals
 across different sample/QC types along the analysis sequence. It helps
@@ -7,12 +7,10 @@ Available feature variables, such as retention time (RT) and full width
 at half maximum (FWHM), can be plotted against analysis order or
 timestamps.
 
-By default, all QC types present in the dataset will be plotted. QC
-types that predefined colors or shapes are assigned black shapes.
-User-defined QC types that have no predefined colors or shapes in
-mrmhub. will be assigned black shapes. have no predefined color and
-shape, will be assigned shapes in black. To show specific QC types use
-the `qc_types` argument.
+By default, all QC types present in the dataset will be plotted.
+User-defined QC types that have no predefined color or shape in mrmhub
+are assigned black shapes. To show specific QC types, use the `qc_types`
+argument.
 
 To plot the feature values before the last applied drift/batch
 correction, add `*_before` to the variable name, e.g.,
@@ -36,11 +34,9 @@ providing critical insights into data quality.
 ``` r
 plot_runscatter(
   data = NULL,
-  variable = c("intensity", "norm_intensity", "conc", "rt", "area", "height", "fwhm",
-    "width", "symmetry", "intensity_raw", "intensity_before", "norm_intensity_raw",
-    "norm_intensity_before", "conc_raw", "conc_before"),
-  filter_data = FALSE,
+  variable,
   qc_types = NA,
+  filter_data = FALSE,
   include_qualifier = TRUE,
   include_istd = TRUE,
   include_feature_filter = NA,
@@ -48,11 +44,12 @@ plot_runscatter(
   plot_range = NA,
   output_pdf = FALSE,
   path = NA,
+  create_dir = TRUE,
   multithreading = FALSE,
   return_plots = FALSE,
   show_batches = TRUE,
   batch_zebra_stripe = FALSE,
-  batch_line_color = "#cdf7d9",
+  batch_line_color = "#b6f0c5",
   batch_fill_color = "grey93",
   cap_outliers = FALSE,
   cap_sample_k_mad = 4,
@@ -71,14 +68,25 @@ plot_runscatter(
   y_lim = c(0, NA),
   log_scale = FALSE,
   show_gridlines = FALSE,
-  point_size = 1.5,
-  point_transparency = 1,
+  point_size = NULL,
+  point_alpha = 1,
   point_border_width = NA,
-  base_font_size = 10,
+  font_base_size = NULL,
+  autoscale = TRUE,
+  legend_position = NULL,
+  legend_size = NULL,
+  show_legend_title = NULL,
+  title = NULL,
+  strip_text_size = NULL,
+  strip_bg_color = NULL,
+  legend_bg_alpha = NULL,
   rows_page = 3,
   cols_page = 3,
   specific_page = NA,
   page_orientation = "LANDSCAPE",
+  page_width = NULL,
+  page_height = NULL,
+  page_units = "mm",
   y_label_text = NA,
   pages_per_core = 1,
   use_dingbats = TRUE,
@@ -98,27 +106,27 @@ plot_runscatter(
 
 - data:
 
-  A `MRMhubExperiment` object containing the dataset and metadata.
+  A `MRMhubExperiment` object.
 
 - variable:
 
   The variable to plot on the y-axis, one of 'intensity',
-  'norm_intensity', 'conc', 'conc', 'rt', 'fwhm', 'area', 'height',
-  response'. Add `_before` after the variable name to plot the feature
-  values before the last applied drift/batch correction, (e.g.,
-  `conc_before`). Add `_raw` after the variable name to plot the raw
-  uncorrected feature values (e.g., `conc_raw`).
-
-- filter_data:
-
-  Logical, whether to use QC-filtered data based on criteria set via
-  [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md).
+  'norm_intensity', 'conc', 'rt', 'fwhm', 'area', 'height', 'response'.
+  Add `_before` after the variable name to plot the feature values
+  before the last applied drift/batch correction, (e.g., `conc_before`).
+  Add `_raw` after the variable name to plot the raw uncorrected feature
+  values (e.g., `conc_raw`).
 
 - qc_types:
 
   QC types to be plotted. Can be a vector of QC types or a regular
   expression pattern. `NA` (default) displays all available QC/Sample
   types.
+
+- filter_data:
+
+  Logical, whether to use QC-filtered data based on criteria set via
+  [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md).
 
 - include_qualifier:
 
@@ -131,19 +139,16 @@ plot_runscatter(
 
 - include_feature_filter:
 
-  A regex pattern or a vector of feature names used to filter features
-  by `feature_id`. If `NA` or an empty string (`""`) is provided, the
-  filter is ignored. When a vector of length \> 1 is supplied, is
-  supplied, only features with exactly these names are selected (applied
-  individually as OR conditions).
+  Feature(s) to include by `feature_id`, as a character vector. Each
+  element is matched exactly when it names an existing feature,
+  otherwise treated as a regex; elements combine with OR. A full ID
+  (e.g. `"S1P d18:0 [M>60]"`) needs no escaping, while patterns like
+  `"PC|PE"` still work. `NA` or `""` ignores the filter.
 
 - exclude_feature_filter:
 
-  A regex pattern or a vector of feature names to exclude features by
-  feature_id. If `NA` or an empty string (`""`) is provided, the filter
-  is ignored. When a vector of length \> 1 is supplied, is supplied,
-  only features with exactly these names are excluded (applied
-  individually as OR conditions).
+  Feature(s) to exclude by `feature_id`, matched the same way as
+  `include_feature_filter`. `NA` or `""` ignores the filter.
 
 - plot_range:
 
@@ -157,6 +162,11 @@ plot_runscatter(
 - path:
 
   File name for the PDF output.
+
+- create_dir:
+
+  A logical value. If `TRUE` (the default) and `output_pdf` is `TRUE`,
+  the parent directory of `path` is created if it does not yet exist.
 
 - multithreading:
 
@@ -250,7 +260,7 @@ plot_runscatter(
 - y_lim:
 
   Numeric vector of length 2, specifying the lower and upper y-axis
-  limits. Default is \`c(0,NA)“, which sets the lower limit to 0 and the
+  limits. Default is `c(0,NA)`, which sets the lower limit to 0 and the
   upper limit automatically.
 
 - log_scale:
@@ -265,7 +275,7 @@ plot_runscatter(
 
   Size of the data points. Default is `1.5`.
 
-- point_transparency:
+- point_alpha:
 
   Alpha transparency of the data points.
 
@@ -273,9 +283,69 @@ plot_runscatter(
 
   Width of the data point borders.
 
-- base_font_size:
+- font_base_size:
 
-  Base font size for the plot.
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
+
+- autoscale:
+
+  Logical. When `TRUE` (default), `font_base_size` and `point_size` left
+  as `NULL` are sized automatically from `cols_page` (more facet columns
+  per page give smaller text and points). Any value passed explicitly
+  always takes precedence. When `FALSE`, unset sizes fall back to the
+  single-plot defaults.
+
+- legend_position:
+
+  Optional legend placement. One of `"right"`, `"left"`, `"top"`,
+  `"bottom"`, `"none"`; a corner keyword `"inside-tr"`, `"inside-tl"`,
+  `"inside-br"`, `"inside-bl"`; or a numeric `c(x, y)` in `[0, 1]`
+  coordinates. `NULL` (default) keeps the current placement, unless a
+  global default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md).
+
+- legend_size:
+
+  Optional single multiplier of `font_base_size` (when `<= 3`) or
+  absolute point size (when `> 3`) that scales the whole legend: text,
+  title, key and the plotted symbols. `NULL` (default) leaves the legend
+  unchanged.
+
+- show_legend_title:
+
+  Logical. `NULL` (default) keeps the legend title, unless a global
+  default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md);
+  `FALSE` hides it, `TRUE` forces it shown.
+
+- title:
+
+  Optional plot title. `NULL` (default) or `NA` shows no title; a
+  character string is shown as the title.
+
+- strip_text_size:
+
+  Optional facet strip text size, as a multiplier of `font_base_size`
+  (when `<= 3`) or an absolute point size (when `> 3`). `NULL` (default)
+  inherits from `font_base_size`.
+
+- strip_bg_color:
+
+  Optional facet strip background fill colour. The strip text colour is
+  set automatically for contrast (white on a dark fill, black on a light
+  one). `NULL` (default) keeps the house dark-navy strips.
+
+- legend_bg_alpha:
+
+  Optional opacity (`[0, 1]`) of a white legend background box, useful
+  for a readable inside legend drawn over points. `NULL` (default)
+  leaves the legend background unchanged.
 
 - rows_page:
 
@@ -291,7 +361,20 @@ plot_runscatter(
 
 - page_orientation:
 
-  Page orientation, "LANDSCAPE" or "PORTRAIT".
+  Page orientation, "LANDSCAPE" or "PORTRAIT". Ignored when `page_width`
+  and `page_height` are given.
+
+- page_width, page_height:
+
+  Size of a PDF page, in `page_units`. Both must be given together.
+  `NULL` (default) uses an A4 page of 280 x 200 mm, oriented by
+  `page_orientation`. When an explicit size is given, `page_orientation`
+  has no effect.
+
+- page_units:
+
+  Unit of `page_width` and `page_height`: `"mm"` (default), `"cm"`,
+  `"in"` or `"pt"`.
 
 - y_label_text:
 
@@ -356,7 +439,8 @@ plot_runscatter(
 
 ## Value
 
-A list of ggplot2 plots, or `NULL` if \`return
+A list of `ggplot` objects if `return_plots = TRUE`, otherwise `NULL`
+(the plots are drawn to the active device or written to a PDF).
 
 ## Details
 
@@ -367,7 +451,7 @@ A list of ggplot2 plots, or `NULL` if \`return
   data, e.g. in the study samples.
 
 - When using log-scale (`log_scale = TRUE`), zero or negative values
-  will replaced with the minimum positive value divided by 5 to avoid
+  will be replaced with the minimum positive value divided by 5 to avoid
   log 0 errors
 
 - Reference lines/ranges corresponding to mean \\\pm\\ k x SD can be
@@ -379,3 +463,68 @@ A list of ggplot2 plots, or `NULL` if \`return
   the last drift or batch correction, add "\_before" to the variable
   name, e.g. `conc_before` or `intensity_before` and set
   `show_trend = TRUE`.
+
+## Preferred formats and devices
+
+|  |  |  |  |
+|----|----|----|----|
+| Purpose | Format | Device used | Typical `dpi` |
+| Journal figure, vector (default choice) | `"pdf"` | [`grDevices::cairo_pdf`](https://rdrr.io/r/grDevices/cairo.html), else [`grDevices::pdf`](https://rdrr.io/r/grDevices/pdf.html) | n/a |
+| Figure for further editing (Illustrator, Inkscape) | `"svg"` | [`svglite::svglite`](https://svglite.r-lib.org/reference/svglite.html), else [`grDevices::svg`](https://rdrr.io/r/grDevices/cairo.html) | n/a |
+| Slides, Quarto HTML, GitHub | `"png"` | [`ragg::agg_png`](https://ragg.r-lib.org/reference/agg_png.html), else [`grDevices::png`](https://rdrr.io/r/grDevices/png.html) | 150-300 |
+| Journal requiring raster submission | `"tiff"` | [`ragg::agg_tiff`](https://ragg.r-lib.org/reference/agg_tiff.html), else [`grDevices::tiff`](https://rdrr.io/r/grDevices/png.html) | 300-600 |
+
+Prefer a **vector** format (`pdf`, `svg`) for publication: text stays
+selectable and searchable, and lines stay sharp at any magnification.
+
+Prefer a **raster** format (`png`, `tiff`) when a plot draws very many
+marks – a `plot_runscatter()` page covering several thousand analyses,
+or a dense
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md)
+score plot. Every point becomes a separate object in a PDF, so such
+figures produce very large files that are slow to open and to typeset.
+Saving them at 300-600 dpi instead keeps the file small with no visible
+loss.
+
+The optional packages `ragg` and `svglite` are used automatically when
+installed, giving better text rendering, system-font support and smaller
+SVG files. When they are absent the equivalent `grDevices` device is
+used and the output is still correct. Installing both is recommended:
+`install.packages(c("ragg", "svglite"))`.
+
+PDF output uses the cairo device wherever R was built with cairo support
+(`capabilities("cairo")`), because plain
+[`grDevices::pdf()`](https://rdrr.io/r/grDevices/pdf.html) writes text
+in a single-byte encoding and silently transliterates anything outside
+it – an en dash becomes `-`, `>=` replaces the proper symbol. Unit
+labels such as `umol/L` and statistical annotations routinely depend on
+those glyphs.
+
+Multi-page output from the paged plot functions (`plot_runscatter()`,
+[`plot_calibrationcurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_calibrationcurves.md),
+[`plot_responsecurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_responsecurves.md),
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md))
+is PDF only, which is the only format that holds many pages in one file.
+Use
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+for single figures in any of the other formats.
+
+## See also
+
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+to save a single figure in any format.
+
+Other QC plots:
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md),
+[`plot_interference_correction()`](https://slinghub.github.io/MRMhub/quant/reference/plot_interference_correction.md),
+[`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md),
+[`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md),
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md),
+[`plot_pca_loading()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca_loading.md),
+[`plot_qc_interference_impact()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_interference_impact.md),
+[`plot_qc_summary_byclass()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_byclass.md),
+[`plot_qc_summary_overall()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_overall.md),
+[`plot_qcmetrics_comparison()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qcmetrics_comparison.md),
+[`plot_rla_boxplot()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rla_boxplot.md),
+[`plot_rt_vs_chain()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rt_vs_chain.md),
+[`plot_runsequence()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runsequence.md)

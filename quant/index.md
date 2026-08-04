@@ -1,89 +1,75 @@
 # MRMhub-QUANT
 
-**MRMhub-QUANT** turns targeted MRM feature intensities into curated,
-QC-filtered, quantified results. It is the post-processing module of
-[MRMhub](https://slinghub.github.io/MRMhub/), distributed as the R
-package `mrmhub`
-([`library(mrmhub)`](https://github.com/SLINGhub/MRMhub)), and works
-with any intensity data — from
-[MRMhub-INTEGRATOR](https://slinghub.github.io/MRMhub/integrator/),
-Skyline, Agilent MassHunter, or generic CSV files. MRMhub-QUANT
-features:
+**MRMhub-QUANT** is a programmatic library for tailored, reproducible
+post-processing and quality-control of targeted metabolomics and
+lipidomics analyses. It works with
+[MRMhub-INTEGRATOR](https://slinghub.github.io/MRMhub/integrator/) peak
+integration results, or feature intensity data from other sources (CSV,
+mzTab-M, Skyline). It is the post-processing module of
+[MRMhub](https://slinghub.github.io/MRMhub/) and distributed as the R
+package `mrmhub`. It features:
 
-- **Reproducible pipelines.** Create reproducible computational
-  pipelines with QC vizualizations. Script, re-run, and share it.
-- **Flexible workflows.** Metabolomics and lipidomics data
-  post-processing using dedicated customizable functions.
-- **A single data object.** Data, metadata, and processing details are
-  stored in single sharable data object (`MRMhubExperiment`).
+- **Reproducible pipelines.** Script, explore and document, with QC
+  visualisations at every step.
+- **Flexible workflows.** Customisable functions for metabolomics and
+  lipidomics post-processing.
+- **A single data object.** Data, metadata, and processing results live
+  in one shareable object.
 
-![A RunSequence overview of a 499-injection MRM batch: quality-control
-samples (TQC, BQC, blanks, LTR) mapped across the analysis order
-alongside the study samples, with batch boundaries and a run-time
-summary — one of the QC views produced from a single
-command.](reference/figures/hero-runsequence.png)
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCA5NjAgMTgyIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Ik1STWh1Yi1RVUFOVCB3b3JrZmxvdyBpbiBmaXZlIHN0YWdlcywgZWFjaCB3aXRoIGl0cyBrZXkgYWN0aW9ucy4gSW1wb3J0IGFuZCBWYWxpZGF0ZTogaW1wb3J0IGRhdGEsIGFkZCBtZXRhZGF0YSwgdmFsaWRhdGUgSURzLCBzZXQgcnVuIG9yZGVyLiBRdWFudGlmeTogSVNURCBub3JtYWxpc2F0aW9uLCBxdWFudGlmeSBieSBJU1RELCBjYWxpYnJhdGlvbiBjdXJ2ZXMsIHJlZmVyZW5jZSBjYWxpYnJhdGlvbi4gQ29ycmVjdDogZHJpZnQgY29ycmVjdGlvbiwgYmF0Y2ggZWZmZWN0cywgaW50ZXJmZXJlbmNlcy4gUUMgYW5kIEZpbHRlcjogUUMgbWV0cmljcywgUENBIGFuZCBydW4tc2NhdHRlciwgb3V0bGllciBkZXRlY3Rpb24sIGZlYXR1cmUgZmlsdGVyaW5nLiBSZXBvcnQ6IEV4Y2VsIGFuZCBDU1YsIG16VGFiLU0sIFFDIHJlcG9ydHMsIHNoYXJlYWJsZSBvYmplY3QuIiBzdHlsZT0id2lkdGg6IDEwMCU7IGhlaWdodDogYXV0bzsgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgJiMzOTtTZWdvZSBVSSYjMzk7LCBSb2JvdG8sIHNhbnMtc2VyaWY7Ij48c3R5bGU+CiAgICAucS1hcnJvdyB7IGN1cnNvcjogcG9pbnRlcjsgdHJhbnNpdGlvbjogb3BhY2l0eSAwLjJzOyB9CiAgICAucS1saW5rOmhvdmVyIC5xLWFycm93IHsgb3BhY2l0eTogMC44MjsgfQogICAgLnEtbGluazpob3ZlciAucS1uYW1lIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IHRleHQtdW5kZXJsaW5lLW9mZnNldDogMnB4OyB9CiAgICAucS1uYW1lIHsgZm9udC1zaXplOiAyMHB4OyBmb250LXdlaWdodDogNzAwOyBmaWxsOiAjMkMzRTUwOyBwb2ludGVyLWV2ZW50czogbm9uZTsgfQogICAgLnEtaXRlbSB7IGZvbnQtc2l6ZTogMTZweDsgZmlsbDogIzQ2NTM1ZjsgcG9pbnRlci1ldmVudHM6IG5vbmU7IH0KICAgIC5xLWRpdiB7IHN0cm9rZTogI2RmZTRlODsgc3Ryb2tlLXdpZHRoOiAxOyB9CiAgPC9zdHlsZT4KPGxpbmUgY2xhc3M9InEtZGl2IiB4MT0iMjM0IiB5MT0iNzAiIHgyPSIyMzQiIHkyPSIxNzYiPjwvbGluZT48bGluZSBjbGFzcz0icS1kaXYiIHgxPSI0MzMiIHkxPSI3MCIgeDI9IjQzMyIgeTI9IjE3NiI+PC9saW5lPjxsaW5lIGNsYXNzPSJxLWRpdiIgeDE9IjU5NiIgeTE9IjcwIiB4Mj0iNTk2IiB5Mj0iMTc2Ij48L2xpbmU+PGxpbmUgY2xhc3M9InEtZGl2IiB4MT0iNzY2IiB5MT0iNzAiIHgyPSI3NjYiIHkyPSIxNzYiPjwvbGluZT48YSBocmVmPSJodHRwczovL3NsaW5naHViLmdpdGh1Yi5pby9NUk1odWIvcXVhbnQvYXJ0aWNsZXMvbWFudWFsLTA0LWRhdGEtaW1wb3J0Lm1kIj48cG9seWdvbiBjbGFzcz0icS1hcnJvdyIgcG9pbnRzPSI0LDQgMjMxLDQgMjU1LDMwIDIzMSw1NiA0LDU2IiBmaWxsPSIjZDZlNGViIj48L3BvbHlnb24+PHRleHQgY2xhc3M9InEtbmFtZSIgeD0iMTE4IiB5PSIzNyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SW1wb3J0ICZhbXA7IFZhbGlkYXRlPC90ZXh0PjwvYT4gPHRleHQgY2xhc3M9InEtaXRlbSIgeD0iMjAiIHk9Ijg4Ij5JbXBvcnQgZGF0YTwvdGV4dD48dGV4dCBjbGFzcz0icS1pdGVtIiB4PSIyMCIgeT0iMTEyIj5BZGQgbWV0YWRhdGE8L3RleHQ+PHRleHQgY2xhc3M9InEtaXRlbSIgeD0iMjAiIHk9IjEzNiI+VmFsaWRhdGUgSURzPC90ZXh0Pjx0ZXh0IGNsYXNzPSJxLWl0ZW0iIHg9IjIwIiB5PSIxNjAiPlNldCBydW4gb3JkZXI8L3RleHQ+PGEgaHJlZj0iaHR0cHM6Ly9zbGluZ2h1Yi5naXRodWIuaW8vTVJNaHViL3F1YW50L2FydGljbGVzL3R1dG9yaWFsLTAzLWxpcGlkb21pY3Mtd29ya2Zsb3cubWQiPjxwb2x5Z29uIGNsYXNzPSJxLWFycm93IiBwb2ludHM9IjIzNyw0IDQzMCw0IDQ1NCwzMCA0MzAsNTYgMjM3LDU2IDI2MSwzMCIgZmlsbD0iI2Q4ZTZkNCI+PC9wb2x5Z29uPjx0ZXh0IGNsYXNzPSJxLW5hbWUiIHg9IjMzNCIgeT0iMzciIHRleHQtYW5jaG9yPSJtaWRkbGUiPlF1YW50aWZ5PC90ZXh0PjwvYT4gPHRleHQgY2xhc3M9InEtaXRlbSIgeD0iMjUzIiB5PSI4OCI+SVNURCBub3JtYWxpc2F0aW9uPC90ZXh0Pjx0ZXh0IGNsYXNzPSJxLWl0ZW0iIHg9IjI1MyIgeT0iMTEyIj5RdWFudGlmeSBieSBJU1REPC90ZXh0Pjx0ZXh0IGNsYXNzPSJxLWl0ZW0iIHg9IjI1MyIgeT0iMTM2Ij5DYWxpYnJhdGlvbiBjdXJ2ZXM8L3RleHQ+PHRleHQgY2xhc3M9InEtaXRlbSIgeD0iMjUzIiB5PSIxNjAiPlJlZmVyZW5jZSBjYWxpYnJhdGlvbjwvdGV4dD48YSBocmVmPSJodHRwczovL3NsaW5naHViLmdpdGh1Yi5pby9NUk1odWIvcXVhbnQvYXJ0aWNsZXMvbWFudWFsLTA3LWNvcnJlY3Rpb25zLm1kIj48cG9seWdvbiBjbGFzcz0icS1hcnJvdyIgcG9pbnRzPSI0MzYsNCA1OTMsNCA2MTcsMzAgNTkzLDU2IDQzNiw1NiA0NjAsMzAiIGZpbGw9IiNlY2QyZDIiPjwvcG9seWdvbj48dGV4dCBjbGFzcz0icS1uYW1lIiB4PSI1MTUiIHk9IjM3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Db3JyZWN0PC90ZXh0PjwvYT4gPHRleHQgY2xhc3M9InEtaXRlbSIgeD0iNDUyIiB5PSI4OCI+RHJpZnQgY29ycmVjdGlvbjwvdGV4dD48dGV4dCBjbGFzcz0icS1pdGVtIiB4PSI0NTIiIHk9IjExMiI+QmF0Y2ggZWZmZWN0czwvdGV4dD48dGV4dCBjbGFzcz0icS1pdGVtIiB4PSI0NTIiIHk9IjEzNiI+SW50ZXJmZXJlbmNlczwvdGV4dD48YSBocmVmPSJodHRwczovL3NsaW5naHViLmdpdGh1Yi5pby9NUk1odWIvcXVhbnQvYXJ0aWNsZXMvdHV0b3JpYWwtMDUtcnVuLXNjYXR0ZXIubWQiPjxwb2x5Z29uIGNsYXNzPSJxLWFycm93IiBwb2ludHM9IjU5OSw0IDc2Myw0IDc4NywzMCA3NjMsNTYgNTk5LDU2IDYyMywzMCIgZmlsbD0iI2Q2ZTRlYiI+PC9wb2x5Z29uPjx0ZXh0IGNsYXNzPSJxLW5hbWUiIHg9IjY4MSIgeT0iMzciIHRleHQtYW5jaG9yPSJtaWRkbGUiPlFDICZhbXA7IEZpbHRlcjwvdGV4dD48L2E+IDx0ZXh0IGNsYXNzPSJxLWl0ZW0iIHg9IjYxNSIgeT0iODgiPlFDIG1ldHJpY3M8L3RleHQ+PHRleHQgY2xhc3M9InEtaXRlbSIgeD0iNjE1IiB5PSIxMTIiPlBDQSAmYW1wOyBydW4tc2NhdHRlcjwvdGV4dD48dGV4dCBjbGFzcz0icS1pdGVtIiB4PSI2MTUiIHk9IjEzNiI+T3V0bGllciBkZXRlY3Rpb248L3RleHQ+PHRleHQgY2xhc3M9InEtaXRlbSIgeD0iNjE1IiB5PSIxNjAiPkZlYXR1cmUgZmlsdGVyaW5nPC90ZXh0PjxhIGhyZWY9Imh0dHBzOi8vc2xpbmdodWIuZ2l0aHViLmlvL01STWh1Yi9xdWFudC9hcnRpY2xlcy90dXRvcmlhbC0wOC1leHBvcnQtZm9ybWF0cy5tZCI+PHBvbHlnb24gY2xhc3M9InEtYXJyb3ciIHBvaW50cz0iNzY5LDQgOTI2LDQgOTUwLDMwIDkyNiw1NiA3NjksNTYgNzkzLDMwIiBmaWxsPSIjYzhjZmQ2Ij48L3BvbHlnb24+PHRleHQgY2xhc3M9InEtbmFtZSIgeD0iODQ4IiB5PSIzNyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UmVwb3J0PC90ZXh0PjwvYT4gPHRleHQgY2xhc3M9InEtaXRlbSIgeD0iNzg1IiB5PSI4OCI+RXhjZWwgJmFtcDsgQ1NWPC90ZXh0Pjx0ZXh0IGNsYXNzPSJxLWl0ZW0iIHg9Ijc4NSIgeT0iMTEyIj5telRhYi1NPC90ZXh0Pjx0ZXh0IGNsYXNzPSJxLWl0ZW0iIHg9Ijc4NSIgeT0iMTM2Ij5RQyByZXBvcnRzPC90ZXh0Pjx0ZXh0IGNsYXNzPSJxLWl0ZW0iIHg9Ijc4NSIgeT0iMTYwIj5TaGFyZWFibGUgb2JqZWN0PC90ZXh0Pjwvc3ZnPg==)
 
-A RunSequence overview of a 499-injection MRM batch: quality-control
-samples (TQC, BQC, blanks, LTR) mapped across the analysis order
-alongside the study samples, with batch boundaries and a run-time
-summary — one of the QC views produced from a single command.
+## Quick Start
 
-[Run your first analysis (5 min)
-→](https://slinghub.github.io/MRMhub/quant/articles/tutorial-00-first-analysis.md)
+- **[Installation](https://slinghub.github.io/MRMhub/quant/articles/manual-00-installation.md)** -
+  install and verify your setup
+- **[Getting started with R and
+  Quarto](https://slinghub.github.io/MRMhub/quant/articles/tutorial-13-getting-started-r-quarto.md)** -
+  Setting up R, an editor, and a Quarto project
+- **[Getting started with
+  MRMhub](https://slinghub.github.io/MRMhub/quant/articles/tutorial-02-getting-started-mrmhub.md)** -
+  a first end-to-end analysis on the bundled data
+- **[Try the interactive workflow
+  builder](https://slinghub.github.io/MRMhub/quant/articles/tutorial-12-workflow-builder.md)** -
+  generate a runnable Quarto notebook
+- **[Run the demo
+  ↗](https://slinghub.github.io/MRMhub/get-started.html)** - a bundled,
+  runnable demo project with data
 
-Prefer point-and-click?
-[`run_walkthrough()`](https://slinghub.github.io/MRMhub/quant/reference/run_walkthrough.md)
-opens a guided app that validates your data and generates the workflow
-script (one-time `install.packages(c("shiny", "bslib"))`).
+## Example Workflows
 
-![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCA4NDAgMTMwIiBzdHlsZT0ibWF4LXdpZHRoOiA4NDBweDsgd2lkdGg6IDEwMCU7IGhlaWdodDogYXV0bzsgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgJiMzOTtTZWdvZSBVSSYjMzk7LCBzYW5zLXNlcmlmOyI+PHN0eWxlPgogICAgLndmLWJveCB7IHJ4OiA4OyByeTogODsgc3Ryb2tlLXdpZHRoOiAxLjU7IGN1cnNvcjogcG9pbnRlcjsgdHJhbnNpdGlvbjogb3BhY2l0eSAwLjJzOyB9CiAgICAud2YtYm94OmhvdmVyIHsgb3BhY2l0eTogMC44NTsgfQogICAgLndmLWxhYmVsIHsgZm9udC1zaXplOiAxMnB4OyBmb250LXdlaWdodDogNjAwOyBmaWxsOiAjMWExYTFhOyBwb2ludGVyLWV2ZW50czogbm9uZTsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IHRleHQtdW5kZXJsaW5lLW9mZnNldDogMnB4OyB9CiAgICAud2YtYXJyb3cgeyBmaWxsOiAjMkMzRTUwOyB9CiAgICAud2YtYm94LWRhc2hlZCB7IGZpbGw6IHRyYW5zcGFyZW50OyBzdHJva2UtZGFzaGFycmF5OiA0LDM7IH0KICAgIC53Zi1ib3gtZGFzaGVkOmhvdmVyIHsgZmlsbDogcmdiYSg5MSwxNDMsMTY4LDAuMDgpOyB9CiAgICAud2YtZGV0YWlsIHsgZm9udC1zaXplOiA5LjVweDsgZmlsbDogIzU1NTsgcG9pbnRlci1ldmVudHM6IG5vbmU7IH0KICA8L3N0eWxlPgo8YSBocmVmPSJodHRwczovL3NsaW5naHViLmdpdGh1Yi5pby9NUk1odWIvcXVhbnQvYXJ0aWNsZXMvbWFudWFsLTA1YS13aGljaC1pbXBvcnRlci5tZCI+PHJlY3QgY2xhc3M9IndmLWJveCB3Zi1ib3gtZGFzaGVkIiB4PSIzNSIgeT0iMTAiIHdpZHRoPSIxMTAiIGhlaWdodD0iNzAiIHN0cm9rZT0iIzVCOEZBOCIgLz48dGV4dCBjbGFzcz0id2YtbGFiZWwiIHg9IjkwIiB5PSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RGF0YSBJbXBvcnQ8L3RleHQ+PC9hPiA8dGV4dCBjbGFzcz0id2YtZGV0YWlsIiB4PSI5MCIgeT0iOTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1STWh1Yi1JTlRFR1JBVE9SPC90ZXh0Pjx0ZXh0IGNsYXNzPSJ3Zi1kZXRhaWwiIHg9IjkwIiB5PSIxMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk90aGVyIGZvcm1hdHM8L3RleHQ+PHBvbHlnb24gY2xhc3M9IndmLWFycm93IiBwb2ludHM9IjE0OCwzOCAxNDgsNTIgMTY0LDQ1Ij48L3BvbHlnb24+PGEgaHJlZj0iaHR0cHM6Ly9zbGluZ2h1Yi5naXRodWIuaW8vTVJNaHViL3F1YW50L2FydGljbGVzL21hbnVhbC0wNi1tZXRhZGF0YS1pbXBvcnQubWQiPjxyZWN0IGNsYXNzPSJ3Zi1ib3giIHg9IjE2NyIgeT0iMTAiIHdpZHRoPSIxMTAiIGhlaWdodD0iNzAiIGZpbGw9IiNmNWUwYzgiIHN0cm9rZT0iI0Q0OTE0RSIgLz48dGV4dCBjbGFzcz0id2YtbGFiZWwiIHg9IjIyMiIgeT0iNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1ldGFkYXRhPC90ZXh0PjwvYT4gPHRleHQgY2xhc3M9IndmLWRldGFpbCIgeD0iMjIyIiB5PSI5OCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+aW1wb3J0IENTVi9YTFM8L3RleHQ+PHRleHQgY2xhc3M9IndmLWRldGFpbCIgeD0iMjIyIiB5PSIxMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkludGVncml0eSB2YWxpZGF0aW9uPC90ZXh0Pjxwb2x5Z29uIGNsYXNzPSJ3Zi1hcnJvdyIgcG9pbnRzPSIyODAsMzggMjgwLDUyIDI5Niw0NSI+PC9wb2x5Z29uPjxhIGhyZWY9Imh0dHBzOi8vc2xpbmdodWIuZ2l0aHViLmlvL01STWh1Yi9xdWFudC9hcnRpY2xlcy9yZWNpcGUtMDEtZXh0LWNhbGlicmF0aW9uLXFjLm1kIj48cmVjdCBjbGFzcz0id2YtYm94IiB4PSIyOTkiIHk9IjEwIiB3aWR0aD0iMTEwIiBoZWlnaHQ9IjcwIiBmaWxsPSIjZDhlNmQ0IiBzdHJva2U9IiM2QjlFNUUiIC8+PHRleHQgY2xhc3M9IndmLWxhYmVsIiB4PSIzNTQiIHk9IjQyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj48dHNwYW4geD0iMzU0IiBkeT0iMCI+Tm9ybWFsaXplIC88L3RzcGFuPjx0c3BhbiB4PSIzNTQiIGR5PSIxNiI+UXVhbnRpZnk8L3RzcGFuPjwvdGV4dD48L2E+IDx0ZXh0IGNsYXNzPSJ3Zi1kZXRhaWwiIHg9IjM1NCIgeT0iOTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPklTVEQ8L3RleHQ+PHRleHQgY2xhc3M9IndmLWRldGFpbCIgeD0iMzU0IiB5PSIxMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNhbGlicmF0aW9uIGN1cnZlPC90ZXh0Pjxwb2x5Z29uIGNsYXNzPSJ3Zi1hcnJvdyIgcG9pbnRzPSI0MTIsMzggNDEyLDUyIDQyOCw0NSI+PC9wb2x5Z29uPjxhIGhyZWY9Imh0dHBzOi8vc2xpbmdodWIuZ2l0aHViLmlvL01STWh1Yi9xdWFudC9hcnRpY2xlcy9tYW51YWwtMDctZHJpZnQtYmF0Y2gtY29ycmVjdGlvbi5tZCI+PHJlY3QgY2xhc3M9IndmLWJveCIgeD0iNDMxIiB5PSIxMCIgd2lkdGg9IjExMCIgaGVpZ2h0PSI3MCIgZmlsbD0iI2VjZDJkMiIgc3Ryb2tlPSIjQzI3MTcxIiAvPjx0ZXh0IGNsYXNzPSJ3Zi1sYWJlbCIgeD0iNDg2IiB5PSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q29ycmVjdGlvbnM8L3RleHQ+PC9hPiA8dGV4dCBjbGFzcz0id2YtZGV0YWlsIiB4PSI0ODYiIHk9Ijk4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5EcmlmdDwvdGV4dD48dGV4dCBjbGFzcz0id2YtZGV0YWlsIiB4PSI0ODYiIHk9IjExMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QmF0Y2g8L3RleHQ+PHBvbHlnb24gY2xhc3M9IndmLWFycm93IiBwb2ludHM9IjU0NCwzOCA1NDQsNTIgNTYwLDQ1Ij48L3BvbHlnb24+PGEgaHJlZj0iaHR0cHM6Ly9zbGluZ2h1Yi5naXRodWIuaW8vTVJNaHViL3F1YW50L2FydGljbGVzL3R1dG9yaWFsLTA5LXBjYS1leHBsb3JhdGlvbi5tZCI+PHJlY3QgY2xhc3M9IndmLWJveCIgeD0iNTYzIiB5PSIxMCIgd2lkdGg9IjExMCIgaGVpZ2h0PSI3MCIgZmlsbD0iI2Q2ZTRlYiIgc3Ryb2tlPSIjNUI4RkE4IiAvPjx0ZXh0IGNsYXNzPSJ3Zi1sYWJlbCIgeD0iNjE4IiB5PSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UUM8L3RleHQ+PC9hPiA8dGV4dCBjbGFzcz0id2YtZGV0YWlsIiB4PSI2MTgiIHk9Ijk4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NZXRyaWNzPC90ZXh0Pjx0ZXh0IGNsYXNzPSJ3Zi1kZXRhaWwiIHg9IjYxOCIgeT0iMTEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QbG90czwvdGV4dD48cG9seWdvbiBjbGFzcz0id2YtYXJyb3ciIHBvaW50cz0iNjc2LDM4IDY3Niw1MiA2OTIsNDUiPjwvcG9seWdvbj48YSBocmVmPSJodHRwczovL3NsaW5naHViLmdpdGh1Yi5pby9NUk1odWIvcXVhbnQvYXJ0aWNsZXMvcmVjaXBlLTAyLWN1c3RvbS1xYy1yZXBvcnQubWQiPjxyZWN0IGNsYXNzPSJ3Zi1ib3giIHg9IjY5NSIgeT0iMTAiIHdpZHRoPSIxMTAiIGhlaWdodD0iNzAiIGZpbGw9IiNjOGNmZDYiIHN0cm9rZT0iIzJDM0U1MCIgLz48dGV4dCBjbGFzcz0id2YtbGFiZWwiIHg9Ijc1MCIgeT0iNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJlcG9ydGluZzwvdGV4dD48L2E+IDx0ZXh0IGNsYXNzPSJ3Zi1kZXRhaWwiIHg9Ijc1MCIgeT0iOTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlBsYWluIHRhYmxlczwvdGV4dD48dGV4dCBjbGFzcz0id2YtZGV0YWlsIiB4PSI3NTAiIHk9IjExMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UUMgcmVwb3J0czwvdGV4dD48L3N2Zz4=)
-
-## Quick Start and Demos
-
-- **[Installation](https://slinghub.github.io/MRMhub/quant/articles/manual-00-installation.md)**
-  — install and verify your setup
-- **[Your First
-  Analysis](https://slinghub.github.io/MRMhub/quant/articles/tutorial-00-first-analysis.md)**
-  — a 5-minute run on bundled data
-- **[Prepare your
-  data](https://slinghub.github.io/MRMhub/quant/articles/manual-05a-which-importer.md)**
-  — file formats and importers
 - **[Example: targeted
-  lipidomics](https://slinghub.github.io/MRMhub/quant/articles/tutorial-03-lipidomics-workflow.md)**
-  — a full lipidomics workflow
+  lipidomics](https://slinghub.github.io/MRMhub/quant/articles/tutorial-03-lipidomics-workflow.md)** -
+  a full lipidomics workflow
 - **[Example: external
-  calibration](https://slinghub.github.io/MRMhub/quant/articles/recipe-01-ext-calibration-qc.md)**
-  — a quantitative assay with calibration curves
+  calibration](https://slinghub.github.io/MRMhub/quant/articles/tutorial-06-external-calibration.md)** -
+  a quantitative assay with calibration curves
+- **[Browse real analyses
+  ↗](https://slinghub.github.io/MRMhub-workflows/)** - annotated,
+  end-to-end reports from large-scale studies
 
-## Installation and Updating
+## Installing and Updating
 
-Make sure to use a fresh R session without loaded packages (quit
-RStudio/Positron first to avoid locked packages):
+Make sure to use a fresh R session without loaded packages (restart
+RStudio/Positron first). Please read [the Installation
+guide](https://slinghub.github.io/MRMhub/quant/articles/manual-00-installation.md)
+first for full instructions and troubleshooting.
 
 ``` r
 
 if (!require("pak")) install.packages("pak")
 pak::pak("SLINGhub/MRMhub")
-library(mrmhub); mrmhub::check_setup()
+library(mrmhub)
 ```
-
-`pak` resolves locked packages and parallelises downloads;
-`remotes::install_github("SLINGhub/MRMhub")` is an equivalent fallback.
-For more details and troubleshooting see
-[Installation](https://slinghub.github.io/MRMhub/quant/articles/manual-00-installation.md)
-and [Troubleshooting &
-FAQ](https://slinghub.github.io/MRMhub/quant/articles/manual-09-troubleshooting.md).
 
 ## Contributing
 
-Questions, bug reports, feature requests, and suggestions are welcome
-via [GitHub issues](https://github.com/SLINGhub/MRMhub/issues). The
-project is released with a [Contributor Code of
+Bug reports and feature requests are welcome via [GitHub
+issues](https://github.com/SLINGhub/MRMhub/issues). The project follows
+the [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 
-## Dual licensing
+## License
 
-The source code is dual-licensed: [GNU
-AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html) for
-non-commercial use, or commercial licensing — contact Jonathan Tan
-(<jonathan_tan@nus.edu.sg>).
+Dual-licensed - non-commercial under [GNU
+AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html). For commercial
+use contact Jonathan Tan (<jonathan_tan@nus.edu.sg>).

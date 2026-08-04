@@ -1,4 +1,4 @@
-# Compare Feature Variability Before and After Normalization
+# Compare feature variability before and after normalization
 
 Evaluates the effectiveness of normalization by comparing feature
 variability (measured as %CV) in QC and/or study samples before and
@@ -11,7 +11,7 @@ plot types:
 
 - Ratio plot: log2 of (CV after / CV before) vs mean CV
 
-Features can be grouped and visualized by their fature class using
+Features can be grouped and visualized by their feature class using
 facets.
 
 The resulting visualization helps assess whether normalization improved
@@ -31,12 +31,20 @@ plot_normalization_qc(
   filter_data = FALSE,
   include_qualifier = FALSE,
   cv_threshold_value = 25,
-  x_lim = c(0, NA_real_),
-  y_lim = c(0, NA_real_),
+  x_lim = c(NA_real_, NA_real_),
+  y_lim = c(NA_real_, NA_real_),
   cols_page = 5,
-  point_size = 1,
+  point_size = NULL,
   point_alpha = 0.5,
-  font_base_size = 8
+  font_base_size = NULL,
+  autoscale = TRUE,
+  legend_position = NULL,
+  legend_size = NULL,
+  show_legend_title = NULL,
+  title = NULL,
+  strip_text_size = NULL,
+  strip_bg_color = NULL,
+  legend_bg_alpha = NULL
 )
 ```
 
@@ -44,7 +52,7 @@ plot_normalization_qc(
 
 - data:
 
-  A `MRMhubExperiment` object
+  A `MRMhubExperiment` object.
 
 - before_norm_var:
 
@@ -68,9 +76,9 @@ plot_normalization_qc(
 - qc_types:
 
   A character vector specifying the QC types to plot. It must contain at
-  least one element. The default is `NA`, which means any of the
-  non-blank QC types ("SPL", "TQC", "BQC", "HQC", "MQC", "LQC", "NIST",
-  "LTR") will be plotted if present in the dataset.
+  least one element. The default `NA` plots any of the non-blank QC
+  types ("SPL", "TQC", "BQC", "HQC", "MQC", "LQC", "NIST", "LTR")
+  present in the dataset.
 
 - facet_by_class:
 
@@ -100,12 +108,14 @@ plot_normalization_qc(
 - x_lim:
 
   Numeric vector of length 2 for x-axis limits. Use `NA` for
-  auto-scaling (default is `c(0, NA)`).
+  auto-scaling (default is `c(NA, NA)`).
 
 - y_lim:
 
   Numeric vector of length 2 for y-axis limits. Use `NA` for
-  auto-scaling (default is `c(0, NA)`).
+  auto-scaling (default is `c(NA, NA)`). A fixed lower limit of `0`
+  would clip the negative values of `plot_type = "diff"` and `"ratio"`,
+  which are the features whose CV the normalization reduced.
 
 - cols_page:
 
@@ -122,11 +132,71 @@ plot_normalization_qc(
 
 - font_base_size:
 
-  Base font size in points (default is `8`).
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
+
+- autoscale:
+
+  Logical. When `TRUE` (default), `font_base_size` and `point_size` left
+  as `NULL` are sized automatically from `cols_page` (more facet columns
+  per page give smaller text and points). Any value passed explicitly
+  always takes precedence. When `FALSE`, unset sizes fall back to the
+  single-plot defaults.
+
+- legend_position:
+
+  Optional legend placement. One of `"right"`, `"left"`, `"top"`,
+  `"bottom"`, `"none"`; a corner keyword `"inside-tr"`, `"inside-tl"`,
+  `"inside-br"`, `"inside-bl"`; or a numeric `c(x, y)` in `[0, 1]`
+  coordinates. `NULL` (default) keeps the current placement, unless a
+  global default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md).
+
+- legend_size:
+
+  Optional single multiplier of `font_base_size` (when `<= 3`) or
+  absolute point size (when `> 3`) that scales the whole legend: text,
+  title, key and the plotted symbols. `NULL` (default) leaves the legend
+  unchanged.
+
+- show_legend_title:
+
+  Logical. `NULL` (default) keeps the legend title, unless a global
+  default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md);
+  `FALSE` hides it, `TRUE` forces it shown.
+
+- title:
+
+  Optional plot title. `NULL` (default) or `NA` shows no title; a
+  character string is shown as the title.
+
+- strip_text_size:
+
+  Optional facet strip text size, as a multiplier of `font_base_size`
+  (when `<= 3`) or an absolute point size (when `> 3`). `NULL` (default)
+  inherits from `font_base_size`.
+
+- strip_bg_color:
+
+  Optional facet strip background fill colour. The strip text colour is
+  set automatically for contrast (white on a dark fill, black on a light
+  one). `NULL` (default) keeps the house dark-navy strips.
+
+- legend_bg_alpha:
+
+  Optional opacity (`[0, 1]`) of a white legend background box, useful
+  for a readable inside legend drawn over points. `NULL` (default)
+  leaves the legend background unchanged.
 
 ## Value
 
-A `ggplot2` object representing the scatter plot comparing CV values
+A `ggplot` object representing the scatter plot comparing CV values
 before and after normalization.
 
 ## Details
@@ -154,21 +224,37 @@ to visualize the results.
 [`calc_qc_metrics()`](https://slinghub.github.io/MRMhub/quant/reference/calc_qc_metrics.md),
 [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md),
 
+Other QC plots:
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md),
+[`plot_interference_correction()`](https://slinghub.github.io/MRMhub/quant/reference/plot_interference_correction.md),
+[`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md),
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md),
+[`plot_pca_loading()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca_loading.md),
+[`plot_qc_interference_impact()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_interference_impact.md),
+[`plot_qc_summary_byclass()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_byclass.md),
+[`plot_qc_summary_overall()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_overall.md),
+[`plot_qcmetrics_comparison()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qcmetrics_comparison.md),
+[`plot_rla_boxplot()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rla_boxplot.md),
+[`plot_rt_vs_chain()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rt_vs_chain.md),
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_runsequence()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runsequence.md)
+
 ## Examples
 
 ``` r
 # Example usage:
 mexp <- lipidomics_dataset
 mexp <- normalize_by_istd(mexp)
-#> ! Interfering features defined in metadata, but no correction was applied. Use `correct_interferences()` to correct.
+#> ! Interfering features defined in metadata, but no correction was applied. Use `correct_custom_interferences()` to correct.
 #> ✔ 20 features normalized with 9 ISTDs in 499 analyses.
 mexp <- calc_qc_metrics(mexp)
+#> ✔ QC metrics calculated for 29 features across 7 sample types, including normalized-intensity and response-curve statistics.
 plot_normalization_qc(
   data = mexp,
   before_norm_var = "intensity",
   after_norm_var = "norm_intensity",
   plot_type = "scatter",
-  qc_type = "SPL",
+  qc_types = "SPL",
   filter_data = FALSE,
   facet_by_class = TRUE,
   cv_threshold_value = 25

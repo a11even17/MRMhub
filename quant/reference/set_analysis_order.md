@@ -1,4 +1,4 @@
-# Set Analysis Order
+# Set analysis order
 
 Determines the sequence of analyses using either instrument timestamps,
 the order in the imported raw data file, or the order defined in the
@@ -18,7 +18,9 @@ set_analysis_order(
 
 - data:
 
-  A `MRMhubExperiment` object
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - order_by:
 
@@ -29,7 +31,9 @@ set_analysis_order(
 
 ## Value
 
-An updated `MRMhubExperiment` object with ordered analyses
+An updated
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object with ordered analyses
 
 ## Examples
 
@@ -37,8 +41,8 @@ An updated `MRMhubExperiment` object with ordered analyses
 file_path <- system.file("extdata", "MRMhub_demo.tsv", package = "mrmhub")
 mexp <- MRMhubExperiment()
 mexp <- import_data_mrmhub(mexp, path = file_path, import_metadata = TRUE)
-#> ✔ Imported 499 analyses with 28 features
-#> ℹ `feature_area` selected as default feature intensity. Modify with `set_intensity_var()`.
+#> ✔ Imported 499 analyses with 28 features.
+#> ℹ feature_area selected as default feature intensity. Modify with `set_intensity_var()`.
 #> ✔ Analysis metadata associated with 499 analyses.
 #> ✔ Feature metadata associated with 28 features.
 

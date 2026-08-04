@@ -1,4 +1,4 @@
-# Drift Correction by Gaussian Kernel Smoothing
+# Drift correction by Gaussian kernel smoothing
 
 Performs drift correction for run-order effects within or across batches
 using Gaussian kernel smoothing, as detailed in Teo et al. (2020). The
@@ -12,15 +12,14 @@ artifacts. The smoothing can be applied to `concentration`,
 Corrections can be applied on a batch-by-batch basis
 (`batch_wise = TRUE`, default) or across all batches
 (`batch_wise = FALSE`). The correction can either replace existing drift
-or batch corrections
-(`replace_previous = `TRUE`, default) or applied on top of existing corrections (`replace_previous
-= FALSE\`).
+or batch corrections (`replace_previous = TRUE`, default) or applied on
+top of existing corrections (`replace_previous = FALSE`).
 
 Drift correction can be applied to all features
 (`conditional_correction = FALSE`) or conditionally, based on whether
 the sample CV difference before and after correction is below a defined
 threshold (`cv_diff_threshold`). The conditional correction is applied
-separately for each batch if `batch_wise = TRUE`, .
+separately for each batch if `batch_wise = TRUE`.
 
 It is recommended to visually inspect the correction using the
 [`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md)
@@ -31,7 +30,7 @@ details, refer to the description of
 This will double the processing time.
 
 **Note**: The function outputs a message indicating the median CV change
-and the mean absolute CV before and after correction for all samples.
+and the median absolute CV before and after correction for all samples.
 However, these metrics are experimental and should not be used as
 definitive criteria for correction (see Details below).
 
@@ -64,7 +63,9 @@ correct_drift_gaussiankernel(
 
 - data:
 
-  A MRMhubExperiment object.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object.
 
 - variable:
 
@@ -118,15 +119,15 @@ correct_drift_gaussiankernel(
 
 - conditional_correction:
 
-  Determines whether drift correction should be applied to all features
-  unconditionally (`TRUE`) or only when the difference of sample CV
-  before vs after smoothing is below the threshold specified by
-  `cv_diff_threshold`.
+  Determines whether drift correction is applied to all features
+  unconditionally (`FALSE`, the default) or, when `TRUE`, only to
+  features whose difference of sample CV before vs after smoothing is
+  below the threshold specified by `cv_diff_threshold`.
 
 - cv_diff_threshold:
 
   This parameter defines the maximum allowable change (difference) in
-  the coefficient of variation (CV) ratio of samples before and after
+  the coefficient of variation (CV) of samples before and after
   smoothing for the correction to be applied. A value of 0 (the default)
   requires the CV to improve, while a value above 0 allows the CV to
   also become worse by a maximum of the defined difference.
@@ -145,7 +146,7 @@ correct_drift_gaussiankernel(
 
   Determines the action when smoothing fails or results in invalid
   values for a feature. If `FALSE` (default), the result for each
-  feature will `NA` for all batches, if `TRUE`, the original data is
+  feature will be `NA` for all batches, if `TRUE`, the original data is
   kept.
 
 - show_progress:
@@ -155,21 +156,22 @@ correct_drift_gaussiankernel(
 
 ## Value
 
-Returns a MRMhubExperiment object.
+Returns a
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object.
 
 ## Details
 
 In the output message, the median CV change is computed as the median of
 CV changes for all features in global correction or for features where
-the correction passed the defined CV difference treshold in case of
-conditional correction (`conditional_correction = FALSE`). For
-batch-wise correction, the change is calculated per batch, with the
-final median CV change being the median of these batch medians across
-features.
+the correction passed the defined CV difference threshold in case of
+conditional correction (`conditional_correction = TRUE`). For batch-wise
+correction, the change is calculated per batch, with the final median CV
+change being the median of these batch medians across features.
 
 ## References
 
 Teo G., Chew WS, Burla B, Herr D, Tai ES, Wenk MR, Torta F, & Choi H
-(2020). MRMhub: Automated Data Processing for Large-Scale Targeted
+(2020). MRMkit: Automated Data Processing for Large-Scale Targeted
 Metabolomics Analysis. *Analytical Chemistry*, 92(20), 13677–13682.
 <https://doi.org/10.1021/acs.analchem.0c03060>

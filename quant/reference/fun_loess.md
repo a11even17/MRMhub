@@ -1,6 +1,6 @@
 # Loess smoothing helper function
 
-Function for loess-based smoothing, for use by `fun_correct_drift`
+Function for loess-based smoothing, for use by `correct_drift`
 
 ## Usage
 
@@ -31,5 +31,4 @@ fun_loess(tbl, ref_qc_types, log_transform_internal, ...)
 ## Value
 
 List with a `data.frame` containing original x and the smoothed y
-values, and a `boolean` value indicting whether the fit failed or not
-not.
+values, and a `boolean` value indicting whether the fit failed or not.

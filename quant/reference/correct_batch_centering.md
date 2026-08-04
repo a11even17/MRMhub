@@ -1,4 +1,4 @@
-# Batch Centering Correction
+# Batch centering correction
 
 This function performs batch centering correction on each feature.
 Optionally, the scale of the batches can be equalized across batches.
@@ -28,8 +28,10 @@ correct_batch_centering(
 
 - data:
 
-  A `MRMhubExperiment` object containing the data to be corrected. This
-  object must include information about QC types and measurements.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object containing the data to be corrected. This object must include
+  information about QC types and measurements.
 
 - variable:
 
@@ -55,7 +57,14 @@ correct_batch_centering(
 - log_transform_internal:
 
   A logical value indicating whether to log-transform the data
-  internally during correction. Defaults to `TRUE`.
+  internally during correction. Defaults to `TRUE`. This also sets the
+  centering model: with `TRUE` the batch reference levels are aligned in
+  log space, i.e. **multiplicative (geometric)** centering (the
+  appropriate choice for multiplicatively-scaling MS intensities, and
+  the reason it is the default); with `FALSE` they are aligned in raw
+  space, i.e. **additive** centering (which can shift low values below
+  zero). Either way the returned data are on the raw (untransformed)
+  scale.
 
 - feature_list:
 
@@ -66,7 +75,7 @@ correct_batch_centering(
 - replace_exisiting_trendcurves:
 
   A logical value indicating whether to replace trend curves from
-  previous corrections. This is only use for plotting using
+  previous corrections. This is only used for plotting using
   [`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md).
   Default is `FALSE`.
 
@@ -77,8 +86,13 @@ correct_batch_centering(
 
 ## Value
 
-A `MRMhubExperiment` object containing the corrected data.
+A
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object containing the corrected data.
 
 ## See also
 
-`plot_runscatter` for visualizing the correction before and after.
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md)
+for visualizing the correction before and after; the [drift-correction
+tutorial](https://slinghub.github.io/MRMhub/quant/articles/tutorial-04-drift-correction.html)
+for a worked example.

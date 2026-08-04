@@ -1,11 +1,12 @@
-# Visualisation Functions
+# Visualisation functions
+
+Manual
 
 MRMhub provides plotting functions covering every stage of the workflow.
 All functions return `ggplot2` objects (or, for paged outputs, a list of
 `ggplot2` objects), so the standard ggplot2 grammar can be used to
-further customise titles, themes, scales, and facets. This reference
-groups the functions by the workflow stage at which they are most
-useful.
+further customise titles, themes, scales, and facets. The functions
+below are grouped by the workflow stage at which they are most useful.
 
 ### Setup
 
@@ -35,12 +36,12 @@ mexp <- readRDS("results/mexp_processed.rds")
 | [`plot_calibrationcurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_calibrationcurves.md) | External calibration | Calibration curves with fit and residuals |
 | [`plot_responsecurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_responsecurves.md) | Response curves | Linearity check from a dilution series |
 | [`plot_rt_vs_chain()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rt_vs_chain.md) | Method check (lipidomics) | RT vs chain length / unsaturation |
-| [`plot_qc_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_matrixeffects.md) | Method check | Matrix-effect QC |
-| [`plot_qc_interferences()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_interferences.md) | Interference correction | QC overview for interference annotations |
+| [`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md) | Method check | Matrix-effect QC |
+| [`plot_interference_correction()`](https://slinghub.github.io/MRMhub/quant/reference/plot_interference_correction.md) | Interference correction | QC overview for interference annotations |
 
 ## Acquisition design
 
-### `plot_runsequence()` — sequence overview
+### `plot_runsequence()`: sequence overview
 
 The run-sequence plot summarises the acquisition design: QC type
 positions, batch boundaries, and the analysis timeline. It is an
@@ -61,7 +62,7 @@ would not be visible against the analysis sequence number.
 
 ## Drift, batch, and per-feature inspection
 
-### `plot_runscatter()` — values vs analysis order
+### `plot_runscatter()`: values vs analysis order
 
 The primary plot for drift and batch QC. Plots a feature variable
 (intensity, normalised intensity, concentration) against the analysis
@@ -83,7 +84,7 @@ pre-correction values, and `variable = "intensity"` / `"conc"` for
 post-correction. Setting `output_pdf = TRUE` and a `path` writes a
 multi-page PDF, which is practical for large feature lists.
 
-### `plot_abundanceprofile()` — feature abundance distribution
+### `plot_abundanceprofile()`: feature abundance distribution
 
 Shows the abundance distribution of each feature, grouped by class.
 Useful for inspecting class coverage and identifying features at the
@@ -103,7 +104,7 @@ must specify a single QC type.
 
 ## Normalisation QC
 
-### `plot_rla_boxplot()` — relative log-abundance per analysis
+### `plot_rla_boxplot()`: relative log-abundance per analysis
 
 A boxplot per analysis of `log2(value / median_across_analyses)`. Width
 and centring of the box reflect injection-level variability. Useful
@@ -117,7 +118,7 @@ plot_rla_boxplot(mexp,
                  qc_types = c("BQC", "SPL"))
 ```
 
-### `plot_normalization_qc()` — before-vs-after comparison
+### `plot_normalization_qc()`: before-vs-after comparison
 
 Compares pre- and post-normalisation values for QC samples in three
 layouts (`plot_type`): `"scatter"` (point cloud), `"diff"` (signed
@@ -138,11 +139,11 @@ plot_normalization_qc(mexp,
 
 ## Multivariate QC
 
-### `plot_pca()` — score plot
+### `plot_pca()`: score plot
 
 Two-dimensional PCA score plot with confidence ellipses grouped by
-`qc_type`, `batch_id`, or `"none"`. See [QC Exploration with
-PCA](https://slinghub.github.io/MRMhub/quant/articles/tutorial-09-pca-exploration.md)
+`qc_type`, `batch_id`, or `"none"`. See [QC exploration with
+PCA](https://slinghub.github.io/MRMhub/quant/articles/tutorial-05-run-scatter.md)
 for an interpretation walk-through.
 
 ``` r
@@ -153,7 +154,7 @@ plot_pca(mexp,
          ellipse_variable  = "qc_type")
 ```
 
-### `plot_pca_loading()` — loadings
+### `plot_pca_loading()`: loadings
 
 Loadings on the first two PCs. Features at the extremes drive sample
 separation; a single feature dominating PC1 should be inspected with
@@ -167,7 +168,7 @@ plot_pca_loading(mexp,
                  qc_types = c("BQC", "SPL"))
 ```
 
-### `plot_feature_correlations()` — correlation heatmap
+### `plot_feature_correlations()`: correlation heatmap
 
 Pairwise correlation matrix across features, useful for identifying
 redundant transitions and flagging candidate isobaric interferences.
@@ -181,7 +182,7 @@ plot_feature_correlations(mexp,
 
 ## QC metrics and filtering
 
-### `plot_qcmetrics_comparison()` — pairwise QC-metric scatter
+### `plot_qcmetrics_comparison()`: pairwise QC-metric scatter
 
 Plots one QC metric against another, computed across features. The
 variable names follow the pattern `{variable}_cv_{qctype}`
@@ -207,7 +208,7 @@ Points below the equality line indicate features for which CV was
 reduced by normalisation; points above indicate features made worse,
 typically a misassigned ISTD.
 
-### `plot_qc_summary_byclass()` / `plot_qc_summary_overall()` — filter outcome
+### `plot_qc_summary_byclass()` / `plot_qc_summary_overall()`: filter outcome
 
 After
 [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md),
@@ -222,7 +223,7 @@ plot_qc_summary_byclass(mexp)
 
 ## External calibration and response curves
 
-### `plot_calibrationcurves()` — calibration fits
+### `plot_calibrationcurves()`: calibration fits
 
 After
 [`quantify_by_calibration()`](https://slinghub.github.io/MRMhub/quant/reference/quantify_by_calibration.md),
@@ -240,7 +241,7 @@ plot_calibrationcurves(mexp,
 The fit model is taken from the calibration setup unless overridden with
 `fit_overwrite = "linear"` or `"quadratic"`.
 
-### `plot_responsecurves()` — RQC linearity
+### `plot_responsecurves()`: RQC linearity
 
 Plots feature response across an RQC dilution series. The fitted slope
 and R² values report on the linearity of the assay in the range of the
@@ -256,7 +257,7 @@ plot_responsecurves(mexp,
 
 ## Method-specific checks
 
-### `plot_rt_vs_chain()` — retention time vs chain length (lipidomics)
+### `plot_rt_vs_chain()`: retention time vs chain length (lipidomics)
 
 For lipidomics methods using class-based chromatography, plots RT
 against carbon number, separated by class. Outliers from the expected
@@ -267,33 +268,212 @@ linear relationship within a class point to mis-identified features.
 plot_rt_vs_chain(mexp)
 ```
 
-### `plot_qc_matrixeffects()` — matrix-effect overview
+### `plot_matrixeffects()`: matrix-effect overview
 
 Compares ISTD response in matrix-containing QCs against solvent-only
 injections to flag matrix-effect outliers.
 
 ``` r
 
-plot_qc_matrixeffects(mexp)
+plot_matrixeffects(mexp)
 ```
 
-### `plot_qc_interferences()` — interference annotations
+### `plot_interference_correction()`: interference annotations
 
 QC overview for features with interference annotations (see
 [Interference
-Correction](https://slinghub.github.io/MRMhub/quant/articles/tutorial-11-interference-correction.md)).
+correction](https://slinghub.github.io/MRMhub/quant/articles/tutorial-11-interference-correction.md)).
 
 ``` r
 
-plot_qc_interferences(mexp)
+plot_interference_correction(mexp)
 ```
 
 ## Customisation and export
 
+Text size, legend placement and legend sizing are controlled directly
+through shared arguments (`font_base_size`, `legend_position`,
+`legend_size`, and, on the core QC plots, `strip_text_size`,
+`show_legend_title`, `legend_bg_alpha`); paged and faceted plots size
+their text and points automatically from `cols_page`. See [Customising
+plots](#customising-plots) for the full argument reference.
+
+### Customising plots
+
+Every `plot_*()` function returns a `ggplot2` object built from a shared
+house theme (faint grey gridlines, a thin panel border, dark-navy facet
+strips). A small set of arguments exposes the common appearance choices,
+so a balanced figure usually comes from the plotting call alone, without
+a trailing `+ theme(...)`.
+
+#### The shared arguments
+
+Every plotting function accepts the three common arguments. The
+higher-use QC plots
+([`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md),
+[`plot_pca_loading()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca_loading.md),
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_rla_boxplot()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rla_boxplot.md),
+[`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md)
+and
+[`plot_qcmetrics_comparison()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qcmetrics_comparison.md))
+accept further arguments for finer legend and facet control.
+
+| Argument | Applies to | Effect |
+|----|----|----|
+| `font_base_size` | all plots | Base font size in points; all plot text scales proportionally |
+| `legend_position` | all plots | Legend placement (keyword, corner, or coordinate) |
+| `legend_size` | all plots | Scales the whole legend: text, title, key and plotted symbols |
+| `show_legend_title` | all plots | `FALSE` hides the legend title |
+| `title` | all plots | A string sets the plot title; `NULL`/`NA` show none |
+| `strip_text_size` | faceted plots | Facet strip label size |
+| `strip_bg_color` | faceted plots | Facet strip background fill (strip text auto-contrasts light/dark) |
+| `legend_bg_alpha` | core QC plots | Opacity of a white background box behind an inside legend |
+| `aspect_ratio` | [`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md) | Panel aspect ratio; default `1` (square score plot) |
+
+Arguments left at their default (`NULL`, or the per-function default)
+leave that aspect of the plot at the house setting. Setting one
+overrides only that property.
+
+#### Setting defaults for a whole notebook
+
+The same appearance choices can be made once, for every subsequent plot,
+with
+[`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md),
+convenient when a document targets a particular medium (a smaller base
+font and point size for a dense multi-panel report, say) and the choice
+should apply throughout without repeating it on each call.
+
+``` r
+
+mrmhub_set_plot_defaults(font_base_size = 8, point_size = 0.8)
+```
+
+The resolution order for every argument is: a value passed explicitly to
+a plotting function wins, then the global default set here, then the
+function’s built-in default (including the automatic `cols_page` sizing
+on faceted plots). A one-off call therefore still overrides the global
+setting:
+
+``` r
+
+# uses the global font_base_size = 8 set above
+plot_pca(mexp, variable = "norm_intensity")
+
+# this single plot overrides it
+plot_pca(mexp, variable = "norm_intensity", font_base_size = 11)
+```
+
+[`mrmhub_get_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_get_plot_defaults.md)
+reports the active settings and
+[`mrmhub_reset_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_reset_plot_defaults.md)
+clears them. The defaults are ordinary R options
+(`mrmhub.font_base_size` and so on), so they can also be scoped to a
+single section with
+[`withr::local_options()`](https://withr.r-lib.org/reference/with_options.html)
+rather than set for the whole session. The arguments that can be set
+globally are `font_base_size`, `point_size`, `legend_position`,
+`legend_size`, `show_legend_title`, `strip_bg_color`, and the `units`
+and `dpi` used by
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+(see [Setting the unit and resolution
+once](#setting-the-unit-and-resolution-once)). Figure width and height
+are deliberately not settable globally: the physical size of a saved
+figure should be readable from the call that writes it.
+
+#### Placing the legend
+
+`legend_position` accepts the standard ggplot2 keywords, four corner
+shortcuts for a legend drawn inside the panel, or a raw coordinate.
+
+| Value | Result |
+|----|----|
+| `"right"`, `"left"`, `"top"`, `"bottom"` | Legend outside the panel on that side |
+| `"none"` | No legend |
+| `"inside-tr"`, `"inside-tl"`, `"inside-br"`, `"inside-bl"` | Inside the panel, anchored to that corner |
+| `c(x, y)` | Inside the panel at that coordinate (`0`–`1`) |
+
+All plots default to `"right"`. For a legend drawn inside the panel over
+the points, a translucent background box (`legend_bg_alpha`) keeps it
+readable:
+
+``` r
+
+plot_normalization_qc(mexp,
+  before_norm_var = "intensity",
+  after_norm_var  = "norm_intensity",
+  plot_type       = "diff",
+  legend_position = "inside-br",
+  legend_bg_alpha = 0.6)
+```
+
+#### Sizing text and symbols
+
+`font_base_size` is the single text knob: increasing it scales axis
+text, titles, strip labels and the legend together. `legend_size` scales
+the legend independently: its text, title, key box, and the plotted
+symbol (the glyph in the key, which a plain `legend.key.size` does not
+resize). A value of `3` or less is read as a multiplier of
+`font_base_size`; a larger value is an absolute point size.
+`strip_text_size` follows the same convention for facet labels.
+
+``` r
+
+plot_rt_vs_chain(mexp,
+  font_base_size  = 6,
+  legend_position = "right",
+  legend_size     = 0.8)     # legend text and glyphs at 6 * 0.8 pt
+```
+
+#### Automatic sizing on paged and faceted plots
+
+Plots that lay panels out in a grid
+([`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_responsecurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_responsecurves.md),
+[`plot_qcmetrics_comparison()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qcmetrics_comparison.md),
+[`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md)
+and
+[`plot_rt_vs_chain()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rt_vs_chain.md))
+size their text and points from the number of facet columns, since
+column count is the main driver of panel size. With `autoscale = TRUE`
+(the default), `font_base_size` and `point_size` left unset are filled
+from `cols_page`:
+
+| `cols_page` | `font_base_size` | `point_size` |
+|-------------|------------------|--------------|
+| 1–2         | 9                | 1.0          |
+| 3           | 7                | 0.7          |
+| 4–5         | 6                | 0.5          |
+| 6 or more   | 5                | 0.4          |
+
+A value passed explicitly always wins, so autoscaling only fills what is
+left unset:
+
+``` r
+
+# 3-column page: text and points sized automatically
+plot_runscatter(mexp, variable = "norm_intensity", cols_page = 3)
+
+# keep the automatic font, but set the point size by hand
+plot_runscatter(mexp, variable = "norm_intensity", cols_page = 3,
+                point_size = 1.2)
+```
+
+Setting `autoscale = FALSE` ignores the grid and uses the single-plot
+defaults (`font_base_size = 11`, `point_size = 1.5`) for anything left
+unset. Single-panel plots such as
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md)
+and
+[`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md)
+use `font_base_size = 11` by default.
+
 ### ggplot2 layering
 
-All functions return `ggplot2` objects, so themes, scales, and titles
-can be appended in the usual way.
+All functions return `ggplot2` objects, so anything the arguments above
+do not cover (bespoke themes, scales, titles) can be appended in the
+usual way, and a trailing
+[`theme()`](https://ggplot2.tidyverse.org/reference/theme.html)
+overrides the house theme.
 
 ``` r
 
@@ -304,7 +484,10 @@ plot_runscatter(mexp, variable = "norm_intensity", qc_types = c("BQC", "SPL")) +
 
 ### Saving plots
 
-For a single plot:
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+writes any plot to a file at a defined physical size and resolution.
+Sizes are given in `mm` by default, matching how journals specify figure
+widths, and `cm`, `in`, `pt` and `px` are also accepted.
 
 ``` r
 
@@ -312,22 +495,125 @@ p <- plot_pca(mexp,
               variable = "norm_intensity",
               qc_types = c("BQC", "SPL"),
               ellipse_variable = "batch_id")
-ggplot2::ggsave("figures/pca_batch.png", p, width = 8, height = 6, dpi = 300)
+
+save_plot(p, "figures/pca_batch.pdf", width = 180, height = 120)
 ```
+
+The same figure can be written in several formats in one call. Give a
+path without an extension and list the formats; each file gets the
+matching extension.
+
+``` r
+
+save_plot(p, "figures/pca_batch", format = c("pdf", "png"), width = 180, height = 120)
+```
+
+The plot is returned visibly, so piping into
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+still renders the figure in the notebook and saving needs no separate
+line:
+
+``` r
+
+plot_pca(mexp, variable = "norm_intensity", ellipse_variable = "batch_id") |>
+  save_plot("figures/pca_batch.pdf", width = 180, height = 120)
+```
+
+In a script or a loop, where re-drawing a dense figure is wasted work,
+`show_plot = FALSE` skips it and returns the written paths instead:
+
+``` r
+
+paths <- save_plot(p, "figures/pca_batch.pdf", width = 180, height = 120,
+                   show_plot = FALSE)
+```
+
+(With `show_plot = TRUE` the paths are still available, as the `"paths"`
+attribute of the returned plot.)
+
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+also accepts what the plot functions return around a plot: the result
+list of
+[`plot_rla_boxplot()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rla_boxplot.md)
+(it picks up the `plot` element), a `patchwork` composition, and a list
+of plots, which becomes a multi-page PDF.
+
+``` r
+
+pages <- plot_runscatter(mexp, variable = "norm_intensity", return_plots = TRUE)
+save_plot(pages, "figures/runscatter_all.pdf", width = 280, height = 200,
+          show_plot = FALSE)
+```
+
+#### Choosing a format
+
+| Purpose | Format | Device used | Typical `dpi` |
+|----|----|----|----|
+| Journal figure, vector (default choice) | `"pdf"` | [`grDevices::cairo_pdf`](https://rdrr.io/r/grDevices/cairo.html), else [`grDevices::pdf`](https://rdrr.io/r/grDevices/pdf.html) | n/a |
+| Figure for further editing (Illustrator, Inkscape) | `"svg"` | [`svglite::svglite`](https://svglite.r-lib.org/reference/svglite.html), else [`grDevices::svg`](https://rdrr.io/r/grDevices/cairo.html) | n/a |
+| Slides, Quarto HTML, GitHub | `"png"` | [`ragg::agg_png`](https://ragg.r-lib.org/reference/agg_png.html), else [`grDevices::png`](https://rdrr.io/r/grDevices/png.html) | 150–300 |
+| Journal requiring raster submission | `"tiff"` | [`ragg::agg_tiff`](https://ragg.r-lib.org/reference/agg_tiff.html), else [`grDevices::tiff`](https://rdrr.io/r/grDevices/png.html) | 300–600 |
+
+Prefer a **vector** format for publication: text stays selectable and
+searchable, and lines stay sharp at any magnification.
+
+Prefer a **raster** format when a plot draws very many marks — a
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md)
+page covering several thousand analyses, or a dense
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md)
+score plot. Every point becomes a separate object in a PDF, so such
+figures produce very large files that are slow to open and to typeset.
+Saving them at 300–600 dpi instead keeps the file small with no visible
+loss.
+
+The optional packages `ragg` and `svglite` are used automatically when
+installed, giving better text rendering, system-font support and smaller
+SVG files. Without them the equivalent `grDevices` device is used and
+the output is still correct. Installing both is recommended:
+`install.packages(c("ragg", "svglite"))`.
+
+PDF output uses the cairo device wherever R was built with cairo
+support, because plain
+[`grDevices::pdf()`](https://rdrr.io/r/grDevices/pdf.html) writes text
+in a single-byte encoding and silently transliterates anything outside
+it — an en dash becomes `-`, and `≥` becomes `>=`. Unit labels such as
+`µmol/L` and statistical annotations depend on those glyphs surviving.
+
+#### Setting the unit and resolution once
+
+`units` and `dpi` can be set for a whole notebook through
+[`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md),
+so only `width` and `height` need repeating. The size itself is always
+explicit at the call site.
+
+``` r
+
+mrmhub_set_plot_defaults(units = "mm", dpi = 600)
+
+save_plot(p, "figures/pca_batch.png", width = 180, height = 120)   # 600 dpi
+```
+
+#### Multi-page PDFs
 
 For paged outputs
 ([`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
-[`plot_calibrationcurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_calibrationcurves.md)),
-use the function’s built-in `output_pdf = TRUE` and `path` arguments to
-write a multi-page PDF directly, rather than iterating in user code.
+[`plot_calibrationcurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_calibrationcurves.md),
+[`plot_responsecurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_responsecurves.md),
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md)),
+the built-in `output_pdf = TRUE` and `path` arguments write a multi-page
+PDF directly, rather than iterating in user code. `page_width` and
+`page_height` set the page size; without them an A4 page is used,
+oriented by `page_orientation`.
 
 ``` r
 
 plot_runscatter(mexp,
-                variable   = "norm_intensity",
-                qc_types   = c("BQC", "SPL"),
-                output_pdf = TRUE,
-                path       = "figures/runscatter_all.pdf")
+                variable    = "norm_intensity",
+                qc_types    = c("BQC", "SPL"),
+                output_pdf  = TRUE,
+                path        = "figures/runscatter_all.pdf",
+                page_width  = 297,
+                page_height = 210)
 ```
 
 ### Combining plots
@@ -347,24 +633,17 @@ p_rla  <- plot_rla_boxplot(mexp, variable = "norm_intensity",
 p_seq / (p_pca | p_rla)
 ```
 
-### Next Steps
+### Next steps
 
-- [Run-Scatter Plot
-  (tutorial)](https://slinghub.github.io/MRMhub/quant/articles/tutorial-05-run-scatter.md)
-  — detailed
-  [`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md)
-  usage
-- [QC Exploration with
-  PCA](https://slinghub.github.io/MRMhub/quant/articles/tutorial-09-pca-exploration.md)
-  — PCA interpretation
-- [Drift Correction
-  (tutorial)](https://slinghub.github.io/MRMhub/quant/articles/tutorial-04-drift-correction.md)
-  —
+- [Exploring QC: RunScatter and
+  PCA](https://slinghub.github.io/MRMhub/quant/articles/tutorial-05-run-scatter.md):
+  [`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+  [`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md)
+  and outlier screening
+- [Drift and batch correction
+  (tutorial)](https://slinghub.github.io/MRMhub/quant/articles/tutorial-04-drift-correction.md):
   [`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md)
   in context
-- [External Calibration & QC
-  (recipe)](https://slinghub.github.io/MRMhub/quant/articles/recipe-01-ext-calibration-qc.md)
-  — calibration plots in workflow
-- [Custom QC Report
-  (recipe)](https://slinghub.github.io/MRMhub/quant/articles/recipe-02-custom-qc-report.md)
-  — combine plots in a report
+- [External calibration &
+  QC](https://slinghub.github.io/MRMhub/quant/articles/tutorial-06-external-calibration.md):
+  calibration plots in workflow

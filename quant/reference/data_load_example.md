@@ -1,8 +1,7 @@
-# Load an example MRMhubExperiment dataset
+# Load an example `MRMhubExperiment` dataset
 
-Load an example MRMhubExperiment dataset. Dataset 1 is a small dataset
-(Burla et al, 2024, see below) and Dataset 2 a larger dataset (Tan et
-al, 2022).See Details below.
+Load an example `MRMhubExperiment` dataset: a small, preprocessed subset
+of a plasma lipidomics dataset (Tan et al., ATVB, 2022).
 
 ## Usage
 
@@ -14,55 +13,30 @@ data_load_example(data = NULL, dataset = 1)
 
 - data:
 
-  MRMhubExperiment object, optional. Data will be overwritten if
-  provided.
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object, optional. Data will be overwritten if provided.
 
 - dataset:
 
-  Dataset type. Either 1 or 2. Default is 1.
+  Which example dataset to load. Currently only `1` (the default) is
+  available.
 
 ## Value
 
-MRMhubExperiment object
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object
 
 ## Examples
 
 ``` r
 myexp <- MRMhubExperiment()
 myexp <- data_load_example(myexp)
+#> ✔ Loaded example dataset 1: 499 analyses and 29 features.
 myexp
 #> 
-#> ── MRMhubExperiment ────────────────────────────────────────────────────────────
-#> Title:
-#> 
-#> Processing status: Annotated raw AREA values
-#> 
-#> ── Annotated Raw Data ──
-#> 
-#> • Analyses: 499
-#> • Features: 29
-#> • Raw signal used for processing: `feature_area`
-#> 
-#> ── Metadata ──
-#> 
-#> • Analyses/samples: ✔
-#> • Features/analytes: ✔
-#> • Internal standards: ✔
-#> • Response curves: ✔
-#> • Calibrants/QC concentrations: ✖
-#> • Study samples: ✖
-#> 
-#> ── Processing Status ──
-#> 
-#> • Isotope corrected: ✖
-#> • ISTD normalized: ✖
-#> • ISTD quantitated: ✖
-#> • Drift corrected variables: ✖
-#> • Batch corrected variables: ✖
-#> • Feature filtering applied: ✖
-#> 
-#> ── Exclusion of Analyses and Features ──
-#> 
-#> • Analyses manually excluded (`analysis_id`): ✖
-#> • Features manually excluded (`feature_id`): ✖
+#> ── MRMhubExperiment:  ──────────────────────────────────────────────────────────
+#> lipidomics | 499 analyses and 29 features | signal: feature_area
+#> Last step: Annotated raw AREA values
+#> Normalized ✖ Quantitated ✖ Drift/batch ✖ Filtered ✖
+#> ℹ Use `mrmhub_status()` for the full processing and metadata report
 ```

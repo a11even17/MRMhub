@@ -1,8 +1,9 @@
-# Import Analysis Results from Plain Wide-Format CSV Files
+# Import analysis results from plain wide-format CSV files
 
 Imports analysis result data from wide-format `.csv` files, where each
-row corresponds to a unique analysis-feature pair and columns contain
-analysis- or feature-specific variables.
+row corresponds to a single analysis and each feature is stored in its
+own column. All feature columns hold the same variable type, given by
+`variable_name`.
 
 ## Usage
 
@@ -22,7 +23,9 @@ import_data_csv_wide(
 
 - data:
 
-  A `MRMhubExperiment` object.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object.
 
 - path:
 
@@ -32,8 +35,9 @@ import_data_csv_wide(
 - variable_name:
 
   A character string specifying the variable type contained in the data.
-  Must be one of `"intensity"`, `"norm_intensity"`, `"conc"`, `"area"`,
-  `"height"`, or `"response"`.
+  Must be one of `"area"`, `"height"`, `"intensity"`,
+  `"norm_intensity"`, `"response"`, `"conc"`, `"conc_raw"`, `"rt"`, or
+  `"fwhm"`.
 
 - analysis_id_col:
 
@@ -60,16 +64,18 @@ import_data_csv_wide(
 
 ## Value
 
-A `MRMhubExperiment` object containing the imported dataset.
+A
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object containing the imported dataset.
 
 ## Details
 
-The dataset must include two identifier columns: `"analysis_id"` and
-`"feature_id"`, with each pair of values unique across the table.
-Additionally, the table must contain at least one feature variable
-column, such as `"area"`, `"height"`, `"intensity"`, `"norm_intensity"`,
-`"response"`, `"conc"`, `"rt"`, or `"fwhm"`. Some downstream functions
-may require specific columns among these to be present.
+Each row must be identified by an `"analysis_id"` column (or, if absent,
+the first column, provided it holds unique values). Every feature is
+stored in a separate column; the feature columns all contain the single
+variable type specified by `variable_name`. Use `first_feature_column`
+to mark where the feature columns begin so that leading metadata columns
+are not mistaken for features.
 
 The `variable_name` argument specifies the data type represented in the
 table, which must be one of: `"area"`, `"height"`, `"intensity"`,
@@ -104,6 +110,20 @@ The `na_strings` parameter allows specifying character strings to be
 interpreted as missing values (NA). Blank fields are also treated as
 missing.
 
+## Identifier normalization
+
+All imported identifiers are whitespace-normalized on import: leading
+and trailing spaces are removed and internal runs of whitespace are
+collapsed to a single space (for example `"QC 01"` becomes `"QC 01"`).
+Raw-data file extensions (`.mzML`, `.d`, `.raw`, `.wiff`, `.wiff2`,
+`.lcd`, `.chrom`, case-insensitive) are stripped from `analysis_id`.
+
+The same normalization is applied to both the data and the metadata,
+which is what lets an `analysis_id` typed into metadata match the one
+derived from a data-file name instead of silently failing to join. A
+consequence is that two identifiers differing only by whitespace
+collapse to one and are then reported as duplicates.
+
 ## Examples
 
 ``` r
@@ -115,44 +135,16 @@ mexp <- import_data_csv_wide(
   variable_name = "conc",
   import_metadata = TRUE
 )
-#> ℹ Metadata column(s) 'qc_type, batch_id' imported. To ignore, set `import_metadata = FALSE`
-#> ✔ Imported 87 analyses with 5 features
+#> ✔ Metadata column(s) 'qc_type, batch_id' imported. To ignore, set `import_metadata = FALSE`
+#> ✔ Imported 87 analyses with 5 features.
 #> ✔ Analysis metadata associated with 87 analyses.
 #> ✔ Feature metadata associated with 5 features.
 #> ℹ Analysis order was based on `analysis_order` column of imported data. Use `set_analysis_order` to change the order.
 print(mexp)
 #> 
-#> ── MRMhubExperiment ────────────────────────────────────────────────────────────
-#> Title:
-#> 
-#> Processing status: Annotated raw CONC values
-#> 
-#> ── Annotated Raw Data ──
-#> 
-#> • Analyses: 87
-#> • Features: 5
-#> • Raw signal used for processing: `feature_conc`
-#> 
-#> ── Metadata ──
-#> 
-#> • Analyses/samples: ✔
-#> • Features/analytes: ✔
-#> • Internal standards: ✖
-#> • Response curves: ✖
-#> • Calibrants/QC concentrations: ✖
-#> • Study samples: ✖
-#> 
-#> ── Processing Status ──
-#> 
-#> • Isotope corrected: ✖
-#> • ISTD normalized: ✖
-#> • ISTD quantitated: ✔
-#> • Drift corrected variables: ✖
-#> • Batch corrected variables: ✖
-#> • Feature filtering applied: ✖
-#> 
-#> ── Exclusion of Analyses and Features ──
-#> 
-#> • Analyses manually excluded (`analysis_id`): ✖
-#> • Features manually excluded (`feature_id`): ✖
+#> ── MRMhubExperiment:  ──────────────────────────────────────────────────────────
+#> NA | 87 analyses and 5 features | signal: feature_conc
+#> Last step: Annotated raw CONC values
+#> Normalized ✖ Quantitated ✖ Drift/batch ✖ Filtered ✖
+#> ℹ Use `mrmhub_status()` for the full processing and metadata report
 ```

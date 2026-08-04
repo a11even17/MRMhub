@@ -1,8 +1,8 @@
-# Plot Retention Time versus Chain Length and Saturation
+# Plot retention time versus chain length and saturation
 
 Generates scatter plots of retention time (RT) versus either chain
 length, degree of saturation (double bonds), or equivalent carbon number
-(ECN) of lipid features of diffent feature classes. This visualization
+(ECN) of lipid features of different feature classes. This visualization
 can be useful in identifying annotation (peak picking) errors in
 reversed-phase (RP)-LC lipidomics dataset arising from isotopic,
 isobaric, isomeric, or unknown interferences.
@@ -21,10 +21,17 @@ plot_rt_vs_chain(
   include_qualifier = FALSE,
   robust_regression = TRUE,
   cols_page = 5,
-  point_size = 2,
-  point_transparency = 0.9,
+  point_size = NULL,
+  point_alpha = 0.9,
   line_transparency = 0.5,
-  base_font_size = 8
+  font_base_size = NULL,
+  autoscale = TRUE,
+  legend_position = NULL,
+  legend_size = NULL,
+  show_legend_title = NULL,
+  title = NULL,
+  strip_text_size = NULL,
+  strip_bg_color = NULL
 )
 ```
 
@@ -32,16 +39,19 @@ plot_rt_vs_chain(
 
 - data:
 
-  A `MRMhubExperiment` object
+  A `MRMhubExperiment` object.
 
 - x_var:
 
-  Variable to use for the x-axis. One ofEither "total_c", "total_db" or
+  Variable to use for the x-axis. One of "total_c", "total_db", or
   "ecn".
 
 - qc_types:
 
-  A character vector of QC types to include in the plot. If `NA`, all
+  A character vector specifying the QC types to plot. It must contain at
+  least one element. The default `NA` plots any of the non-blank QC
+  types ("SPL", "TQC", "BQC", "HQC", "MQC", "LQC", "NIST", "LTR")
+  present in the dataset.
 
 - outliers_highlight:
 
@@ -83,7 +93,7 @@ plot_rt_vs_chain(
 
   Size of the data points. Default is 2
 
-- point_transparency:
+- point_alpha:
 
   Alpha transparency of the data point. Default is 0.9
 
@@ -91,13 +101,67 @@ plot_rt_vs_chain(
 
   Alpha transparency of the regression lines. Default is 0.9
 
-- base_font_size:
+- font_base_size:
 
-  Base font size for the plot.
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
+
+- autoscale:
+
+  Logical. When `TRUE` (default), `font_base_size` and `point_size` left
+  as `NULL` are sized automatically from `cols_page` (more facet columns
+  per page give smaller text and points). Any value passed explicitly
+  always takes precedence. When `FALSE`, unset sizes fall back to the
+  single-plot defaults.
+
+- legend_position:
+
+  Optional legend placement. One of `"right"`, `"left"`, `"top"`,
+  `"bottom"`, `"none"`; a corner keyword `"inside-tr"`, `"inside-tl"`,
+  `"inside-br"`, `"inside-bl"`; or a numeric `c(x, y)` in `[0, 1]`
+  coordinates. `NULL` (default) keeps the current placement, unless a
+  global default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md).
+
+- legend_size:
+
+  Optional single multiplier of `font_base_size` (when `<= 3`) or
+  absolute point size (when `> 3`) that scales the whole legend: text,
+  title, key and the plotted symbols. `NULL` (default) leaves the legend
+  unchanged.
+
+- show_legend_title:
+
+  Logical. `NULL` (default) keeps the legend title, unless a global
+  default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md);
+  `FALSE` hides it, `TRUE` forces it shown.
+
+- title:
+
+  Optional plot title. `NULL` (default) or `NA` shows no title; a
+  character string is shown as the title.
+
+- strip_text_size:
+
+  Optional facet strip text size, as a multiplier of `font_base_size`
+  (when `<= 3`) or an absolute point size (when `> 3`). `NULL` (default)
+  inherits from `font_base_size`.
+
+- strip_bg_color:
+
+  Optional facet strip background fill colour. The strip text colour is
+  set automatically for contrast (white on a dark fill, black on a light
+  one). `NULL` (default) keeps the house dark-navy strips.
 
 ## Value
 
-A `ggplot2` object representing faceted scatter plots
+A `ggplot` object representing faceted scatter plots
 
 ## Details
 
@@ -109,3 +173,20 @@ be plotted against the ECN, which is calculated as \\ECN = C\_{total} -
 ecn_k \times DB\_{total}\\, where \\ecn_k\\ is a constant that may need
 to be adjusted to the specific chromatographic properties. The default
 value is \\ecn_k = 1.5\\.
+
+## See also
+
+Other QC plots:
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md),
+[`plot_interference_correction()`](https://slinghub.github.io/MRMhub/quant/reference/plot_interference_correction.md),
+[`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md),
+[`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md),
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md),
+[`plot_pca_loading()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca_loading.md),
+[`plot_qc_interference_impact()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_interference_impact.md),
+[`plot_qc_summary_byclass()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_byclass.md),
+[`plot_qc_summary_overall()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_overall.md),
+[`plot_qcmetrics_comparison()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qcmetrics_comparison.md),
+[`plot_rla_boxplot()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rla_boxplot.md),
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_runsequence()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runsequence.md)

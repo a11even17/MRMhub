@@ -8,8 +8,8 @@ as defined in the `qc_concentrations` metadata. The regression fit model
 `fit_weighting` for all features, if `fit_overwrite` is `TRUE`.
 Alternatively, the model and weighting can be defined individually for
 each feature in the `feature` metadata (columns `curve_fit_model` and
-`fit_weighting`). If these details are missing in the metadata, the
-default values provided via `fit_model` and `fit_weighting` will be
+`curve_fit_weighting`). If these details are missing in the metadata,
+the default values provided via `fit_model` and `fit_weighting` will be
 used.
 
 ## Usage
@@ -23,7 +23,8 @@ calc_calibration_results(
   fit_model,
   fit_weighting,
   ignore_missing_annotation = FALSE,
-  include_fit_object = FALSE
+  include_fit_object = FALSE,
+  lod_sigma = c("residual", "intercept")
 )
 ```
 
@@ -31,8 +32,9 @@ calc_calibration_results(
 
 - data:
 
-  A `MRMhubExperiment` object containing the data to be used for
-  calibration.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object containing the data to be used for calibration.
 
 - variable:
 
@@ -43,12 +45,12 @@ calc_calibration_results(
 
 - include_qualifier:
 
-  A logical value. If `TRUE`, the function will include quantifier
+  A logical value. If `TRUE`, the function will include qualifier
   features in the calibration curve calculations.
 
 - fit_overwrite:
 
-  If `TRUE`, the function will se the provided `fit_model` and
+  If `TRUE`, the function will use the provided `fit_model` and
   `fit_weighting` values for all analytes and ignore any fit method and
   weighting settings defined in the metadata.
 
@@ -69,33 +71,84 @@ calc_calibration_results(
 
 - ignore_missing_annotation:
 
-  If `FALSE`, an error will be raised if any of the following
-  information is missing: calibration curve data, ISTD mix volume, and
-  sample amounts for any feature.
+  If `FALSE`, an error will be raised if calibration curve data is
+  missing for any feature.
 
 - include_fit_object:
 
   If `TRUE`, the function will return the full regression fit objects
   for each feature in the `metrics_calibration` table.
 
+- lod_sigma:
+
+  A character string selecting the response standard deviation (sigma)
+  used in the ICH Q2 LoD/LoQ formulas. Must be one of `"residual"` (the
+  residual standard error of the regression, Sy/x; the default) or
+  `"intercept"` (the standard error of the intercept). No averaging of
+  the two is performed.
+
 ## Value
 
-A modified `MRMhubExperiment` object with an updated
-`metrics_calibration` table containing the calibration curve results,
-including concentrations, LoD, and LoQ values for each feature.
+A modified
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object with an updated `metrics_calibration` table containing the
+calibration curve results, including concentrations, LoD, and LoQ values
+for each feature.
 
 ## Details
 
 Additionally, the limit of detection (LoD) and limit of quantification
-(LoQ) are calculated for each feature based on the calibration curve.
-LoD is calculated as 3 times the sample standard error of the regression
-residuals divided by the regression slope, and LoQ is 10 times the same
-ratio. In the case of a quadratic fit, LoD and LoQ are calculated using
-the slope at the concentration of the lowest calibration point.
+(LoQ) are calculated for each feature based on the calibration curve,
+following the ICH Q2(R1/R2) approach (LoD = 3.3 sigma / S, LoQ = 10
+sigma / S). Here S is the slope of the calibration curve, taken at zero
+concentration (the linear coefficient `coef_b`). For a quadratic fit the
+true slope is `b + 2 c x`, which reduces to `coef_b` at zero
+concentration, so the quadratic term does not contribute to the slope
+used here. ICH Q2 specifies the slope formula for linear responses only;
+using the low-concentration tangent slope for a quadratic fit is an
+approximation beyond the guideline (adequate when the curvature near
+zero is small).
+
+The response standard deviation `sigma` is selected via `lod_sigma`,
+following the ICH-acceptable choices: `"residual"` uses the residual
+standard error of the regression (Sy/x; the default and prior
+behaviour), while `"intercept"` uses the standard error of the
+intercept. The `sigma` column reported in `metrics_calibration` is
+always the residual standard error, independent of this choice.
 
 The results of the regression and the calculated LoD and LoQ values are
 stored in the `metrics_calibration` table of the returned
 `MRMhubExperiment` object.
+
+### Calibration coefficient columns
+
+The fitted curve is stored in **ascending** power order, following R's
+[`lm()`](https://rdrr.io/r/stats/lm.html) /
+[`poly()`](https://rdrr.io/r/stats/poly.html) convention. The model is
+
+`response = coef_a + coef_b * x + coef_c * x^2`
+
+- `coef_a` — intercept (0th-order term, `x^0`)
+
+- `coef_b` — 1st-order (linear) coefficient (`x^1`); the slope of a
+  linear fit
+
+- `coef_c` — 2nd-order (quadratic) coefficient (`x^2`); `NA` for a
+  linear fit
+
+Only linear and quadratic models are fitted, so there are no
+higher-order terms. This ascending order is the **reverse** of the
+descending `a*x^2 + b*x + c` form printed by some vendor software (e.g.
+Agilent MassHunter, where `a` is the quadratic term). When comparing
+against such an export, match coefficients by power (`coef_a` =
+intercept, `coef_c` = `x^2`), not by letter.
+
+## References
+
+ICH Harmonised Tripartite Guideline. Validation of Analytical
+Procedures: Text and Methodology Q2(R1) (2005); Q2(R2) (2023).
+International Council for Harmonisation of Technical Requirements for
+Pharmaceuticals for Human Use.
 
 ## See also
 

@@ -1,9 +1,9 @@
-# Relative Log Abundance (RLA) Plot
+# Relative log abundance (RLA) plot
 
 The Relative Log Abundance (RLA) plot visualizes standardized feature
 abundances distributions across samples. RLA standardization involves
 subtracting either the within-batch or across-batch median from each
-feature's log-transformed abundance. Thse plots are effective for
+feature's log-transformed abundance. These plots are effective for
 identifying systematic technical variations, such as batch effects,
 instrument drift, or sample handling inconsistencies, by providing a
 robust representation less susceptible to global intensity shifts.
@@ -12,7 +12,7 @@ The function also incorporates optional outlier detection and
 visualization functionalities to identify anomalous samples based on
 their median RLA values.
 
-This funcion returns a list with the ggplot object representing the RLA
+This function returns a list with the ggplot object representing the RLA
 plot and a table with detected outliers (if `outlier_detection = TRUE`).
 
 ## Usage
@@ -20,8 +20,8 @@ plot and a table with detected outliers (if `outlier_detection = TRUE`).
 ``` r
 plot_rla_boxplot(
   data = NULL,
-  rla_type_batch,
   variable,
+  rla_type_batch,
   qc_types = NA,
   plot_range = NA,
   rla_limit_to_range = FALSE,
@@ -50,7 +50,14 @@ plot_rla_boxplot(
   batch_fill_color = "grey93",
   x_gridlines = FALSE,
   linewidth = 0.2,
-  base_font_size = 8,
+  font_base_size = NULL,
+  legend_position = NULL,
+  legend_size = NULL,
+  show_legend_title = NULL,
+  title = NULL,
+  strip_text_size = NULL,
+  strip_bg_color = NULL,
+  legend_bg_alpha = NULL,
   relative_log_abundances = TRUE,
   show_plot = TRUE
 )
@@ -60,12 +67,7 @@ plot_rla_boxplot(
 
 - data:
 
-  MRMhubExperiment
-
-- rla_type_batch:
-
-  Character, must be either "within" or "across", defining whether to
-  use within-batch or across-batch RLA
+  A `MRMhubExperiment` object.
 
 - variable:
 
@@ -73,6 +75,11 @@ plot_rla_boxplot(
   "conc", "area", "height", "fwhm", or one of "intensity_raw",
   "intensity_before", "norm_intensity_raw", "norm_intensity_before",
   "conc_raw", "conc_before"
+
+- rla_type_batch:
+
+  Character, must be either "within" or "across", defining whether to
+  use within-batch or across-batch RLA
 
 - qc_types:
 
@@ -138,17 +145,16 @@ plot_rla_boxplot(
 
 - include_feature_filter:
 
-  A regex pattern or a vector of feature names used to filter features
-  by `feature_id`. If `NA` or an empty string (`""`) is provided, the
-  filter is ignored. When a vector of length \> 1 is supplied, is
-  supplied, only features with exactly these names are selected (applied
-  individually as OR conditions).
+  Feature(s) to include by `feature_id`, as a character vector. Each
+  element is matched exactly when it names an existing feature,
+  otherwise treated as a regex; elements combine with OR. A full ID
+  (e.g. `"S1P d18:0 [M>60]"`) needs no escaping, while patterns like
+  `"PC|PE"` still work. `NA` or `""` ignores the filter.
 
 - exclude_feature_filter:
 
-  A regex pattern or a vector of feature names to exclude features by
-  feature_id. If `NA` or an empty string (`""`) is provided, the filter
-  is ignored. When a vector of length \> 1 is supplied.
+  Feature(s) to exclude by `feature_id`, matched the same way as
+  `include_feature_filter`. `NA` or `""` ignores the filter.
 
 - show_timestamp:
 
@@ -157,7 +163,8 @@ plot_rla_boxplot(
 
 - min_feature_intensity:
 
-  Numeric, exclude features with overall median signal below this value
+  Numeric, exclude features with overall median intensity below this
+  value
 
 - y_lim:
 
@@ -220,9 +227,61 @@ plot_rla_boxplot(
 
   Numeric, line width used for whiskers of the boxplot
 
-- base_font_size:
+- font_base_size:
 
-  Numeric, base font size for the plot
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
+
+- legend_position:
+
+  Optional legend placement. One of `"right"`, `"left"`, `"top"`,
+  `"bottom"`, `"none"`; a corner keyword `"inside-tr"`, `"inside-tl"`,
+  `"inside-br"`, `"inside-bl"`; or a numeric `c(x, y)` in `[0, 1]`
+  coordinates. `NULL` (default) keeps the current placement, unless a
+  global default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md).
+
+- legend_size:
+
+  Optional single multiplier of `font_base_size` (when `<= 3`) or
+  absolute point size (when `> 3`) that scales the whole legend: text,
+  title, key and the plotted symbols. `NULL` (default) leaves the legend
+  unchanged.
+
+- show_legend_title:
+
+  Logical. `NULL` (default) keeps the legend title, unless a global
+  default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md);
+  `FALSE` hides it, `TRUE` forces it shown.
+
+- title:
+
+  Optional plot title. `NULL` (default) or `NA` shows no title; a
+  character string is shown as the title.
+
+- strip_text_size:
+
+  Optional facet strip text size, as a multiplier of `font_base_size`
+  (when `<= 3`) or an absolute point size (when `> 3`). `NULL` (default)
+  inherits from `font_base_size`.
+
+- strip_bg_color:
+
+  Optional facet strip background fill colour. The strip text colour is
+  set automatically for contrast (white on a dark fill, black on a light
+  one). `NULL` (default) keeps the house dark-navy strips.
+
+- legend_bg_alpha:
+
+  Optional opacity (`[0, 1]`) of a white legend background box, useful
+  for a readable inside legend drawn over points. `NULL` (default)
+  leaves the legend background unchanged.
 
 - relative_log_abundances:
 
@@ -235,8 +294,8 @@ plot_rla_boxplot(
 
 ## Value
 
-A list with the ggplot object representing the RLA plot and a table with
-detected outliers if `outlier_detection = TRUE`.
+A list with the `ggplot` object representing the RLA plot and a table
+with detected outliers if `outlier_detection = TRUE`.
 
 ## References
 
@@ -246,3 +305,20 @@ Analytical Chemistry 10768-10776 [DOI:
 (2015) Statistical Methods for Handling Unwanted Variation in
 Metabolomics Data. Analytical Chemistry 87(7):3606-3615 [DOI:
 10.1021/ac502439y](https://doi.org/10.1021/ac502439y)
+
+## See also
+
+Other QC plots:
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md),
+[`plot_interference_correction()`](https://slinghub.github.io/MRMhub/quant/reference/plot_interference_correction.md),
+[`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md),
+[`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md),
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md),
+[`plot_pca_loading()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca_loading.md),
+[`plot_qc_interference_impact()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_interference_impact.md),
+[`plot_qc_summary_byclass()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_byclass.md),
+[`plot_qc_summary_overall()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_overall.md),
+[`plot_qcmetrics_comparison()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qcmetrics_comparison.md),
+[`plot_rt_vs_chain()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rt_vs_chain.md),
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_runsequence()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runsequence.md)

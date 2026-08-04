@@ -1,4 +1,4 @@
-# Normalize Feature Intensities Using Internal Standards
+# Normalize feature intensities using internal standards
 
 Normalize feature intensities by dividing them by the intensities of the
 corresponding internal standards (ISTDs). Each feature must have a
@@ -14,7 +14,9 @@ normalize_by_istd(data = NULL, ignore_missing_annotation = FALSE)
 
 - data:
 
-  A `MRMhubExperiment` object.
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object.
 
 - ignore_missing_annotation:
 
@@ -25,4 +27,6 @@ normalize_by_istd(data = NULL, ignore_missing_annotation = FALSE)
 
 ## Value
 
-A `MRMhubExperiment` object with normalized feature intensities
+A
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object with normalized feature intensities

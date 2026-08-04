@@ -2,7 +2,7 @@
 
 Imports .csv files exported from Agilent MassHunter Quantitative
 Analysis software, containing peak integration results. The input files
-must have anlyses (samples) in rows, features/compounds in columns, and
+must have analyses (samples) in rows, features/compounds in columns, and
 either peak areas, peak heights, or response as the values. Additional
 columns, such as retention time (RT), full-width at half-maximum (FWHM),
 precursor m/z (PrecursorMZ), and collision energy (CE), will also be
@@ -33,7 +33,8 @@ import_data_masshunter(
 
 - data:
 
-  MRMhubExperiment object
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - path:
 
@@ -53,7 +54,7 @@ import_data_masshunter(
 - conc_column:
 
   Which concentration field of the masshunter data to use, in case
-  "Calc. Conc." and "Final. Conc." are present. Default is "conc_final".
+  "Calc. Conc." and "Final Conc" are present. Default is "conc_final".
   Must be one of "conc_calc" or "conc_final" (default).
 
 - silent:
@@ -62,7 +63,22 @@ import_data_masshunter(
 
 ## Value
 
-MRMhubExperiment object with the imported data
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object with the imported data
+
+## Identifier normalization
+
+All imported identifiers are whitespace-normalized on import: leading
+and trailing spaces are removed and internal runs of whitespace are
+collapsed to a single space (for example `"QC 01"` becomes `"QC 01"`).
+Raw-data file extensions (`.mzML`, `.d`, `.raw`, `.wiff`, `.wiff2`,
+`.lcd`, `.chrom`, case-insensitive) are stripped from `analysis_id`.
+
+The same normalization is applied to both the data and the metadata,
+which is what lets an `analysis_id` typed into metadata match the one
+derived from a data-file name instead of silently failing to join. A
+consequence is that two identifiers differing only by whitespace
+collapse to one and are then reported as duplicates.
 
 ## Examples
 
@@ -75,44 +91,16 @@ mexp <- import_data_masshunter(
   path = file_path,
   import_metadata = TRUE,
   expand_qualifier_names = TRUE)
-#> ✔ Imported 38 analyses with 31 features
-#> ℹ `feature_area` selected as default feature intensity. Modify with `set_intensity_var()`.
+#> ✔ Imported 38 analyses with 31 features.
+#> ℹ feature_area selected as default feature intensity. Modify with `set_intensity_var()`.
 #> ✔ Analysis metadata associated with 38 analyses.
 #> ✔ Feature metadata associated with 31 features.
 
 print(mexp)
 #> 
-#> ── MRMhubExperiment ────────────────────────────────────────────────────────────
-#> Title:
-#> 
-#> Processing status: Annotated raw AREA values
-#> 
-#> ── Annotated Raw Data ──
-#> 
-#> • Analyses: 38
-#> • Features: 31
-#> • Raw signal used for processing: `feature_area`
-#> 
-#> ── Metadata ──
-#> 
-#> • Analyses/samples: ✔
-#> • Features/analytes: ✔
-#> • Internal standards: ✖
-#> • Response curves: ✖
-#> • Calibrants/QC concentrations: ✖
-#> • Study samples: ✖
-#> 
-#> ── Processing Status ──
-#> 
-#> • Isotope corrected: ✖
-#> • ISTD normalized: ✖
-#> • ISTD quantitated: ✖
-#> • Drift corrected variables: ✖
-#> • Batch corrected variables: ✖
-#> • Feature filtering applied: ✖
-#> 
-#> ── Exclusion of Analyses and Features ──
-#> 
-#> • Analyses manually excluded (`analysis_id`): ✖
-#> • Features manually excluded (`feature_id`): ✖
+#> ── MRMhubExperiment:  ──────────────────────────────────────────────────────────
+#> NA | 38 analyses and 31 features | signal: feature_area
+#> Last step: Annotated raw AREA values
+#> Normalized ✖ Quantitated ✖ Drift/batch ✖ Filtered ✖
+#> ℹ Use `mrmhub_status()` for the full processing and metadata report
 ```

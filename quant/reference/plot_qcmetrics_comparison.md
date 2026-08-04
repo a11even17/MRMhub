@@ -25,13 +25,21 @@ plot_qcmetrics_comparison(
   x_lim = c(NA_real_, NA_real_),
   y_lim = c(NA_real_, NA_real_),
   cols_page = 5,
-  point_size = 1.5,
+  point_size = NULL,
+  point_alpha = 0.5,
   point_color = "#0460acff",
   point_fill = "#4da2e7ff",
   point_shape = 21,
-  point_alpha = 0.5,
   point_stroke = 0.5,
-  font_base_size = 8
+  font_base_size = NULL,
+  autoscale = TRUE,
+  legend_position = NULL,
+  legend_size = NULL,
+  show_legend_title = NULL,
+  title = NULL,
+  strip_text_size = NULL,
+  strip_bg_color = NULL,
+  legend_bg_alpha = NULL
 )
 ```
 
@@ -39,16 +47,16 @@ plot_qcmetrics_comparison(
 
 - data:
 
-  A `MRMhubExperiment` object containing pre-calculated QC metrics.
+  A `MRMhubExperiment` object.
 
 - plot_type:
 
   A character string specifying the type of plot to generate. Must be
   one of "scatter", "diff", or "ratio". Selecting "scatter" plots the
-  "y_variable" against the "y_variable" values as a scatter plot, "diff"
+  "y_variable" against the "x_variable" values as a scatter plot, "diff"
   plots the difference between the two values against the average value,
   and "ratio" plots the log2 ratio of the two values against the average
-  value.c
+  value.
 
 - x_variable:
 
@@ -64,7 +72,8 @@ plot_qcmetrics_comparison(
 
 - facet_by_class:
 
-  Logical; if `TRUE`, facets the plot by `feature_class`, as defined
+  Logical; if `TRUE`, facets the plot by `feature_class`, as defined in
+  the feature metadata.
 
 - y_shared:
 
@@ -113,6 +122,10 @@ plot_qcmetrics_comparison(
 
   Numeric; size of points in millimeters (default is `1`).
 
+- point_alpha:
+
+  Numeric; transparency of points (default is `0.5`).
+
 - point_color:
 
   A vector specifying the colors for points corresponding to different
@@ -137,21 +150,77 @@ plot_qcmetrics_comparison(
   Default is `NA` which corresponds to the default shapes for QC types
   defined in the package.
 
-- point_alpha:
-
-  Numeric; transparency of points (default is `0.5`).
-
 - point_stroke:
 
   Numeric; thickness of point borders (default is `0.5`).
 
 - font_base_size:
 
-  Numeric; base font size in points (default is `8`).
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
+
+- autoscale:
+
+  Logical. When `TRUE` (default), `font_base_size` and `point_size` left
+  as `NULL` are sized automatically from `cols_page` (more facet columns
+  per page give smaller text and points). Any value passed explicitly
+  always takes precedence. When `FALSE`, unset sizes fall back to the
+  single-plot defaults.
+
+- legend_position:
+
+  Optional legend placement. One of `"right"`, `"left"`, `"top"`,
+  `"bottom"`, `"none"`; a corner keyword `"inside-tr"`, `"inside-tl"`,
+  `"inside-br"`, `"inside-bl"`; or a numeric `c(x, y)` in `[0, 1]`
+  coordinates. `NULL` (default) keeps the current placement, unless a
+  global default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md).
+
+- legend_size:
+
+  Optional single multiplier of `font_base_size` (when `<= 3`) or
+  absolute point size (when `> 3`) that scales the whole legend: text,
+  title, key and the plotted symbols. `NULL` (default) leaves the legend
+  unchanged.
+
+- show_legend_title:
+
+  Logical. `NULL` (default) keeps the legend title, unless a global
+  default is set with
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md);
+  `FALSE` hides it, `TRUE` forces it shown.
+
+- title:
+
+  Optional plot title. `NULL` (default) or `NA` shows no title; a
+  character string is shown as the title.
+
+- strip_text_size:
+
+  Optional facet strip text size, as a multiplier of `font_base_size`
+  (when `<= 3`) or an absolute point size (when `> 3`). `NULL` (default)
+  inherits from `font_base_size`.
+
+- strip_bg_color:
+
+  Optional facet strip background fill colour. The strip text colour is
+  set automatically for contrast (white on a dark fill, black on a light
+  one). `NULL` (default) keeps the house dark-navy strips.
+
+- legend_bg_alpha:
+
+  Optional opacity (`[0, 1]`) of a white legend background box, useful
+  for a readable inside legend drawn over points. `NULL` (default)
+  leaves the legend background unchanged.
 
 ## Value
 
-A `ggplot2` object representing the scatter plot.
+A `ggplot` object representing the scatter plot.
 
 ## Details
 
@@ -159,7 +228,7 @@ The comparison is visualized through one of three plot types:
 
 - Scatter plot: Values of `y_variable` vs `x_variable`
 
-- Difference plot: (`y_variable` - \`x_variable“) vs mean of both values
+- Difference plot: (`y_variable` - `x_variable`) vs mean of both values
 
 - Ratio plot: log2(`y_variable` / `x_variable`) vs mean of both values
 
@@ -180,3 +249,18 @@ The comparison is visualized through one of three plot types:
 [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md),
 [`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md),
 [`normalize_by_istd()`](https://slinghub.github.io/MRMhub/quant/reference/normalize_by_istd.md)
+
+Other QC plots:
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md),
+[`plot_interference_correction()`](https://slinghub.github.io/MRMhub/quant/reference/plot_interference_correction.md),
+[`plot_matrixeffects()`](https://slinghub.github.io/MRMhub/quant/reference/plot_matrixeffects.md),
+[`plot_normalization_qc()`](https://slinghub.github.io/MRMhub/quant/reference/plot_normalization_qc.md),
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md),
+[`plot_pca_loading()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca_loading.md),
+[`plot_qc_interference_impact()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_interference_impact.md),
+[`plot_qc_summary_byclass()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_byclass.md),
+[`plot_qc_summary_overall()`](https://slinghub.github.io/MRMhub/quant/reference/plot_qc_summary_overall.md),
+[`plot_rla_boxplot()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rla_boxplot.md),
+[`plot_rt_vs_chain()`](https://slinghub.github.io/MRMhub/quant/reference/plot_rt_vs_chain.md),
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+[`plot_runsequence()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runsequence.md)

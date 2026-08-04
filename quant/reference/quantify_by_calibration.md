@@ -9,7 +9,7 @@ weighting method (either "none", "1/x", or "1/x^2") can be defined
 globally via the arguments `fit_model` and `fit_weighting` for all
 features, if `fit_overwrite` is `TRUE`. Alternatively, the model and
 weighting can be defined individually for each feature in the `feature`
-metadata (columns `curve_fit_model` and `fit_weighting`). If these
+metadata (columns `curve_fit_model` and `curve_fit_weighting`). If these
 details are missing in the metadata, the default values provided via
 `fit_model` and `fit_weighting` will be used.
 
@@ -23,7 +23,8 @@ quantify_by_calibration(
   fit_model = c("linear", "quadratic"),
   fit_weighting = c("none", "1/x", "1/x^2"),
   ignore_failed_calibration = FALSE,
-  ignore_missing_annotation = FALSE
+  ignore_missing_annotation = FALSE,
+  lod_sigma = c("residual", "intercept")
 )
 ```
 
@@ -31,11 +32,13 @@ quantify_by_calibration(
 
 - data:
 
-  A `MRMhubExperiment` object
+  A
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - include_qualifier:
 
-  A logical value. If `TRUE`, the function will include quantifier
+  A logical value. If `TRUE`, the function will include qualifier
   features in the calibration curve calculations.
 
 - fit_overwrite:
@@ -72,9 +75,20 @@ quantify_by_calibration(
   for any feature. If `TRUE`, missing annotations will be ignored, and
   resulting feature concentration will be `NA`
 
+- lod_sigma:
+
+  A character string selecting the standard deviation of the response
+  (sigma) used in the ICH Q2 LoD/LoQ formulas. Must be one of
+  `"residual"` (the residual standard error of the regression, Sy/x; the
+  default) or `"intercept"` (the standard error of the intercept). See
+  [`calc_calibration_results()`](https://slinghub.github.io/MRMhub/quant/reference/calc_calibration_results.md)
+  for details.
+
 ## Value
 
-A modified `MRMhubExperiment` object with updated concentration values.
+A modified
+[`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+object with updated concentration values.
 
 ## Details
 

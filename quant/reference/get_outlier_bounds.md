@@ -3,20 +3,6 @@
 Computes lower and upper bounds for a numeric vector using one of
 several methods:
 
-- `"iqr"`: Tukey's Interquartile Range fences
-
-- `"mad"`: Median Absolute Deviation
-
-- `"sd"`: Standard deviation from mean
-
-- `"quantile"`: Fixed percentile cutoffs
-
-- `"z_normal"`: Standard Z-score using mean & SD
-
-- `"z_robust"`: Modified Z-score using median & MAD
-
-- `"fold_change"`: Median ± log10(k), assumes log-transformed data
-
 ## Usage
 
 ``` r
@@ -72,6 +58,22 @@ get_outlier_bounds(
 A numeric vector of length 2: `c(lower_bound, upper_bound)` representing
 the smallest and largest observed values within the computed fences.
 
+## Details
+
+- `"iqr"`: Tukey's Interquartile Range fences
+
+- `"mad"`: Median Absolute Deviation
+
+- `"sd"`: Standard deviation from mean
+
+- `"quantile"`: Fixed percentile cutoffs
+
+- `"z_normal"`: Standard Z-score using mean & SD
+
+- `"z_robust"`: Modified Z-score using median & MAD
+
+- `"fold_change"`: Median ± log10(k), assumes log-transformed data
+
 ## Examples
 
 ``` r
@@ -88,7 +90,7 @@ get_outlier_bounds(c(1, 2, 3, 4, 100), "z_normal")
 get_outlier_bounds(c(1, 2, 3, 4, 100), "z_robust")
 #> [1] 1 4
 get_outlier_bounds(log10(c(1, 2, 4, 8)), "fold_change")       # default 2×
-#> [1] 0.00000 0.90309
+#> [1] 0.30103 0.60206
 get_outlier_bounds(log10(c(1, 2, 4, 8)), "fold_change", k = 3) # 3× fold-change
 #> [1] 0.00000 0.90309
 ```

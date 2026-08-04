@@ -1,9 +1,8 @@
-# Export Data to CSV file
+# Export data to a CSV file
 
-This function exports specific unprocessed or pr ocessed feature
-variable (e.g. intensities or concentrations) from a `MRMhubExperiment`
-object to a CSV file. Allows selection of features and optional QC
-filtering.
+This function exports specific unprocessed or processed feature variable
+(e.g. intensities or concentrations) from a `MRMhubExperiment` object to
+a CSV file. Allows selection of features and optional QC filtering.
 
 ## Usage
 
@@ -12,13 +11,14 @@ save_dataset_csv(
   data = NULL,
   path,
   variable,
-  filter_data = FALSE,
   qc_types = NA,
+  filter_data = FALSE,
   include_qualifier = NA,
   include_istd = NA,
   include_feature_filter = NA,
   exclude_feature_filter = NA,
-  add_qctype = NA
+  add_qctype = NA,
+  create_dir = TRUE
 )
 ```
 
@@ -26,7 +26,8 @@ save_dataset_csv(
 
 - data:
 
-  MRMhubExperiment object
+  [`MRMhubExperiment`](https://slinghub.github.io/MRMhub/quant/reference/MRMhubExperiment-class.md)
+  object
 
 - path:
 
@@ -38,6 +39,12 @@ save_dataset_csv(
   "area", "height", "intensity", "norm_intensity", "response", "conc",
   "conc_raw", "rt", "fwhm".
 
+- qc_types:
+
+  QC types to be exported. Can be a vector of QC types or a regular
+  expression pattern. `NA` (default) exports all available QC/Sample
+  types.
+
 - filter_data:
 
   A logical value indicating whether to use all data (default) or only
@@ -45,42 +52,40 @@ save_dataset_csv(
   [`filter_features_qc()`](https://slinghub.github.io/MRMhub/quant/reference/filter_features_qc.md)).
   Default is `FALSE`.
 
-- qc_types:
-
-  QC types to be plotted. Can be a vector of QC types or a regular
-  expression pattern. `NA` (default) displays all available QC/Sample
-  types.
-
 - include_qualifier:
 
   A logical value indicating whether to include qualifier features.
   Default is `NA`, which will be automatically set to `FALSE` if
-  `variable` is `conc` or `conc_raw`, and `FALSE` otherwise.
+  `variable` is `conc` or `conc_raw`, and `TRUE` otherwise.
 
 - include_istd:
 
   A logical value indicating whether to include internal standard (ISTD)
   features. Default is `NA`, which will be automatically set to `FALSE`
-  if `variable` is ”norm_intensity`, `conc`or`conc_raw`, and `TRUE\`
+  if `variable` is `norm_intensity`, `conc` or `conc_raw`, and `TRUE`
   otherwise.
 
 - include_feature_filter:
 
-  A character or regex pattern used to filter features by `feature_id`.
-  If `NA` or an empty string (`""`) is provided, the filter is ignored.
-  When a vector of length \> 1 is supplied, only features with exactly
-  these names are selected (applied individually as OR conditions).
+  Feature(s) to include by `feature_id`, as a character vector. Each
+  element is matched exactly when it names an existing feature,
+  otherwise treated as a regex; elements combine with OR. A full ID
+  (e.g. `"S1P d18:0 [M>60]"`) needs no escaping, while patterns like
+  `"PC|PE"` still work. `NA` or `""` ignores the filter.
 
 - exclude_feature_filter:
 
-  A character or regex pattern used to exclude features by `feature_id`.
-  If `NA` or an empty string (`""`) is provided, the filter is ignored.
-  When a vector of length \> 1 is supplied, only features with exactly
-  these names are excluded (applied individually as OR conditions).
+  Feature(s) to exclude by `feature_id`, matched the same way as
+  `include_feature_filter`. `NA` or `""` ignores the filter.
 
 - add_qctype:
 
   Add the QC type as column
+
+- create_dir:
+
+  A logical value. If `TRUE` (the default), the parent directory of
+  `path` is created if it does not yet exist.
 
 ## See also
 

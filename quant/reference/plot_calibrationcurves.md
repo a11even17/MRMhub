@@ -1,4 +1,4 @@
-# Plot Calibration Curves
+# Plot calibration curves
 
 This function plots calibration curves of each feature where defined and
 displays QC samples with defined concentrations within the plot. Users
@@ -19,7 +19,7 @@ plot_calibrationcurves(
   ci_show = NA,
   ci_clip = TRUE,
   zoom_n_points = NA,
-  log_axes = FALSE,
+  log_scale = FALSE,
   filter_data = FALSE,
   include_qualifier = TRUE,
   include_istd = FALSE,
@@ -27,19 +27,23 @@ plot_calibrationcurves(
   exclude_feature_filter = NA,
   output_pdf = FALSE,
   path = NA,
+  create_dir = TRUE,
   return_plots = FALSE,
-  point_size = 1.5,
-  line_width = 0.7,
+  point_size = NULL,
   point_color = NA,
   point_fill = NA,
   point_shape = NA,
+  line_width = 0.7,
   line_color = "#4575b4",
   ribbon_fill = "#e6f6ff",
-  font_base_size = 7,
+  font_base_size = NULL,
   rows_page = 4,
   cols_page = 5,
   specific_page = NA,
   page_orientation = "LANDSCAPE",
+  page_width = NULL,
+  page_height = NULL,
+  page_units = "mm",
   show_progress = TRUE
 )
 ```
@@ -48,7 +52,7 @@ plot_calibrationcurves(
 
 - data:
 
-  A `MRMhubExperiment` object containing the dataset.
+  A `MRMhubExperiment` object.
 
 - variable:
 
@@ -69,7 +73,7 @@ plot_calibrationcurves(
 
   If `TRUE`, the function will use the provided `fit_model` and
   `fit_weighting` values for all analytes and ignore any fit method and
-  weighting settings defined in the metadata .
+  weighting settings defined in the metadata.
 
 - fit_model:
 
@@ -90,7 +94,7 @@ plot_calibrationcurves(
 
   Logical, if `TRUE`, displays the confidence interval as ribbon.
   Default is `NA`, in which case confidence intervals are plotted in a
-  linear scale and ommitted in log-log scale.
+  linear scale and omitted in log-log scale.
 
 - ci_clip:
 
@@ -102,16 +106,13 @@ plot_calibrationcurves(
   Number of x lowest concentration points to display, used for zooming.
   Set to `NULL` or `NA` (default) to show all points.
 
-- log_axes:
+- log_scale:
 
   Logical. Determines whether the x and y axes are displayed in a
   logarithmic scale (log-log scale). Set to `TRUE` to enable logarithmic
   scaling; otherwise, set to `FALSE` for a linear scale. Note: If
   `TRUE`, any regression curves or standard error regions with negative
-  values will be omitted from display. equimolar response of spiked-in
-  non-labelled and labelled standards. At a normalized intensity of 1,
-  assuming an equimolar response, both types of standards are present at
-  equal concentrations.
+  values will be omitted from display.
 
 - filter_data:
 
@@ -129,11 +130,16 @@ plot_calibrationcurves(
 
 - include_feature_filter:
 
-  Regex pattern to include features. If omitted, considers all features.
+  Feature(s) to include by `feature_id`, as a character vector. Each
+  element is matched exactly when it names an existing feature,
+  otherwise treated as a regex; elements combine with OR. A full ID
+  (e.g. `"S1P d18:0 [M>60]"`) needs no escaping, while patterns like
+  `"PC|PE"` still work. `NA` or `""` ignores the filter.
 
 - exclude_feature_filter:
 
-  Regex pattern to exclude features. If omitted, excludes none.
+  Feature(s) to exclude by `feature_id`, matched the same way as
+  `include_feature_filter`. `NA` or `""` ignores the filter.
 
 - output_pdf:
 
@@ -143,18 +149,19 @@ plot_calibrationcurves(
 
   File path for saving the PDF. Default is an empty string.
 
+- create_dir:
+
+  A logical value. If `TRUE` (the default) and `output_pdf` is `TRUE`,
+  the parent directory of `path` is created if it does not yet exist.
+
 - return_plots:
 
-  Logical, if `TRUE`, returns plots as a list of ggplot2 objects.
+  Logical, if `TRUE`, returns plots as a list of `ggplot` objects.
   Default is `FALSE`.
 
 - point_size:
 
   Size of points in the plot. Default is 1.5.
-
-- line_width:
-
-  Width of regression lines. Default is 0.7.
 
 - point_color:
 
@@ -180,6 +187,10 @@ plot_calibrationcurves(
   Default is `NA` which corresponds to the default shapes for QC types
   defined in the package.
 
+- line_width:
+
+  Width of regression lines. Default is 0.7.
+
 - line_color:
 
   Color of the regression line. Default is `"#4575b4"`.
@@ -190,7 +201,13 @@ plot_calibrationcurves(
 
 - font_base_size:
 
-  Base font size for text in plots. Default is 7.
+  Numeric. Base font size (in points) for plot text; all plot text
+  scales proportionally with this value. `NULL` (default) uses the
+  global default set by
+  [`mrmhub_set_plot_defaults()`](https://slinghub.github.io/MRMhub/quant/reference/mrmhub_set_plot_defaults.md)
+  if one is in effect, otherwise an automatic size (derived from the
+  facet-column count on paged plots, or the per-plot default shown in
+  the Usage section above).
 
 - rows_page:
 
@@ -207,11 +224,28 @@ plot_calibrationcurves(
 - page_orientation:
 
   Orientation of PDF, either `"LANDSCAPE"` or `"PORTRAIT"`. Default is
-  \`"LANDSCAPE
+  `"LANDSCAPE"`. Ignored when `page_width` and `page_height` are given.
+
+- page_width, page_height:
+
+  Size of a PDF page, in `page_units`. Both must be given together.
+  `NULL` (default) uses an A4 page of 280 x 200 mm, oriented by
+  `page_orientation`. When an explicit size is given, `page_orientation`
+  has no effect.
+
+- page_units:
+
+  Unit of `page_width` and `page_height`: `"mm"` (default), `"cm"`,
+  `"in"` or `"pt"`.
 
 - show_progress:
 
   Logical. If `TRUE`, displays a progress bar during plot creation.
+
+## Value
+
+A list of `ggplot` objects if `return_plots = TRUE`, otherwise `NULL`
+(the plots are drawn to the active device or written to a PDF).
 
 ## Details
 
@@ -227,3 +261,58 @@ exceeds the product of `rows_page` and `cols_page` settings. The
 function supports both direct plotting within R and saving plots as PDF
 files. Additionally, plots can be returned as a list of ggplot2 objects
 for further manipulation or integration into other analyses.
+
+## Preferred formats and devices
+
+|  |  |  |  |
+|----|----|----|----|
+| Purpose | Format | Device used | Typical `dpi` |
+| Journal figure, vector (default choice) | `"pdf"` | [`grDevices::cairo_pdf`](https://rdrr.io/r/grDevices/cairo.html), else [`grDevices::pdf`](https://rdrr.io/r/grDevices/pdf.html) | n/a |
+| Figure for further editing (Illustrator, Inkscape) | `"svg"` | [`svglite::svglite`](https://svglite.r-lib.org/reference/svglite.html), else [`grDevices::svg`](https://rdrr.io/r/grDevices/cairo.html) | n/a |
+| Slides, Quarto HTML, GitHub | `"png"` | [`ragg::agg_png`](https://ragg.r-lib.org/reference/agg_png.html), else [`grDevices::png`](https://rdrr.io/r/grDevices/png.html) | 150-300 |
+| Journal requiring raster submission | `"tiff"` | [`ragg::agg_tiff`](https://ragg.r-lib.org/reference/agg_tiff.html), else [`grDevices::tiff`](https://rdrr.io/r/grDevices/png.html) | 300-600 |
+
+Prefer a **vector** format (`pdf`, `svg`) for publication: text stays
+selectable and searchable, and lines stay sharp at any magnification.
+
+Prefer a **raster** format (`png`, `tiff`) when a plot draws very many
+marks – a
+[`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md)
+page covering several thousand analyses, or a dense
+[`plot_pca()`](https://slinghub.github.io/MRMhub/quant/reference/plot_pca.md)
+score plot. Every point becomes a separate object in a PDF, so such
+figures produce very large files that are slow to open and to typeset.
+Saving them at 300-600 dpi instead keeps the file small with no visible
+loss.
+
+The optional packages `ragg` and `svglite` are used automatically when
+installed, giving better text rendering, system-font support and smaller
+SVG files. When they are absent the equivalent `grDevices` device is
+used and the output is still correct. Installing both is recommended:
+`install.packages(c("ragg", "svglite"))`.
+
+PDF output uses the cairo device wherever R was built with cairo support
+(`capabilities("cairo")`), because plain
+[`grDevices::pdf()`](https://rdrr.io/r/grDevices/pdf.html) writes text
+in a single-byte encoding and silently transliterates anything outside
+it – an en dash becomes `-`, `>=` replaces the proper symbol. Unit
+labels such as `umol/L` and statistical annotations routinely depend on
+those glyphs.
+
+Multi-page output from the paged plot functions
+([`plot_runscatter()`](https://slinghub.github.io/MRMhub/quant/reference/plot_runscatter.md),
+`plot_calibrationcurves()`,
+[`plot_responsecurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_responsecurves.md),
+[`plot_feature_correlations()`](https://slinghub.github.io/MRMhub/quant/reference/plot_feature_correlations.md))
+is PDF only, which is the only format that holds many pages in one file.
+Use
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+for single figures in any of the other formats.
+
+## See also
+
+[`save_plot()`](https://slinghub.github.io/MRMhub/quant/reference/save_plot.md)
+to save a single figure in any format.
+
+Other calibration plots:
+[`plot_responsecurves()`](https://slinghub.github.io/MRMhub/quant/reference/plot_responsecurves.md)
