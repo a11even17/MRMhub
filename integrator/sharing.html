@@ -2,21 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Sharing a complete, reproducible INTEGRATOR peak-integration dataset (raw data, input files, parameters, and results) together with the accompanying applications.">
+<meta name="description" content="Sharing a complete, reproducible INTEGRATOR project as a single self-contained folder">
 
-<title>Sharing Results &amp; Reproducible Workflows – MRMhub · INTEGRATOR</title>
+<title>Sharing &amp; Archiving Results – MRMhub-INTEGRATOR</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -34,22 +37,20 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./msconvert.html" rel="next">
-<link href="./viz.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-011108973cccfa058b9d53d4b7eb11ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b0172729d9e3827b305e14eb5a71532e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-011108973cccfa058b9d53d4b7eb11ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d75fdbbafb6609ad1fb5dc6294fb069d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-b1ea61e1e1aaf56a6595074ec96c4785.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d75fdbbafb6609ad1fb5dc6294fb069d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -82,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -90,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">MRMhub · INTEGRATOR</span>
+    <span class="navbar-title">MRMhub-INTEGRATOR</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -100,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -113,36 +114,58 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-manual">    
         <li>
+    <a class="dropdown-item" href="./manual.html">
+ <span class="dropdown-text">Manual Contents</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
     <a class="dropdown-item" href="./setup.html">
- <span class="dropdown-text">Download &amp; Setup</span></a>
+ <span class="dropdown-text">Installation</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./input-files.html">
- <span class="dropdown-text">Input Files</span></a>
+ <span class="dropdown-text">Prepare Input Files</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./tuning.html">
+ <span class="dropdown-text">Tuning Peak Integration</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./running.html">
- <span class="dropdown-text">Running INTEGRATOR</span></a>
+ <span class="dropdown-text">Processing Workflow</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./output-files.html">
+ <span class="dropdown-text">Output Files</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./viz.html">
+ <span class="dropdown-text">MRMhub-viz Visualiser</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./sharing.html">
+ <span class="dropdown-text">Sharing &amp; Archiving</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="./algorithm.html">
  <span class="dropdown-text">Algorithm</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="./viz.html">
- <span class="dropdown-text">MRMhub-viz Visualizer</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./sharing.html">
- <span class="dropdown-text">Sharing Results</span></a>
-  </li>  
         <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="./msconvert.html">
- <span class="dropdown-text">Vendor → mzML (MSConvert)</span></a>
+ <span class="dropdown-text">mzML Conversion (MSConvert)</span></a>
   </li>  
     </ul>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./faq.html"> 
+<span class="menu-text">FAQ</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./news.html"> 
+<span class="menu-text">NEWS</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
@@ -164,119 +187,33 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./setup.html">Manual</a></li><li class="breadcrumb-item"><a href="./sharing.html">Sharing Results</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Overview</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./quickstart.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Quick Start</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Manual</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Download &amp; Setup</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./input-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Input Files</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./running.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Running INTEGRATOR</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./algorithm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Algorithm</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./viz.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MRMhub-viz Visualizer</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./sharing.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Sharing Results</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./msconvert.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vendor → mzML (MSConvert)</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-to-bundle" id="toc-what-to-bundle" class="nav-link active" data-scroll-target="#what-to-bundle">What to bundle</a>
-  <ul class="collapse">
-  <li><a href="#raw-data-and-input-files" id="toc-raw-data-and-input-files" class="nav-link" data-scroll-target="#raw-data-and-input-files">Raw data and input files</a></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
-  <li><a href="#applications" id="toc-applications" class="nav-link" data-scroll-target="#applications">Applications</a></li>
-  </ul></li>
-  <li><a href="#next" id="toc-next" class="nav-link" data-scroll-target="#next">Next</a></li>
+  <li><a href="#a-shareable-project-folder" id="toc-a-shareable-project-folder" class="nav-link active" data-scroll-target="#a-shareable-project-folder">A shareable project folder</a></li>
+  <li><a href="#reproducibility-and-fair-data" id="toc-reproducibility-and-fair-data" class="nav-link" data-scroll-target="#reproducibility-and-fair-data">Reproducibility and FAIR data</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See also</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./setup.html">Manual</a></li><li class="breadcrumb-item"><a href="./sharing.html">Sharing Results</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Sharing Results &amp; Reproducible Workflows</h1>
+<h1 class="title">Sharing &amp; Archiving Results</h1>
 </div>
 
 <div>
   <div class="description">
-    <p>Sharing a complete, reproducible INTEGRATOR peak-integration dataset (raw data, input files, parameters, and results) together with the accompanying applications.</p>
+    Sharing a complete, reproducible INTEGRATOR project as a single self-contained folder
   </div>
 </div>
 
@@ -293,125 +230,61 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Because INTEGRATOR and MRMhub-viz are self-contained executables that require no installation, a complete peak-integration dataset can be shared as a single folder, allowing others to inspect, reproduce, and modify the raw-data processing. Beyond the CSV tables of peak areas, the raw data, the input files with all integration parameters, and the individual integration results can be bundled together with the applications.</p>
-<section id="what-to-bundle" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-bundle">What to bundle</h2>
-<p>The components below make a shared dataset fully self-contained. The <strong>raw data and input files</strong> are what is needed to re-run the processing; the <strong>results</strong> allow the outcome to be inspected without re-running; and the <strong>applications</strong> provide the means to do either.</p>
-<section id="raw-data-and-input-files" class="level3">
-<h3 class="anchored" data-anchor-id="raw-data-and-input-files">Raw data and input files</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Item</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>mzML/</code> folder</td>
-<td>The converted raw data on which integration is performed.</td>
-</tr>
-<tr class="even">
-<td><code>param.txt</code></td>
-<td>All global parameters (tolerances, peak-width windows, RT-shift bounds, threads).</td>
-</tr>
-<tr class="odd">
-<td><code>run_order.csv</code></td>
-<td>The sample list, in processing order, with sample/QC types and reference-sample designations.</td>
-</tr>
-<tr class="even">
-<td><code>feature_list.csv</code></td>
-<td>The transitions and features to integrate, including any per-feature overrides.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="results" class="level3">
-<h3 class="anchored" data-anchor-id="results">Results</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Item</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>long.csv</code></td>
-<td>The canonical long-format results and the hand-off to the QUANT R package.</td>
-</tr>
-<tr class="even">
-<td><code>quant_raw.csv</code></td>
-<td>The wide-format table of peak areas.</td>
-</tr>
-<tr class="odd">
-<td><code>RT_matrix.csv</code></td>
-<td>The finalised integration borders, including any manual adjustments — required to reproduce the exact integration.</td>
-</tr>
-<tr class="even">
-<td><code>misc/</code> folder</td>
-<td>The binary integration results read by MRMhub-viz for interactive review.</td>
-</tr>
-<tr class="odd">
-<td>PDF folders (optional)</td>
-<td><code>by_transition</code>, <code>by_transition_low</code>, and <code>by_sample</code> PDFs documenting the integration (see <a href="./running.html">Running INTEGRATOR — Step 4</a>).</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="applications" class="level3">
-<h3 class="anchored" data-anchor-id="applications">Applications</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Item</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>MRMhub</strong> (~1 MB)</td>
-<td>The integration application, to re-run or modify any processing step.</td>
-</tr>
-<tr class="even">
-<td><strong>MRMhub-viz</strong> (~10 MB)</td>
-<td>The visualizer, to review the integration interactively (see <a href="./viz.html">MRMhub-viz</a>).</td>
-</tr>
-<tr class="odd">
-<td><code>MRMhub_plot.r</code></td>
-<td>The base-R script that generates the PDF results; it can be edited to tailor the plot layout.</td>
-</tr>
-</tbody>
-</table>
-<div class="callout callout-style-default callout-tip callout-titled">
+<p>Because INTEGRATOR and MRMhub-viz are portable executables that require no installation, a peak-integration analysis is already self-contained: the project folder holds the raw data, the input files with every parameter, the results, and the applications that produced them. The project folder is itself the shareable artefact: a recipient can inspect the outcome, or re-run and adjust the integration, from the folder alone, with no additional material to assemble.</p>
+<section id="a-shareable-project-folder" class="level2">
+<h2 class="anchored" data-anchor-id="a-shareable-project-folder">A shareable project folder</h2>
+<p>A complete project combines the files documented on the <a href="./setup.html">Installation</a> and <a href="./output-files.html">Output Files</a> pages. Kept together, they let a recipient do either of two things: <strong>re-run</strong> the processing (raw data + input files + applications) or <strong>inspect</strong> the result without re-running (result tables + <code>misc/</code> + optional PDFs).</p>
+<div class="filetree">
+<pre><code>shared-project/
+├── MRMhub.exe / .app      ┐
+├── MRMhub-viz.exe / .app  ├ applications — re-run, or review in MRMhub-viz
+├── MRMhub_plot.r          ┘ (no installation required)
+├── param.txt          ┐
+├── run_order.csv      ├  input files — every integration parameter
+├── feature_list.csv   ┘
+├── mzML/                  ← the converted raw data
+├── long.csv           ┐
+├── quant_raw.csv      ├  results — the peak tables (long.csv hands off to QUANT)
+├── RT_matrix.csv      ┘  RT_matrix.csv carries the exact integration borders
+├── misc/                 ← binary results read by MRMhub-viz
+└── by_transition/ …      ← chromatogram PDFs (optional)</code></pre>
+<p><span class="tree-caption">A complete project. See <a href="./output-files.html">Output Files</a> for the result formats and <a href="./setup.html">Installation</a> for the applications and input files.</span></p>
+</div>
+<p>A short <code>README</code> may be added before sharing, recording the study, the INTEGRATOR version used, and any manual <code>RT_matrix.csv</code> adjustments; the release provides a <code>readme.txt</code> template as a starting point.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Tip
+<span class="screen-reader-only">Note</span>Keep the applications in the project folder
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Retaining one copy of the applications in each analysis project folder keeps the project reproducible and self-documenting: a recipient can open MRMhub-viz to inspect every peak, or re-run INTEGRATOR to reproduce or adjust the integration, without any installation.</p>
+<p>Retaining one copy of the applications in each project folder is the recommended default. It makes the folder self-documenting and reproducible: the recipient opens MRMhub-viz to inspect every peak, or re-runs INTEGRATOR to reproduce or adjust the integration, without installing anything or matching software versions by hand.</p>
 </div>
 </div>
 </section>
-</section>
-<section id="next" class="level2">
-<h2 class="anchored" data-anchor-id="next">Next</h2>
+<section id="reproducibility-and-fair-data" class="level2">
+<h2 class="anchored" data-anchor-id="reproducibility-and-fair-data">Reproducibility and FAIR data</h2>
+<p>An INTEGRATOR project folder aligns with the <a href="https://www.go-fair.org/fair-principles/">FAIR principles</a> for research data and is well suited to long-term archiving:</p>
 <ul>
-<li><a href="./viz.html">MRMhub-viz Visualizer</a> — the interactive tool bundled with the dataset for review.</li>
-<li><a href="./running.html">Running INTEGRATOR</a> — the processing steps that generate these results.</li>
-<li><a href="https://slinghub.github.io/MRMhub/quant/">QUANT documentation ↗</a> — continue with the post-processing pipeline once <code>long.csv</code> is produced.</li>
+<li><strong>Interoperable</strong> — the raw data, results, and parameters are all in open, non-proprietary formats: <code>mzML</code> for the raw data, plain CSV for the result and configuration tables, and plain-text <code>param.txt</code> for the parameters, none of which require INTEGRATOR to be read. Only the auxiliary <code>misc/</code> binaries are application-specific, and they are not needed to access the results.</li>
+<li><strong>Reusable</strong> — the bundled executables make the integration <strong>end-to-end reproducible with no external software</strong>: because INTEGRATOR is self-contained and no runtime, library, or vendor tool is involved, a recipient re-runs the entire integration from the folder alone (only the optional PDF plotting depends on an R installation). With the complete parameter record (<code>param.txt</code> plus the finalised <code>RT_matrix.csv</code>) travelling alongside the data, the result is reproduced exactly rather than approximately.</li>
+<li><strong>Findable &amp; Accessible</strong> — because the folder consists only of standard files, it can be deposited as-is in a general-purpose research-data repository (for example <a href="https://zenodo.org">Zenodo</a>) to obtain a persistent, citable DOI alongside the associated publication.</li>
 </ul>
-
-
 </section>
+<section id="see-also" class="level2 see-also">
+<h2 class="anchored" data-anchor-id="see-also">See also</h2>
+<ul>
+<li><a href="./output-files.html">Output Files</a> — the formats of the result tables in a shared project.</li>
+<li><a href="./setup.html">Installation</a> — the applications and input files bundled with the data.</li>
+<li><a href="./viz.html">Review results in MRMhub-viz</a> — the interactive tool included in the folder.</li>
+<li><a href="https://slinghub.github.io/MRMhub/quant/">Continue with QUANT ↗</a> — post-process <code>long.csv</code>.</li>
+</ul>
+</section>
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -814,18 +687,6 @@ Tip
     }
   });
   </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./viz.html" class="pagination-link" aria-label="MRMhub-viz Visualizer">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">MRMhub-viz Visualizer</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./msconvert.html" class="pagination-link" aria-label="Vendor → mzML (MSConvert)">
-        <span class="nav-page-text">Vendor → mzML (MSConvert)</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 

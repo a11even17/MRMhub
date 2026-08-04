@@ -2,21 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Convert vendor raw files (.raw, .wiff, .d) to mzML using ProteoWizard MSConvert, the input format expected by INTEGRATOR.">
+<meta name="description" content="Convert vendor raw files (.wiff, .raw, .d) to open mzML with ProteoWizard MSConvert — the input INTEGRATOR expects">
 
-<title>MSConvert Instructions – MRMhub · INTEGRATOR</title>
+<title>mzML Conversion – MRMhub-INTEGRATOR</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -34,21 +37,20 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./sharing.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-011108973cccfa058b9d53d4b7eb11ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b0172729d9e3827b305e14eb5a71532e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-011108973cccfa058b9d53d4b7eb11ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d75fdbbafb6609ad1fb5dc6294fb069d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-b1ea61e1e1aaf56a6595074ec96c4785.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d75fdbbafb6609ad1fb5dc6294fb069d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -81,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -89,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">MRMhub · INTEGRATOR</span>
+    <span class="navbar-title">MRMhub-INTEGRATOR</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -99,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -112,36 +114,58 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-manual">    
         <li>
+    <a class="dropdown-item" href="./manual.html">
+ <span class="dropdown-text">Manual Contents</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
     <a class="dropdown-item" href="./setup.html">
- <span class="dropdown-text">Download &amp; Setup</span></a>
+ <span class="dropdown-text">Installation</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./input-files.html">
- <span class="dropdown-text">Input Files</span></a>
+ <span class="dropdown-text">Prepare Input Files</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./tuning.html">
+ <span class="dropdown-text">Tuning Peak Integration</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./running.html">
- <span class="dropdown-text">Running INTEGRATOR</span></a>
+ <span class="dropdown-text">Processing Workflow</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./output-files.html">
+ <span class="dropdown-text">Output Files</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./viz.html">
+ <span class="dropdown-text">MRMhub-viz Visualiser</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./sharing.html">
+ <span class="dropdown-text">Sharing &amp; Archiving</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="./algorithm.html">
  <span class="dropdown-text">Algorithm</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="./viz.html">
- <span class="dropdown-text">MRMhub-viz Visualizer</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./sharing.html">
- <span class="dropdown-text">Sharing Results</span></a>
-  </li>  
         <li><hr class="dropdown-divider"></li>
         <li>
     <a class="dropdown-item" href="./msconvert.html">
- <span class="dropdown-text">Vendor → mzML (MSConvert)</span></a>
+ <span class="dropdown-text">mzML Conversion (MSConvert)</span></a>
   </li>  
     </ul>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./faq.html"> 
+<span class="menu-text">FAQ</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./news.html"> 
+<span class="menu-text">NEWS</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
@@ -163,113 +187,31 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./setup.html">Manual</a></li><li class="breadcrumb-item"><a href="./msconvert.html">Vendor → mzML (MSConvert)</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Overview</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./quickstart.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Quick Start</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Manual</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Download &amp; Setup</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./input-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Input Files</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./running.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Running INTEGRATOR</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./algorithm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Algorithm</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./viz.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MRMhub-viz Visualizer</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./sharing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Sharing Results</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./msconvert.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Vendor → mzML (MSConvert)</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#next" id="toc-next" class="nav-link active" data-scroll-target="#next">Next</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link active" data-scroll-target="#see-also">See also</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./setup.html">Manual</a></li><li class="breadcrumb-item"><a href="./msconvert.html">Vendor → mzML (MSConvert)</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">MSConvert Instructions</h1>
+<h1 class="title">mzML Conversion</h1>
 </div>
 
 <div>
   <div class="description">
-    <p>Convert vendor raw files (.raw, .wiff, .d) to mzML using ProteoWizard MSConvert, the input format expected by INTEGRATOR.</p>
+    Convert vendor raw files (.wiff, .raw, .d) to open mzML with ProteoWizard MSConvert — the input INTEGRATOR expects
   </div>
 </div>
 
@@ -286,28 +228,28 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>INTEGRATOR uses mzML files as input. The MSConvert tool, part of the ProteoWizard software, converts proprietary raw data files (.wiff for SCIEX, .raw folders for Waters, .raw files for Thermo Fisher, .d folders for Agilent, etc.) into mzML format. This step can only be performed on a Windows PC.</p>
+<p>INTEGRATOR reads MS data in the open <strong>mzML</strong> format. MSConvert, part of the ProteoWizard suite, converts vendor raw files — SCIEX <code>.wiff</code>, Waters <code>.raw</code> folders, Thermo Fisher <code>.raw</code> files, Agilent <code>.d</code> folders — to mzML. Conversion runs on Windows only.</p>
 <ol type="1">
-<li><p>Download or upgrade to a recent version of ProteoWizard (<a href="https://proteowizard.sourceforge.io" class="uri">https://proteowizard.sourceforge.io</a>) on a Windows computer. A recent version ensures successful conversion of current vendor-specific formats.</p></li>
-<li><p>Start “MSConvert” via the START menu, or by right-clicking on the raw files to be converted and selecting MSConvertGUI.</p></li>
-<li><p>In the MSConvert window, use the “Browse” button to select the raw files to be converted. Note: .wiff and .wiff.scan files need to be located in the same folder.</p></li>
-<li><p>Set the following options: “<em>mzML</em>” for “<em>Output format”</em>, “<em>32-bit</em>” for “<em>Binary encoding precision</em>”, check “<em>Write index</em>” and to improve performance, increase “Files to convert in parallel” to the number of available CPU cores.</p></li>
-<li><p>Run the conversion by clicking “Start”, and copy the mzML files to the MRMhub subfolder mzML</p></li>
+<li><p>Install or upgrade to a <strong>recent</strong> version of <a href="https://proteowizard.sourceforge.io">ProteoWizard</a> on a Windows computer. A recent version ensures support for current vendor formats.</p></li>
+<li><p>Launch <strong>MSConvertGUI</strong> from the Start menu, or by right-clicking the raw files and selecting <em>MSConvertGUI</em>.</p></li>
+<li><p>Click <strong>Browse</strong> to select the raw files to convert. For SCIEX data, keep the <code>.wiff</code> and <code>.wiff.scan</code> files together in the same folder.</p></li>
+<li><p>Set the options: <em>Output format</em> → <strong>mzML</strong>, <em>Binary encoding precision</em> → <strong>32-bit</strong>, and enable <strong>Write index</strong>. To speed up large batches, raise <em>Files to convert in parallel</em> to the number of available CPU cores.</p></li>
+<li><p>Click <strong>Start</strong>, then copy the resulting mzML files into the <code>mzML</code> subfolder of your MRMhub project.</p></li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/paste-13.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Screenshot of the MSConvertGUI window configured to output mzML. In the Options panel, Output format is set to mzML with 32-bit binary encoding, and Write index and Use zlib compression are enabled; the Start button at the bottom right runs the conversion."></p>
 </figure>
 </div>
-<section id="next" class="level2">
-<h2 class="anchored" data-anchor-id="next">Next</h2>
+<section id="see-also" class="level2 see-also">
+<h2 class="anchored" data-anchor-id="see-also">See also</h2>
 <ul>
-<li><a href="./setup.html">Download &amp; Project Setup</a> — download the standalone INTEGRATOR executable.</li>
-<li><a href="./running.html">Running INTEGRATOR</a> — process your mzML files.</li>
+<li><a href="./setup.html">Install INTEGRATOR</a> — download the standalone executable.</li>
+<li><a href="./running.html">Processing Workflow</a> — process your mzML files.</li>
 </ul>
-
-
 </section>
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -710,15 +652,6 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./sharing.html" class="pagination-link" aria-label="Sharing Results">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Sharing Results</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-  </div>
-</nav>
 </div> <!-- /content -->
 
 

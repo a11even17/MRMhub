@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Common problems when preparing input files and running INTEGRATOR, and how to resolve them">
+
+<title>FAQ &amp; Troubleshooting – MRMhub-INTEGRATOR</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d75fdbbafb6609ad1fb5dc6294fb069d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-b1ea61e1e1aaf56a6595074ec96c4785.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d75fdbbafb6609ad1fb5dc6294fb069d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MRMhub-INTEGRATOR</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./quickstart.html"> 
+<span class="menu-text">Quick Start</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-manual" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Manual</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-manual">    
+        <li>
+    <a class="dropdown-item" href="./manual.html">
+ <span class="dropdown-text">Manual Contents</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="./setup.html">
+ <span class="dropdown-text">Installation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./input-files.html">
+ <span class="dropdown-text">Prepare Input Files</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./tuning.html">
+ <span class="dropdown-text">Tuning Peak Integration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./running.html">
+ <span class="dropdown-text">Processing Workflow</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./output-files.html">
+ <span class="dropdown-text">Output Files</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./viz.html">
+ <span class="dropdown-text">MRMhub-viz Visualiser</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./sharing.html">
+ <span class="dropdown-text">Sharing &amp; Archiving</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="./algorithm.html">
+ <span class="dropdown-text">Algorithm</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="./msconvert.html">
+ <span class="dropdown-text">mzML Conversion (MSConvert)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="./faq.html" aria-current="page"> 
+<span class="menu-text">FAQ</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./news.html"> 
+<span class="menu-text">NEWS</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://slinghub.github.io/MRMhub/"> 
+<span class="menu-text">← MRMhub home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://slinghub.github.io/MRMhub/quant/"> 
+<span class="menu-text">QUANT (R package) ↗</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/SLINGhub/MRMhub"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#running-app" id="toc-running-app" class="nav-link active" data-scroll-target="#running-app">Running the application</a>
+  <ul class="collapse">
+  <li><a href="#wont-open" id="toc-wont-open" class="nav-link" data-scroll-target="#wont-open">Q: The application will not open (macOS “cannot be verified” / Windows “blocked”)</a></li>
+  <li><a href="#crash-start" id="toc-crash-start" class="nav-link" data-scroll-target="#crash-start">Q: MRMhub closes on start — the console opens, then returns to the shell prompt</a></li>
+  <li><a href="#system-req" id="toc-system-req" class="nav-link" data-scroll-target="#system-req">Q: The application is slow or runs out of memory</a></li>
+  </ul></li>
+  <li><a href="#input-files" id="toc-input-files" class="nav-link" data-scroll-target="#input-files">Input data and files</a>
+  <ul class="collapse">
+  <li><a href="#msconvert-settings" id="toc-msconvert-settings" class="nav-link" data-scroll-target="#msconvert-settings">Q: The mzML files are misread, or conversion fails</a></li>
+  <li><a href="#csv-misread" id="toc-csv-misread" class="nav-link" data-scroll-target="#csv-misread">Q: After editing a CSV, integration results are incorrect or implausible</a></li>
+  <li><a href="#col-not-found" id="toc-col-not-found" class="nav-link" data-scroll-target="#col-not-found">Q: INTEGRATOR reports a “column not found” error</a></li>
+  <li><a href="#file-names" id="toc-file-names" class="nav-link" data-scroll-target="#file-names">Q: Which input files are required, and can they be renamed?</a></li>
+  <li><a href="#peakwidth-brackets" id="toc-peakwidth-brackets" class="nav-link" data-scroll-target="#peakwidth-brackets">Q: A per-feature peak-width override has no effect</a></li>
+  <li><a href="#rtshift-zero" id="toc-rtshift-zero" class="nav-link" data-scroll-target="#rtshift-zero">Q: RT-shift correction seems inactive</a></li>
+  </ul></li>
+  <li><a href="#matching" id="toc-matching" class="nav-link" data-scroll-target="#matching">Transition matching and validation (Step 1)</a>
+  <ul class="collapse">
+  <li><a href="#no-report" id="toc-no-report" class="nav-link" data-scroll-target="#no-report">Q: Validation finished but wrote no report files</a></li>
+  <li><a href="#q-what-do-the-missing_.txt-reports-mean-missing-files" id="toc-q-what-do-the-missing_.txt-reports-mean-missing-files" class="nav-link" data-scroll-target="#q-what-do-the-missing_.txt-reports-mean-missing-files">Q: What do the missing_*.txt reports mean? {#missing-files}</a></li>
+  <li><a href="#no-match" id="toc-no-match" class="nav-link" data-scroll-target="#no-match">Q: A transition I defined never appears in the results</a></li>
+  <li><a href="#dropped-all" id="toc-dropped-all" class="nav-link" data-scroll-target="#dropped-all">Q: Why was a transition dropped from every sample?</a></li>
+  <li><a href="#duplicate-transition" id="toc-duplicate-transition" class="nav-link" data-scroll-target="#duplicate-transition">Q: The same transition appears more than once in an mzML file</a></li>
+  </ul></li>
+  <li><a href="#integration" id="toc-integration" class="nav-link" data-scroll-target="#integration">Peak detection and integration (Steps 2–3)</a>
+  <ul class="collapse">
+  <li><a href="#area-zero" id="toc-area-zero" class="nav-link" data-scroll-target="#area-zero">Q: A feature’s area is reported as zero</a></li>
+  <li><a href="#wrong-peak" id="toc-wrong-peak" class="nav-link" data-scroll-target="#wrong-peak">Q: A wrong or adjacent peak is integrated</a></li>
+  <li><a href="#overlap" id="toc-overlap" class="nav-link" data-scroll-target="#overlap">Q: A partially overlapping peak is not integrated correctly</a></li>
+  <li><a href="#drift-untracked" id="toc-drift-untracked" class="nav-link" data-scroll-target="#drift-untracked">Q: Retention-time drift is not tracked across the sequence</a></li>
+  <li><a href="#uniform-wobble" id="toc-uniform-wobble" class="nav-link" data-scroll-target="#uniform-wobble">Q: I set a uniform width for a feature, but its borders still shift across samples</a></li>
+  </ul></li>
+  <li><a href="#rerun" id="toc-rerun" class="nav-link" data-scroll-target="#rerun">Re-running after edits</a>
+  <ul class="collapse">
+  <li><a href="#no-effect" id="toc-no-effect" class="nav-link" data-scroll-target="#no-effect">Q: A changed parameter has no effect on the integration</a></li>
+  <li><a href="#what-to-rerun" id="toc-what-to-rerun" class="nav-link" data-scroll-target="#what-to-rerun">Q: I edited an input file — what must be re-run?</a></li>
+  <li><a href="#rtmatrix-lost" id="toc-rtmatrix-lost" class="nav-link" data-scroll-target="#rtmatrix-lost">Q: My manual RT_matrix.csv edits disappeared</a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results: viewing and output files</a>
+  <ul class="collapse">
+  <li><a href="#viz-empty" id="toc-viz-empty" class="nav-link" data-scroll-target="#viz-empty">Q: MRMhub-viz shows nothing, or will not load a dataset</a></li>
+  <li><a href="#pdf-fail" id="toc-pdf-fail" class="nav-link" data-scroll-target="#pdf-fail">Q: PDF generation (Step 4) produces no plots, or plotting fails</a></li>
+  <li><a href="#pdf-missing" id="toc-pdf-missing" class="nav-link" data-scroll-target="#pdf-missing">Q: A feature has no PDF, or its PDF is in the low-intensity folder</a></li>
+  <li><a href="#pdf-low-wrong" id="toc-pdf-low-wrong" class="nav-link" data-scroll-target="#pdf-low-wrong">Q: A transition’s PDF is in the low-intensity folder but should not be</a></li>
+  <li><a href="#quant-rt" id="toc-quant-rt" class="nav-link" data-scroll-target="#quant-rt">Q: The RT values in quant_raw.csv do not match the peak apex</a></li>
+  </ul></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See also</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">FAQ &amp; Troubleshooting</h1>
+</div>
+
+<div>
+  <div class="description">
+    Common problems when preparing input files and running INTEGRATOR, and how to resolve them
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Problems are grouped by theme; the box below links the most frequent ones directly. This page does not list every case — for peak-integration problems in particular, see <a href="./tuning.html">Tuning Peak Integration</a>, which covers the parameters in depth. See also <a href="./input-files.html">Input Files</a> and the <a href="./running.html">Processing Workflow</a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Most common problems
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="#wont-open">The application will not open</a></li>
+<li><a href="#csv-misread">Integration results are incorrect or implausible</a></li>
+<li><a href="#col-not-found">INTEGRATOR reports a “column not found” error</a></li>
+<li><a href="#no-report">Validation wrote no report files</a></li>
+<li><a href="#no-effect">A changed parameter has no effect on the integration</a></li>
+<li><a href="#crash-start">MRMhub closes immediately on start</a></li>
+<li><a href="#area-zero">A feature’s area is reported as zero</a></li>
+<li><a href="#viz-empty">MRMhub-viz shows nothing, or will not load</a></li>
+</ul>
+</div>
+</div>
+<section id="running-app" class="level2">
+<h2 class="anchored" data-anchor-id="running-app">Running the application</h2>
+<section id="wont-open" class="level3">
+<h3 class="anchored" data-anchor-id="wont-open">Q: The application will not open (macOS “cannot be verified” / Windows “blocked”)</h3>
+<p><strong>A:</strong> The executables are unsigned, so the operating system shows a one-time security prompt on first launch — this is not a fault. Clear it separately for <strong>both</strong> MRMhub and MRMhub-viz, and again after each update. Antivirus or endpoint-protection software may also quarantine the unsigned executable; allow-list it if the file will not launch. See <a href="./setup.html#clearing-the-first-launch-security-prompt">clearing the security prompt</a>.</p>
+<p>The macOS build is Apple silicon only and will not run on an Intel Mac.</p>
+</section>
+<section id="crash-start" class="level3">
+<h3 class="anchored" data-anchor-id="crash-start">Q: MRMhub closes on start — the console opens, then returns to the shell prompt</h3>
+<p><strong>A:</strong> The usual cause is a malformed input file: the console opens, the application exits without showing the menu, and the shell prompt (<code>$</code>) becomes active again — often <strong>without a clear error message</strong>. Check that:</p>
+<ul>
+<li><code>param.txt</code> is in the same folder as the executable;</li>
+<li>the input-file and mzML paths in <code>param.txt</code> are correct (no typos);</li>
+<li>no parameter name or value has a typo or wrong format;</li>
+<li>no input file is empty or truncated.</li>
+</ul>
+<p>If in doubt, start again from the release templates. See <a href="./input-files.html">Input Files</a>.</p>
+</section>
+<section id="system-req" class="level3">
+<h3 class="anchored" data-anchor-id="system-req">Q: The application is slow or runs out of memory</h3>
+<p><strong>A:</strong> Integration is multithreaded, controlled by <code>num_threads</code> in <code>param.txt</code> — this affects speed only, never the results:</p>
+<ul>
+<li><strong>Keep multithreading active.</strong> Ensure <code>num_threads</code> is greater than <code>1</code> (the template default is <code>2</code>); <code>1</code> runs single-threaded and is slowest. Raising it toward the CPU’s core count speeds up the integration.</li>
+<li><strong>Do not exceed the core count.</strong> Setting more threads than the machine has cores does <strong>not</strong> cause an error, but the extra threads only oversubscribe the CPU and add context-switching overhead — no faster, sometimes slower.</li>
+<li><strong>Leave a few cores free if you need the machine.</strong> Assigning every core makes the whole computer unresponsive during processing; leave 1–2 for the operating system (e.g.&nbsp;set <code>6</code> on an 8-core CPU).</li>
+</ul>
+<p>For memory, allow <strong>16 GB RAM</strong> for large sequences (8 GB minimum) and ample disk space for the <code>misc/</code> folder, tables, and PDFs. If the application will not start <strong>at all</strong>, see <a href="#wont-open">The application will not open</a> instead. See <a href="./setup.html">Installation</a> and <a href="./input-files.html">Input Files</a>.</p>
+</section>
+</section>
+<section id="input-files" class="level2">
+<h2 class="anchored" data-anchor-id="input-files">Input data and files</h2>
+<section id="msconvert-settings" class="level3">
+<h3 class="anchored" data-anchor-id="msconvert-settings">Q: The mzML files are misread, or conversion fails</h3>
+<p><strong>A:</strong> Convert with a <strong>recent</strong> ProteoWizard MSConvert (Windows only), using <strong>mzML</strong> output, <strong>32-bit</strong> encoding, and <strong>Write index</strong> enabled. For SCIEX data, keep the <code>.wiff</code> and <code>.wiff.scan</code> files in the same folder. See <a href="./msconvert.html">mzML Conversion</a>.</p>
+</section>
+<section id="csv-misread" class="level3">
+<h3 class="anchored" data-anchor-id="csv-misread">Q: After editing a CSV, integration results are incorrect or implausible</h3>
+<p><strong>A:</strong> Columns are matched by <strong>header name</strong>, so a renamed or misspelled required column stops the run with an explicit error rather than being silently misread (see <a href="#col-not-found">the “column not found” error</a>). Plausible-but-wrong results instead come from spreadsheet editors corrupting the cell <strong>values</strong>: dropped leading zeros, values like <code>16:0</code> coerced to dates (format the cells as text), a semicolon delimiter from a non-English locale, a UTF-8 byte-order mark that breaks the first header, and stray trailing spaces or blank rows. File names must also match the mzML files exactly (<code>.mzML</code> extension, correct case). When results look wrong, reopen the CSV in a plain-text editor and compare the values against the template.</p>
+</section>
+<section id="col-not-found" class="level3">
+<h3 class="anchored" data-anchor-id="col-not-found">Q: INTEGRATOR reports a “column not found” error</h3>
+<p><strong>A:</strong> <code>run_order.csv</code> and <code>feature_list.csv</code> are read by matching the <strong>header row</strong>, so a required column whose name INTEGRATOR cannot find stops the run with a <code>&lt;name&gt; column not found!</code> message. The usual causes are a misspelled or renamed header, a deleted column, or a stray space inserted <strong>inside</strong> a name (<code>Feature ID</code> is read as <code>Feature</code> and no longer matches <code>Feature_ID</code>). Column <em>order</em> does not matter. Restore the exact header names from the <a href="https://github.com/SLINGhub/MRMhub/releases">templates</a> — the required names are listed in <a href="./input-files.html#sample-list-run_order.csv">Input Files</a> (matching is case-insensitive).</p>
+</section>
+<section id="file-names" class="level3">
+<h3 class="anchored" data-anchor-id="file-names">Q: Which input files are required, and can they be renamed?</h3>
+<p><strong>A:</strong> Only <code>param.txt</code> has a fixed name and must sit beside the executable. The sample and feature lists may be renamed via the <code>batch_info</code> and <code>transition_list</code> entries in <code>param.txt</code>. See <a href="./input-files.html">Input Files</a>.</p>
+</section>
+<section id="peakwidth-brackets" class="level3">
+<h3 class="anchored" data-anchor-id="peakwidth-brackets">Q: A per-feature peak-width override has no effect</h3>
+<p><strong>A:</strong> The global <code>peak_width</code> in <code>param.txt</code> uses brackets — <code>[w, x, y, z]</code> — but the per-feature override in the feature list is entered <strong>without</strong> brackets, as <code>w, x, y, z</code>. Brackets, or the wrong number of values, cause it to be ignored. See <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+<section id="rtshift-zero" class="level3">
+<h3 class="anchored" data-anchor-id="rtshift-zero">Q: RT-shift correction seems inactive</h3>
+<p><strong>A:</strong> <code>RT_shift = [0.0, 0.0]</code> disables it. The lower bound is negative (earlier), the upper positive (later), e.g.&nbsp;<code>[-0.2, 0.2]</code>; a small non-zero window is recommended even for stable methods. See <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+</section>
+<section id="matching" class="level2">
+<h2 class="anchored" data-anchor-id="matching">Transition matching and validation (Step 1)</h2>
+<section id="no-report" class="level3">
+<h3 class="anchored" data-anchor-id="no-report">Q: Validation finished but wrote no report files</h3>
+<p><strong>A:</strong> No report is the expected result of a <strong>clean</strong> validation. The <code>missing_*.txt</code> files are written <strong>only when problems are found</strong>, so their absence confirms that every mzML file and transition matched, and the run can proceed. See <a href="./running.html#step-1-data-validation">Processing Workflow</a>.</p>
+</section>
+<section id="q-what-do-the-missing_.txt-reports-mean-missing-files" class="level3">
+<h3 class="anchored" data-anchor-id="q-what-do-the-missing_.txt-reports-mean-missing-files">Q: What do the missing_*.txt reports mean? {#missing-files}</h3>
+<p><strong>A:</strong> They are written only on problems: <strong>missing_files.txt</strong> (mzML listed but absent, or present but unlisted), <strong>missing_compounds.txt</strong> (transitions not matched in the mzML), and <strong>missing_details.txt</strong> (which samples lack a given transition). The analysis may still proceed. See <a href="./running.html#step-1-data-validation">Processing Workflow</a>.</p>
+</section>
+<section id="no-match" class="level3">
+<h3 class="anchored" data-anchor-id="no-match">Q: A transition I defined never appears in the results</h3>
+<p><strong>A:</strong> Locate the cause by step:</p>
+<ul>
+<li><strong>Not matched (Step 1)</strong> — if it is listed in <code>missing_compounds.txt</code>, it was not found in the mzML data. Matching is by precursor and product <em>m/z</em> and RT, within <code>mz_tol</code> and <code>RT_tol</code>; check the transition-list values against the mzML and widen <code>mz_tol</code> if the <em>m/z</em> calibration is slightly off.</li>
+<li><strong>Matched but not integrated (Step 3)</strong> — the transition is present but no peak was found, so its area is zero and its <code>long.csv</code> fields are empty (see <a href="#area-zero">area reported as zero</a>).</li>
+<li><strong>No plot produced (Step 4)</strong> — the transition has data but no PDF (see <a href="#pdf-missing">a feature has no PDF</a>).</li>
+</ul>
+</section>
+<section id="dropped-all" class="level3">
+<h3 class="anchored" data-anchor-id="dropped-all">Q: Why was a transition dropped from every sample?</h3>
+<p><strong>A:</strong> <strong>Current limitation</strong> — INTEGRATOR integrates only transitions present in <strong>all</strong> mzML files; one missing from a single file is dropped for the whole dataset (reported in the missing_*.txt files). Acquire it in every sample, or exclude the files that lack it. See <a href="./running.html#step-1-data-validation">Processing Workflow</a>.</p>
+</section>
+<section id="duplicate-transition" class="level3">
+<h3 class="anchored" data-anchor-id="duplicate-transition">Q: The same transition appears more than once in an mzML file</h3>
+<p><strong>A:</strong> When a transition with near-identical Q1/Q3 and MRM windows occurs several times, INTEGRATOR prompts for the MRM index; the <code>chromatogram index</code> column in the feature list can also fix the assignment.</p>
+</section>
+</section>
+<section id="integration" class="level2">
+<h2 class="anchored" data-anchor-id="integration">Peak detection and integration (Steps 2–3)</h2>
+<section id="area-zero" class="level3">
+<h3 class="anchored" data-anchor-id="area-zero">Q: A feature’s area is reported as zero</h3>
+<p><strong>A:</strong> No peak was found within <code>RT_tol</code> of the expected RT — the same reason measurement cells are left empty in <code>long.csv</code>. Check the expected RT, confirm the <em>m/z</em> match, and widen <code>RT_tol</code> for drifting peaks. See <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+<section id="wrong-peak" class="level3">
+<h3 class="anchored" data-anchor-id="wrong-peak">Q: A wrong or adjacent peak is integrated</h3>
+<p><strong>A:</strong> Usually <code>RT_tol</code> or <code>peak_width</code> is too wide, or the expected RT is off, so a neighbouring peak falls inside the window. Narrow the window, or set a per-feature width or fixed bounds for that feature — confirm the effect in <a href="./viz.html">MRMhub-viz</a> first. See <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+<section id="overlap" class="level3">
+<h3 class="anchored" data-anchor-id="overlap">Q: A partially overlapping peak is not integrated correctly</h3>
+<p><strong>A:</strong> Partially resolved peaks often cannot be separated by the window alone: adjust <code>peak_width</code> and the integration bounds, or set fixed per-feature borders as a last resort. Fully co-eluting analytes (identical RT) cannot be separated at all and require a chromatographic or MRM-transition change. See <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+<section id="drift-untracked" class="level3">
+<h3 class="anchored" data-anchor-id="drift-untracked">Q: Retention-time drift is not tracked across the sequence</h3>
+<p><strong>A:</strong> Choose reference samples from <strong>early</strong> in the sequence, mutually well aligned, and set <code>RT_shift</code> / <code>RT_shift_bound</code> to cover the real drift. See <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+<section id="uniform-wobble" class="level3">
+<h3 class="anchored" data-anchor-id="uniform-wobble">Q: I set a uniform width for a feature, but its borders still shift across samples</h3>
+<p><strong>A:</strong> This is expected. <code>uniform_width</code> fixes the borders on the <strong>RT-drift-corrected</strong> scale, where they are identical across samples. In <strong>absolute</strong> RT — as plotted in the PDFs — they move with each sample’s RT shift, so they appear to wobble. See <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+</section>
+<section id="rerun" class="level2">
+<h2 class="anchored" data-anchor-id="rerun">Re-running after edits</h2>
+<section id="no-effect" class="level3">
+<h3 class="anchored" data-anchor-id="no-effect">Q: A changed parameter has no effect on the integration</h3>
+<p><strong>A:</strong> Work through the likely causes:</p>
+<ul>
+<li><strong>The steps were not re-run</strong> — an edit to any input file takes effect only after re-running from <strong>Step 1</strong>; a change to the plots needs <strong>Step 4</strong> re-run.</li>
+<li><strong>The value is in the wrong format</strong> — check brackets, commas, and sign (see the <a href="#peakwidth-brackets">peak-width</a> and <a href="#rtshift-zero">RT-shift</a> notes).</li>
+<li><strong>The change is too small</strong> to alter the result — try a larger adjustment.</li>
+<li><strong>A required column header is misspelled or missing</strong>, so the edited value never reaches INTEGRATOR (this now stops the run — see <a href="#col-not-found">the “column not found” error</a>).</li>
+</ul>
+</section>
+<section id="what-to-rerun" class="level3">
+<h3 class="anchored" data-anchor-id="what-to-rerun">Q: I edited an input file — what must be re-run?</h3>
+<p><strong>A:</strong> Any input-file edit means restarting from <strong>Step 1</strong>. Editing only <code>RT_matrix.csv</code> (manual borders) means re-running <strong>Step 3</strong> alone. See <a href="./running.html">Processing Workflow</a>.</p>
+</section>
+<section id="rtmatrix-lost" class="level3">
+<h3 class="anchored" data-anchor-id="rtmatrix-lost">Q: My manual RT_matrix.csv edits disappeared</h3>
+<p><strong>A:</strong> Re-running <strong>Step 2</strong> overwrites <code>RT_matrix.csv</code>. Make manual edits only once integration is otherwise final, back up the file, and re-run <strong>Step 3 alone</strong>. See <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results: viewing and output files</h2>
+<section id="viz-empty" class="level3">
+<h3 class="anchored" data-anchor-id="viz-empty">Q: MRMhub-viz shows nothing, or will not load a dataset</h3>
+<p><strong>A:</strong> MRMhub-viz reads the <code>misc/</code> folder, so Step 3 (peak integration) must have run at least once and <code>misc/</code> must exist; the viz executable must also sit in the same folder as MRMhub. If <code>misc/</code> was deleted, re-run Step 3. See <a href="./viz.html">MRMhub-viz</a>.</p>
+</section>
+<section id="pdf-fail" class="level3">
+<h3 class="anchored" data-anchor-id="pdf-fail">Q: PDF generation (Step 4) produces no plots, or plotting fails</h3>
+<p><strong>A:</strong> PDF plotting is carried out by the bundled R script, so it needs a working <strong>R installation</strong>. Check, in order:</p>
+<ul>
+<li><strong>R is installed</strong> — install it from <a href="https://cran.r-project.org/">CRAN</a> (no additional R packages are required).</li>
+<li><strong>R is on the system <code>PATH</code></strong> — the executable calls R from the command line, so <code>Rscript</code> must be resolvable in a terminal (verify with <code>Rscript --version</code>). On Windows the installer does not add R to the <code>PATH</code> automatically; add R’s <code>bin</code> directory manually (see the CRAN R-for-Windows FAQ, §2.29 <em>“Rcmd is not found in my PATH!”</em>, at <a href="https://cran.r-project.org/bin/windows/base/rw-FAQ.html" class="uri">https://cran.r-project.org/bin/windows/base/rw-FAQ.html</a>).</li>
+<li><strong>The plotting script is present</strong> — <code>MRMhub_plot.r</code> must be in the project folder; use the copy bundled in the release.</li>
+<li><strong>The <code>misc/</code> folder exists</strong> — it is produced by Step 3 and is required for plotting.</li>
+</ul>
+<p>Plotting can also be slow for large projects. See <a href="./setup.html">Installation</a>.</p>
+</section>
+<section id="pdf-missing" class="level3">
+<h3 class="anchored" data-anchor-id="pdf-missing">Q: A feature has no PDF, or its PDF is in the low-intensity folder</h3>
+<p><strong>A:</strong> A transition gets <strong>no PDF</strong> if it is not defined or not matched in <code>feature_list.csv</code>, or not present in <strong>all</strong> mzML files (see <a href="#dropped-all">dropped from every sample</a>). If a peak is missing or its area falls below the intensity threshold, the plot is written to <code>by_transition_low/</code> instead of <code>by_transition/</code>.</p>
+</section>
+<section id="pdf-low-wrong" class="level3">
+<h3 class="anchored" data-anchor-id="pdf-low-wrong">Q: A transition’s PDF is in the low-intensity folder but should not be</h3>
+<p><strong>A:</strong> <code>by_transition_low/</code> holds transitions whose integrated area is below the threshold, so a real peak landing there usually means it was not detected, the expected RT is off, or the integration parameters are unsuitable — i.e.&nbsp;the wrong peak (or none) was integrated. See <a href="#wrong-peak">a wrong peak is integrated</a> and <a href="./tuning.html">Tuning Peak Integration</a>.</p>
+</section>
+<section id="quant-rt" class="level3">
+<h3 class="anchored" data-anchor-id="quant-rt">Q: The RT values in quant_raw.csv do not match the peak apex</h3>
+<p><strong>A:</strong> The <code>RT</code> row in <code>quant_raw.csv</code> is the <strong>expected</strong> RT from the feature list, not the measured apex, and the file holds <strong>areas only</strong>. Apex RT, height, and FWHM are in <code>long.csv</code>. See <a href="./output-files.html">Output Files</a>.</p>
+</section>
+</section>
+<section id="see-also" class="level2 see-also">
+<h2 class="anchored" data-anchor-id="see-also">See also</h2>
+<ul>
+<li><a href="./input-files.html">Input Files</a> — the field-by-field reference for the three input files.</li>
+<li><a href="./tuning.html">Tuning Peak Integration</a> — choosing peak widths and integration bounds.</li>
+<li><a href="./running.html">Processing Workflow</a> — the four processing steps.</li>
+<li><a href="./output-files.html">Output Files</a> — the format of long.csv, quant_raw.csv, and RT_matrix.csv.</li>
+</ul>
+</section>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
