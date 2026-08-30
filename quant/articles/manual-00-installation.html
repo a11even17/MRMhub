@@ -139,10 +139,9 @@ Manual
 <li>
 <strong>Operating system:</strong> Windows, macOS, or Linux.</li>
 <li>
-<strong>R:</strong> version 4.1 or newer, from <a href="https://cran.r-project.org" class="external-link">CRAN</a>. Use the current release or
-the one before it: CRAN builds binary packages only for those two, so on
-an older R some dependencies are compiled from source, which needs <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">Rtools</a>
-(Windows) or the Xcode command line tools (macOS).</li>
+<strong>R:</strong> the current release, from <a href="https://cran.r-project.org" class="external-link">CRAN</a>. Minimum is 4.1; on older
+releases some packages must be built from source, which is slower and
+requires additional tools.</li>
 <li>
 <strong>R Editor (recommended):</strong> <a href="https://posit.co/download/rstudio-desktop/" class="external-link">RStudio</a> or <a href="https://positron.posit.co" class="external-link">Positron</a>.</li>
 <li>
@@ -160,34 +159,43 @@ sessions first. Many installation issues are caused by R packages that
 are loaded in another session while the installer tries to update
 them.</p>
 </div>
-<p>In a <strong>fresh R session</strong>, we recommend installing with
-<code>pak</code>:</p>
+<p>In a <strong>fresh R session</strong>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://pak.r-lib.org/" class="external-link">"pak"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"SLINGhub/MRMhub"</span><span class="op">)</span></span></code></pre></div>
-<p>To update MRMhub later, re-run the same command in a fresh
-session.</p>
-<div class="callout callout-note">
-<p><strong>No compiler needed.</strong> <code>mrmhub</code> contains no
-compiled code, and CRAN provides binaries for all its dependencies. If
-the installer starts compiling anyway, or asks <em>“install from sources
-the package which needs compilation?”</em>, decline — or set, before
-installing:</p>
+<code class="sourceCode R"><span><span class="co"># mrmhub from the MRMhub R-universe repository, dependencies from CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"mrmhub"</span>,</span>
+<span>                 repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://slinghub.r-universe.dev"</span>,</span>
+<span>                           <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>The same command installs later updates.</p>
+<p>Confirm the installation:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>install.packages.compile.from.source <span class="op">=</span> <span class="st">"never"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<p>If <code>pak</code> fails, e.g. due to institutional network firewall
-or proxy settings, try <code>remotes</code> instead:</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SLINGhub/MRMhub" class="external-link">mrmhub</a></span><span class="op">)</span></span></code></pre></div>
+<p>If R is older than the version the package was built with, the
+warning <code>package 'mrmhub' was built under R version ...</code>
+appears. It can be ignored: <code>mrmhub</code> contains no compiled
+code, so the version difference has no effect. If the package does not
+load, see <a href="#troubleshooting">Troubleshooting</a> or the ZIP-file
+method below. For optional features, see <a href="#optional-packages">Optional packages</a>.</p>
+<div class="section level3">
+<h3 id="alternative-installation-methods">Alternative installation methods<a class="anchor" aria-label="anchor" href="#alternative-installation-methods"></a>
+</h3>
+<p>If R-universe is unreachable, MRMhub can be installed from GitHub.
+Both routes build the package locally.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"pak"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"SLINGhub/MRMhub"</span><span class="op">)</span></span></code></pre></div>
+<p><code>pak</code> may fail because of a network or proxy restriction,
+or a request for build tools such as the Xcode command line tools on
+macOS. In that case, use <code>remotes</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"SLINGhub/MRMhub"</span><span class="op">)</span></span></code></pre></div>
-<p>If installation fails, see the ZIP-file method below or <a href="#troubleshooting">Troubleshooting</a>.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="installing-from-a-downloaded-repository-zip-file">Installing from a downloaded repository ZIP file<a class="anchor" aria-label="anchor" href="#installing-from-a-downloaded-repository-zip-file"></a>
 </h2>
-<p>If the methods above fail or R cannot reach GitHub, download a copy
-of the repository and install MRMhub from it:</p>
+<p>If the methods above fail or R cannot reach the repositories,
+download a copy of the repository and install MRMhub from it:</p>
 <ol style="list-style-type: decimal">
 <li>Open <a href="https://github.com/SLINGhub/MRMhub" class="external-link uri">https://github.com/SLINGhub/MRMhub</a> in a browser.</li>
 <li>Click the green <strong>Code</strong> button and choose
@@ -196,21 +204,12 @@ directly).</li>
 <li>Unzip the file. It expands to a folder named
 <code>MRMhub-main</code>.</li>
 <li>In a <strong>fresh R session</strong>, install from that folder with
-<code>pak</code>:</li>
+<code>remotes</code>:</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/local_install.html" class="external-link">local_install</a></span><span class="op">(</span><span class="st">"path/to/MRMhub-main"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_local.html" class="external-link">install_local</a></span><span class="op">(</span><span class="st">"path/to/MRMhub-main"</span><span class="op">)</span></span></code></pre></div>
 <p>Replace <code>path/to/MRMhub-main</code> with the actual location of
 the unzipped folder, e.g. <code>"~/Downloads/MRMhub-main"</code>.</p>
-</div>
-<div class="section level2">
-<h2 id="confirm-mrmhub-is-successfully-installed">Confirm <code>mrmhub</code> is successfully installed<a class="anchor" aria-label="anchor" href="#confirm-mrmhub-is-successfully-installed"></a>
-</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SLINGhub/MRMhub" class="external-link">mrmhub</a></span><span class="op">)</span></span></code></pre></div>
-<p>If this loads without error, you are ready to go. If you plan to use
-any of the functions listed under <a href="#optional-packages">Optional
-packages</a> below, install those too. If it loads with errors, see <a href="#troubleshooting">Troubleshooting</a> below.</p>
 </div>
 <div class="section level2">
 <h2 id="optional-packages">Optional packages<a class="anchor" aria-label="anchor" href="#optional-packages"></a>
@@ -315,7 +314,7 @@ session (again, with all other RStudio/Positron sessions closed):</p>
 <code>pak</code> as shown above: it selects the Bioconductor release
 paired with the installed R version. <code>BiocManager</code> may
 instead resolve to an older release and report that the current one
-requires a newer R — that message is advisory, and upgrading R is not
+requires a newer R. That message is advisory, and upgrading R is not
 necessary.</p>
 </div>
 <div class="section level2">
@@ -377,10 +376,11 @@ downloaded repository ZIP file</a>
 install your organisation’s root certificate</td>
 </tr>
 <tr class="even">
-<td><code>package 'X' was installed under R version …</code></td>
-<td>Package built for a different R</td>
-<td>
-<code>install.packages("X")</code> to rebuild it for your R</td>
+<td><code>package 'mrmhub' was built under R version …</code></td>
+<td>The R-universe binary is built under the current R patch release,
+newer than the R in use</td>
+<td>Cosmetic; <code>mrmhub</code> contains no compiled code. Update R to
+the current release to silence it</td>
 </tr>
 <tr class="odd">
 <td><code>there is no package called 'mrmhub'</code></td>
@@ -407,9 +407,14 @@ selects the release paired with your R. Upgrading R is not required</td>
 </tr>
 <tr class="even">
 <td>
-<code>clang: error: ...</code> (macOS)</td>
-<td>Compiler tools missing</td>
-<td>Run <code>xcode-select --install</code> in Terminal, retry</td>
+<code>clang: error:</code>,
+<code>Could not find tools necessary to compile a package</code>, or
+<code>No developer tools were found</code> (macOS)</td>
+<td>Xcode command line tools missing</td>
+<td>Run <code>xcode-select --install</code> in a Terminal, accept the
+dialog, retry in a fresh session, or install with <code>remotes</code>
+instead of <code>pak</code>
+</td>
 </tr>
 <tr class="odd">
 <td>

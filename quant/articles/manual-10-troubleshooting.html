@@ -191,6 +191,13 @@ RStudio and Positron, <em>Session ▸ Restart R</em>
 matching your R version (Rtools43 for R 4.3, Rtools44 for R 4.4, …),
 restart R, and retry. Rtools compiles the source packages a few
 dependencies still need when no Windows binary is available yet.</p>
+<p><strong>Q: <em>“Could not find tools necessary to compile a
+package”</em> (macOS).</strong></p>
+<p><strong>A:</strong> Install the Xcode command line tools with
+<code>xcode-select --install</code> in a Terminal, accept the dialog,
+and retry in a fresh session. <code>mrmhub</code> contains no compiled
+code; the requirement comes from the installer, so <code>remotes</code>
+is an alternative to <code>pak</code> here.</p>
 <p><strong>Q: <code>remotes</code> keeps failing on a locked or
 transitive dependency.</strong></p>
 <p><strong>A:</strong> <a href="https://pak.r-lib.org/" class="external-link"><code>pak</code></a> resolves the

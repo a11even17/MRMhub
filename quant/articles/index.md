@@ -168,4 +168,4 @@
   notebooks](https://slinghub.github.io/MRMhub/quant/articles/tutorial-13-getting-started-r-quarto.md):
 
   Install R and an IDE, create a Quarto project, learn to read and run
-  notebook code, and render a report — for readers new to R and Quarto.
+  notebook code, and render a report, for readers new to R and Quarto.
