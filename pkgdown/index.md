@@ -1,7 +1,7 @@
 # MRMhub-QUANT <a href="https://slinghub.github.io/MRMhub/quant/"><img src="man/figures/logo.svg" align="right" height="139" alt="MRMhub-QUANT website" /></a>
 
 <!-- badges: start -->
-[![Version](https://img.shields.io/badge/version-0.9.9-blue.svg)](https://github.com/SLINGhub/MRMhub/releases) [![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) [![bioRxiv](https://img.shields.io/badge/bioRxiv-preprint-b31b1b.svg)](https://doi.org/10.64898/2025.12.20.695370) [![R-CMD-check](https://github.com/SLINGhub/MRMhub/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/SLINGhub/MRMhub/actions/workflows/R-CMD-check.yml) [![Codecov test coverage](https://codecov.io/gh/SLINGhub/MRMhub/graph/badge.svg)](https://app.codecov.io/gh/SLINGhub/MRMhub)
+[![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)](https://github.com/SLINGhub/MRMhub/releases) [![Nature Metabolism](https://img.shields.io/badge/Nature%20Metabolism-2026-b31b1b.svg)](https://doi.org/10.1038/s42255-026-01629-2) [![R-CMD-check](https://github.com/SLINGhub/MRMhub/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/SLINGhub/MRMhub/actions/workflows/R-CMD-check.yml) [![Codecov test coverage](https://codecov.io/gh/SLINGhub/MRMhub/graph/badge.svg)](https://app.codecov.io/gh/SLINGhub/MRMhub)
 <!-- badges: end -->
 
 **MRMhub-QUANT** is a programmatic library for tailored, reproducible post-processing and quality-control of targeted metabolomics and lipidomics analyses. It works with [MRMhub-INTEGRATOR](https://slinghub.github.io/MRMhub/integrator/) peak integration results, or feature intensity data from other sources (CSV, mzTab-M, Skyline). It is the post-processing module of [MRMhub](https://slinghub.github.io/MRMhub/) and distributed as the R package `mrmhub`. It features:
@@ -69,13 +69,19 @@
 
 ## Installing and Updating
 
-Make sure to use a fresh R session without loaded packages (restart RStudio/Positron first). Please read [the Installation guide](articles/manual-00-installation.html) first for full instructions and troubleshooting.
+Make sure to use a fresh R session without loaded packages (restart RStudio/Positron first).
+
+Read [the Installation guide](articles/manual-00-installation.html) before installing.
 
 ```r
-if (!require("pak")) install.packages("pak")
-pak::pak("SLINGhub/MRMhub")
+# mrmhub from the MRMhub R-universe repository, dependencies from CRAN
+install.packages("mrmhub",
+                 repos = c("https://slinghub.r-universe.dev",
+                           "https://cloud.r-project.org"))
 library(mrmhub)
 ```
+
+The same command installs later updates. [Alternative methods](articles/manual-00-installation.html#alternative-installation-methods) using `pak` or `remotes` are described in the guide.
 
 ## Contributing
 

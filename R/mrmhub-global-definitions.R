@@ -150,6 +150,35 @@ pkg.env$qc_type_annotation <- list(
     "NIST",
     "LTR"
   ),
+  # Point draw order (z-order) for scatter-type plots: rows are arranged by this
+  # order, so the first entries are drawn first (background) and later ones on
+  # top. Independent of `qc_type_levels`, which governs legend order and the
+  # colour/fill/shape lookups. Study samples and calibrators are the most
+  # numerous and go to the back; blanks and rare diagnostic QCs sit on top.
+  # Must stay a permutation of `qc_type_levels`.
+  qc_type_plot_order = c(
+    "SPL",
+    "CAL",
+    "TQC",
+    "BQC",
+    "NIST",
+    "LTR",
+    "HQC",
+    "LQC",
+    "MQC",
+    "QC",
+    "PQC",
+    "RQC",
+    "EQC",
+    "EQA",
+    "SST",
+    "PBLK",
+    "BLK",
+    "MBLK",
+    "TBLK",
+    "UBLK",
+    "SBLK"
+  ),
   qc_type_col = c(
     "SBLK" = "#1854f9",
     "TBLK" = "#db0202",
@@ -283,11 +312,11 @@ pkg.env$lipid_class_annotations <- list(
     "SHexCer" = "#a7cc00",
     "GM1" = "#a7cc00",
     "GM3" = "#a7cc00",
-    "HexCer;02" = "#a7cc00",
-    "Hex1Cer;02" = "#a7cc00",
-    "Hex2Cer;02" = "#a7cc00",
-    "Hex3Cer;02" = "#a7cc00",
-    "SHexCer;02" = "#a7cc00",
+    "HexCer;O2" = "#a7cc00",
+    "Hex1Cer;O2" = "#a7cc00",
+    "Hex2Cer;O2" = "#a7cc00",
+    "Hex3Cer;O2" = "#a7cc00",
+    "SHexCer;O2" = "#a7cc00",
     "Hex3HexNAcNeuAcCer" = "#a7cc00",
     "Hex2NeuAcCer" = "#a7cc00",
     "LPC" = "#89faf8",

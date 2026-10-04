@@ -50,26 +50,14 @@ plot_interference_correction <- function(
   angle_x = 45
 ) {
   check_data(data)
-  check_installed("ggbeeswarm")
+  check_pkg_installed("ggbeeswarm")
   font_base_size <- resolve_plot_opt(font_base_size, "font_base_size", 11)
   point_size <- resolve_plot_opt(point_size, "point_size", 0.5)
   sort_by_effect <- match.arg(sort_by_effect)
   if (all(is.na(qc_types))) {
     qc_types <- intersect(
-      data$dataset$qc_type,
-      c(
-        "SPL",
-        "TQC",
-        "BQC",
-        "HQC",
-        "MQC",
-        "LQC",
-        "QC",
-        "NIST",
-        "LTR",
-        "PBLK",
-        "SBLK"
-      )
+      data@dataset$qc_type,
+      pkg.env$qc_type_annotation$qc_type_levels_nonblank
     )
   }
 
@@ -170,7 +158,7 @@ plot_interference_correction <- function(
 
   df$qc_type <- factor(
     df$qc_type,
-    levels = c("PBLK", "TQC", "BQC", "LQC", "MQC", "HQC", "SPL", "NIST", "LTR")
+    levels = pkg.env$qc_type_annotation$qc_type_levels
   )
 
   df_std <- df
@@ -209,10 +197,6 @@ plot_interference_correction <- function(
       color = "grey80",
       linetype = "dashed"
     ) +
-    # ggplot2::labs(
-    #   x = NULL,
-    #   y = ""
-    # ) +
     ggplot2::scale_color_manual(
       name = NULL,
       values = pkg.env$qc_type_annotation$qc_type_col,

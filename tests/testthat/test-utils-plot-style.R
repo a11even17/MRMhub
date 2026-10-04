@@ -135,3 +135,72 @@ test_that("resolve_page_size rejects unsupported units and sizes", {
 test_that("resolve_page_size defaults to mm", {
   expect_equal(resolve_page_size(180, 240), resolve_page_size(180, 240, "mm"))
 })
+
+test_that("qc_type_plot_order is a permutation of qc_type_levels", {
+  plot_order <- pkg.env$qc_type_annotation$qc_type_plot_order
+  levels <- pkg.env$qc_type_annotation$qc_type_levels
+  expect_setequal(plot_order, levels)
+  expect_equal(length(plot_order), length(levels))
+  expect_false(any(duplicated(plot_order)))
+})
+
+test_that("arrange_qc_type_draw_order sorts by the draw order, not by level", {
+  d <- data.frame(
+    id = 1:5,
+    qc_type = factor(
+      c("SPL", "BQC", "TQC", "SBLK", "SPL"),
+      levels = pkg.env$qc_type_annotation$qc_type_levels
+    )
+  )
+  out <- arrange_qc_type_draw_order(d)
+  expect_equal(
+    as.character(out$qc_type),
+    c("SPL", "SPL", "TQC", "BQC", "SBLK")
+  )
+  # stable: the two SPL rows keep their input order
+  expect_equal(out$id[1:2], c(1L, 5L))
+})
+
+test_that("arrange_qc_type_draw_order draws unknown QC types on top", {
+  d <- data.frame(
+    id = 1:3,
+    qc_type = c("FOO", "SBLK", "SPL"),
+    stringsAsFactors = FALSE
+  )
+  out <- arrange_qc_type_draw_order(d)
+  expect_equal(out$qc_type, c("SPL", "SBLK", "FOO"))
+})
+
+test_that("arrange_qc_type_draw_order orders within a grouping column", {
+  d <- data.frame(
+    feature_id = c("B", "B", "A", "A"),
+    qc_type = c("SPL", "BQC", "SBLK", "SPL"),
+    stringsAsFactors = FALSE
+  )
+  out <- arrange_qc_type_draw_order(d, within = "feature_id")
+  # groups keep their incoming order (B before A), QC types are ordered inside
+  expect_equal(out$feature_id, c("B", "B", "A", "A"))
+  expect_equal(out$qc_type, c("SPL", "BQC", "SPL", "SBLK"))
+})
+
+test_that("gap_axis draws one band for several real gaps between two visible orders", {
+  # Gaps 2->4 and 5->7 both fall between visible orders 2 and 8; band width 3
+  g <- gap_axis(c(2L, 8L), c(1L, 2L, 4L, 5L, 7L, 8L), TRUE, 1)
+  expect_equal(g$index, c(1, 5))
+  expect_equal(g$d_gaps$gap_label, "2 | 8")
+})
+
+test_that("render_pages counts one page for a specific_page", {
+  expect_message(
+    render_pages(
+      total_pages = 5,
+      specific_page = 3,
+      page_fun = function(i) ggplot(),
+      output_pdf = FALSE,
+      return_plots = TRUE,
+      show_progress = FALSE
+    ),
+    "(1 page)",
+    fixed = TRUE
+  )
+})
