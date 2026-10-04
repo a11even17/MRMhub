@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mrmhub</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -384,8 +384,8 @@ are experimental and require an optional package.</p>
 2007)</span> applies an empirical-Bayes location and scale adjustment,
 shrinking the batch estimates across features (requires the
 <code>sva</code> package). Unlike centering and SERRF, it estimates
-batch effects from all samples; pass <code>covariates</code> to protect
-biology on unbalanced designs.</p>
+batch effects from all study samples and routine QCs; pass
+<code>covariates</code> to protect biology on unbalanced designs.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mexp_batch</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_batch_combat.html">correct_batch_combat</a></span><span class="op">(</span></span>
 <span>  <span class="va">mexp_batch</span>,</span>

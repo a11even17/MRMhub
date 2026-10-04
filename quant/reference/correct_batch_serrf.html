@@ -6,8 +6,9 @@ see Details. Validate results against the reference SERRF for your data.
 Normalises systematic error with SERRF (Systematic Error Removal using Random
 Forest; Fan et al. 2019). For each feature and batch a random forest is
 trained on the reference QC samples, using the batch's most-correlated
-features as predictors, and the learned systematic error is removed from all
-samples. Unlike ComBat, SERRF captures non-linear drift and batch effects
+features as predictors, and the learned systematic error is removed from the
+study samples and routine QCs; blanks, response curves, calibrants and other
+analysis types keep their uncorrected values. Unlike ComBat, SERRF captures non-linear drift and batch effects
 jointly and is anchored on the QC samples, matching the QC-based design of the
 package; it is best suited to larger panels with dense QC coverage.
 SERRF operates on the raw abundance scale (no log transform). Features with
@@ -20,8 +21,9 @@ see Details. Validate results against the reference SERRF for your data.
 Normalises systematic error with SERRF (Systematic Error Removal using Random
 Forest; Fan et al. 2019). For each feature and batch a random forest is
 trained on the reference QC samples, using the batch's most-correlated
-features as predictors, and the learned systematic error is removed from all
-samples. Unlike ComBat, SERRF captures non-linear drift and batch effects
+features as predictors, and the learned systematic error is removed from the
+study samples and routine QCs; blanks, response curves, calibrants and other
+analysis types keep their uncorrected values. Unlike ComBat, SERRF captures non-linear drift and batch effects
 jointly and is anchored on the QC samples, matching the QC-based design of the
 package; it is best suited to larger panels with dense QC coverage.
 SERRF operates on the raw abundance scale (no log transform). Features with
@@ -35,7 +37,7 @@ normalization and drift correction in the recommended pipeline."><meta property=
 
     <a class="navbar-brand me-2" href="../index.html">mrmhub</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,8 +124,9 @@ see Details. Validate results against the reference SERRF for your data.</p>
 <p>Normalises systematic error with SERRF (Systematic Error Removal using Random
 Forest; Fan et al. 2019). For each feature and batch a random forest is
 trained on the reference QC samples, using the batch's most-correlated
-features as predictors, and the learned systematic error is removed from all
-samples. Unlike ComBat, SERRF captures non-linear drift and batch effects
+features as predictors, and the learned systematic error is removed from the
+study samples and routine QCs; blanks, response curves, calibrants and other
+analysis types keep their uncorrected values. Unlike ComBat, SERRF captures non-linear drift and batch effects
 jointly and is anchored on the QC samples, matching the QC-based design of the
 package; it is best suited to larger panels with dense QC coverage.</p>
 <p>SERRF operates on the raw abundance scale (no log transform). Features with
@@ -143,6 +146,7 @@ normalization and drift correction in the recommended pipeline.</p>
 <span>  seed <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  num_threads <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  show_progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ignore_istd <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  replace_previous <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  feature_list <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  replace_exisiting_trendcurves <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -189,6 +193,12 @@ each forest trains on a small QC set.</p></dd>
 
 <dt id="arg-show-progress">show_progress<a class="anchor" aria-label="anchor" href="#arg-show-progress"></a></dt>
 <dd><p>Show a progress bar over batches. Default <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-ignore-istd">ignore_istd<a class="anchor" aria-label="anchor" href="#arg-ignore-istd"></a></dt>
+<dd><p>Logical. Exclude internal standards (ISTDs) from correction
+if <code>TRUE</code> (the default). Their values are left unchanged, and they are not
+available as random-forest predictors.</p></dd>
 
 
 <dt id="arg-replace-previous">replace_previous<a class="anchor" aria-label="anchor" href="#arg-replace-previous"></a></dt>

@@ -11,10 +11,12 @@ Normalises systematic error with SERRF (Systematic Error Removal using
 Random Forest; Fan et al. 2019). For each feature and batch a random
 forest is trained on the reference QC samples, using the batch's
 most-correlated features as predictors, and the learned systematic error
-is removed from all samples. Unlike ComBat, SERRF captures non-linear
-drift and batch effects jointly and is anchored on the QC samples,
-matching the QC-based design of the package; it is best suited to larger
-panels with dense QC coverage.
+is removed from the study samples and routine QCs; blanks, response
+curves, calibrants and other analysis types keep their uncorrected
+values. Unlike ComBat, SERRF captures non-linear drift and batch effects
+jointly and is anchored on the QC samples, matching the QC-based design
+of the package; it is best suited to larger panels with dense QC
+coverage.
 
 SERRF operates on the raw abundance scale (no log transform). Features
 with missing or non-positive values, and batches with fewer than two
@@ -34,6 +36,7 @@ correct_batch_serrf(
   seed = 1L,
   num_threads = 1L,
   show_progress = TRUE,
+  ignore_istd = TRUE,
   replace_previous = TRUE,
   feature_list = NULL,
   replace_exisiting_trendcurves = FALSE
@@ -83,6 +86,12 @@ correct_batch_serrf(
 - show_progress:
 
   Show a progress bar over batches. Default `TRUE`.
+
+- ignore_istd:
+
+  Logical. Exclude internal standards (ISTDs) from correction if `TRUE`
+  (the default). Their values are left unchanged, and they are not
+  available as random-forest predictors.
 
 - replace_previous:
 
