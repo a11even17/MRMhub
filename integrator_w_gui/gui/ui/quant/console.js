@@ -1,4 +1,4 @@
-import { createTerminal } from "./terminal.bundle.js";
+import { createTerminal } from "./terminal.bundle.js?v=1.2.4-console-theme";
 import { captureScroll, scrollPosition } from "./scroll-state.js";
 
 export function initializeConsole(root, confirm, clearR) {

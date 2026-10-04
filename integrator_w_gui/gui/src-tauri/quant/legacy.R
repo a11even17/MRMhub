@@ -25,6 +25,7 @@ run_legacy <- function(request, work) {
   if (!is.environment(workspace)) stop("Invalid legacy session.")
   if (!is.null(session)) {
     for (package in rev(session$packages)) library(package, character.only = TRUE)
+    if (length(session$plotDefaults)) do.call(mrmhub::mrmhub_set_plot_defaults, session$plotDefaults)
     if (!is.null(session$randomSeed)) assign(".Random.seed", session$randomSeed, envir = globalenv())
   }
   setwd(if (is.null(session)) request$project else session$directory)
@@ -59,6 +60,7 @@ run_legacy <- function(request, work) {
   report_progress(length(expressions) + 1L, "Finishing plot files and saving the R session checkpoint…")
   grDevices::graphics.off()
   saveRDS(list(workspace = workspace, directory = getwd(),
+               plotDefaults = mrmhub::mrmhub_get_plot_defaults(),
                packages = sub("^package:", "", grep("^package:", search(), value = TRUE)),
                randomSeed = get0(".Random.seed", envir = globalenv(), inherits = FALSE)),
           file.path(work, "workspace.rds"))
@@ -68,7 +70,9 @@ run_legacy <- function(request, work) {
   if (methods::is(experiment, "MRMhubExperiment")) {
     # mexp is already in workspace.rds. Table previews read it there rather
     # than writing a second full copy of the measurements after every block.
-    names <- methods::slotNames(experiment)
+    # Older upstream example objects can omit newly added scalar slots.
+    # Inspect only stored slots; do not mutate the user's Legacy objects.
+    names <- intersect(methods::slotNames(experiment), names(attributes(experiment)))
     names <- names[vapply(names, function(n) is.data.frame(methods::slot(experiment, n)), logical(1))]
     tables <- unname(lapply(names, function(n) list(name = n, rows = nrow(methods::slot(experiment, n)), editable = FALSE)))
   }

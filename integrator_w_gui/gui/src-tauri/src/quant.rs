@@ -140,6 +140,23 @@ fn library(engine: &Path, version: &str) -> PathBuf {
     version.hash(&mut hash);
     engine.join(format!("library-{:016x}", hash.finish()))
 }
+// Reuse dependencies from ready libraries for this exact R runtime, without
+// copying hundreds of MB on every bundled-source update. mrmhub is still
+// loaded explicitly from the current engine's library.
+fn reusable_libraries(engine: &Path, lib: &Path) -> Vec<PathBuf> {
+    let mut paths = Vec::new();
+    if let (Some(root), Some(name)) = (engine.parent(), lib.file_name()) {
+        if let Ok(entries) = fs::read_dir(root) {
+            for entry in entries.flatten() {
+                if !entry.file_type().is_ok_and(|t| t.is_dir()) { continue; }
+                let candidate = entry.path().join(name);
+                if candidate != lib && candidate.join("ready").is_file() { paths.push(candidate); }
+            }
+        }
+    }
+    paths.sort();
+    paths
+}
 fn read_json(path: &Path) -> Result<Value, String> {
     serde_json::from_slice(&fs::read(path).map_err(|e| e.to_string())?).map_err(|e| e.to_string())
 }
@@ -171,6 +188,7 @@ fn run_r(
         fs::File::create(work.join("run.log")).map_err(|e| e.to_string())?,
     ));
     let mut child = command(r)
+        .env("MRMHUB_QUANT_LIBRARIES", std::env::join_paths(reusable_libraries(engine, lib)).map_err(|e| e.to_string())?)
         .arg("--vanilla")
         .arg(engine.join("runner.R"))
         .args([
@@ -290,14 +308,21 @@ pub async fn quant_status(app: AppHandle, rscript: Option<String>) -> Result<Val
 }
 
 #[tauri::command]
-pub async fn quant_setup(app: AppHandle) -> Result<Value, String> {
+pub async fn quant_setup(app: AppHandle, packages: Option<Vec<String>>) -> Result<Value, String> {
     tauri::async_runtime::spawn_blocking(move || {
         let state = app.state::<QuantState>();
         let _busy = lock(&state)?;
         let (r, version) = runtime(&app)?;
         let engine = engine(&app)?;
         let lib = library(&engine, &version);
-        run_r(&app, "setup", &engine, &engine.join(unique_id()), &r, &lib)
+        let packages = packages.unwrap_or_default();
+        if packages.iter().any(|p| !["sva", "ranger", "rgoslin", "enviPat"].contains(&p.as_str())) {
+            return Err("Unsupported optional QUANT dependency.".into());
+        }
+        let work = engine.join(unique_id());
+        fs::create_dir_all(&work).map_err(|e| e.to_string())?;
+        fs::write(work.join("optional-packages.txt"), packages.join("\n")).map_err(|e| e.to_string())?;
+        run_r(&app, "setup", &engine, &work, &r, &lib)
     })
     .await
     .map_err(|e| e.to_string())?
@@ -594,6 +619,16 @@ pub fn quant_save_artifact(
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn dependency_reuse_is_scoped_to_ready_libraries_for_the_same_r_runtime() {
+        let f = Fixture::new(); let engine = f.0.join("new-engine");
+        let lib = engine.join("library-current-r");
+        for (id, name, ready) in [("new-engine", "library-current-r", true), ("old-engine", "library-current-r", true), ("other-r", "library-other-r", true), ("incomplete", "library-current-r", false)] {
+            let path = f.0.join(id).join(name); fs::create_dir_all(&path).unwrap();
+            if ready { fs::write(path.join("ready"), "ready").unwrap(); }
+        }
+        assert_eq!(reusable_libraries(&engine, &lib), vec![f.0.join("old-engine/library-current-r")]);
+    }
     #[test]
     fn rolling_storage_keeps_one_snapshot_per_mode_and_all_graphs() {
         let f = Fixture::new(); let root = f.0.join("QUANT");

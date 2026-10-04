@@ -1,6 +1,7 @@
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
+import { terminalTheme } from "../ui/quant/terminal-theme.js";
 
 // Export only stable public APIs; no commands or clipboard escape handlers.
 export function createTerminal(host, onInput, onResize) {
@@ -8,7 +9,7 @@ export function createTerminal(host, onInput, onResize) {
     cursorBlink: true, scrollback: 5000, fontSize: 13,
     fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace",
     allowProposedApi: false, screenReaderMode: true,
-    theme: { background: "#0b121a", foreground: "#d2e2eb", cursor: "#82d6c4", selectionBackground: "#315360" },
+    theme: terminalTheme(getComputedStyle(host)),
   });
   const fit = new FitAddon(); terminal.loadAddon(fit); terminal.open(host);
   terminal.onData(onInput);
@@ -18,7 +19,14 @@ export function createTerminal(host, onInput, onResize) {
     cancelAnimationFrame(frame);
     frame = requestAnimationFrame(() => { if (host.clientWidth && host.clientHeight) fit.fit(); });
   };
-  new ResizeObserver(resize).observe(host);
+  const resizeObserver = new ResizeObserver(resize);
+  resizeObserver.observe(host);
+  const themeObserver = new MutationObserver(() => {
+    terminal.options.theme = terminalTheme(getComputedStyle(host));
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   document.fonts.ready.then(resize);
-  return { terminal, resize };
+  return { terminal, resize, dispose() {
+    cancelAnimationFrame(frame); resizeObserver.disconnect(); themeObserver.disconnect(); terminal.dispose();
+  } };
 }

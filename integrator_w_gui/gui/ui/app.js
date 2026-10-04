@@ -5,7 +5,7 @@ const isWindows = /^Win/i.test(navigator.platform) || /Windows/i.test(navigator.
 const scratchpadAutoWipePreference = "mrmhub-scratchpad-auto-wipe";
 const guiScalePreference = "mrmhub-gui-scale";
 const legacyVisualizerScalePreference = "mrmhub-visualizer-font-scale";
-const guiScaleOptions = [100, 125, 150, 175, 200];
+const guiScaleOptions = [90, 100, 110, 125, 150, 175, 200];
 document.documentElement.classList.toggle("platform-windows", isWindows);
 
 const elements = {
@@ -1174,7 +1174,7 @@ async function showVisualizer() {
   elements.visualizerStatus.textContent = "Loading visualizer...";
   try {
     await loadD3();
-    visualizerModule ??= await import("./visualizer/visualizer.js");
+    visualizerModule ??= await import("./visualizer/visualizer.js?v=1.2.4-saved-fill");
     await visualizerModule.initializeVisualizer(project.path);
   } catch (error) {
     elements.visualizerStatus.textContent = "Visualizer could not be loaded.";
@@ -1441,6 +1441,7 @@ async function bootstrap() {
       '<p class="empty-log">Activity cleared.</p>';
   });
   elements.integratorTab.addEventListener("click", showIntegrator);
+  document.querySelector("#brand-home").addEventListener("click", showIntegrator);
   elements.visualizerTab.addEventListener("click", showVisualizer);
   elements.scratchpadTab.addEventListener("click", showScratchpad);
   elements.scratchpadAutoWipe.addEventListener("change", updateScratchpadMode);
@@ -1556,7 +1557,7 @@ document.querySelector("#quant-tab").addEventListener("click", async () => {
   document.querySelector("#quant-tab").classList.add("active");
   document.querySelector("#quant-tab").setAttribute("aria-current", "page");
   try {
-    quantModule ??= await import("./quant/quant.js");
+    quantModule ??= await import("./quant/quant.js?v=1.2.4-console-theme");
     await quantModule.initializeQuant(project?.path);
   } catch (error) { showToast(String(error), "error"); }
 });

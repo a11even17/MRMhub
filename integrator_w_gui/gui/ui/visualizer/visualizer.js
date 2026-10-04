@@ -1,4 +1,5 @@
 import { referenceBounds } from "./reference-bounds.js";
+import { savedIntegrationRegions } from "./integration-regions.js";
 
 const { invoke, Channel } = window.__TAURI__.core;
 const dialog = window.__TAURI__.dialog;
@@ -54,6 +55,7 @@ const elements = {
   toolbar: document.querySelector(".visualizer-toolbar"),
   selectorExpand: document.querySelector("#visualizer-selector-expand"),
   view: document.querySelector("#visualizer-view"),
+  empty: document.querySelector("#visualizer-empty"),
 };
 
 const state = {
@@ -219,21 +221,27 @@ function populateTransitions() {
   const previousValue = elements.transition.value;
   const fragment = document.createDocumentFragment();
   appendOption(fragment, "Select a transition", "");
+  const references = document.createElement("optgroup");
+  references.label = "Reference samples";
+  const transitions = document.createElement("optgroup");
+  transitions.label = "Transitions";
   let matchCount = 0;
   state.references.forEach((reference, index) => {
     const label = `${reference.slice(3)}, REF`;
     if (matches(label)) {
-      appendOption(fragment, label, `r:${index}`);
+      appendOption(references, label, `r:${index}`);
       matchCount += 1;
     }
   });
   state.transitions.forEach((transition, index) => {
     const label = `${transition.name}, ${transition.cqq}`;
     if (matches(label)) {
-      appendOption(fragment, label, `t:${index}`);
+      appendOption(transitions, label, `t:${index}`);
       matchCount += 1;
     }
   });
+  if (references.children.length) fragment.append(references);
+  if (transitions.children.length) fragment.append(transitions);
   if (query && matchCount === 0) {
     appendOption(fragment, `No matches for "${state.transitionSearch}"`, "");
   }
@@ -278,6 +286,8 @@ export function clearPlots() {
   state.traceGraphs.length = 0;
   elements.qc.replaceChildren();
   elements.plots.replaceChildren();
+  elements.view.classList.remove("has-plots");
+  elements.empty?.classList.remove("hidden");
 }
 
 // Enables full plot virtualization only when the selection is large enough to
@@ -1110,9 +1120,8 @@ function renderTrace(
     .call(d3.axisLeft(y).ticks(2, "s").tickSize(0));
   yAxis.select(".domain").remove();
 
-  // draws a preview fill from the chromatogram line down to the x-axis. This is
-  // used while dragging so the blue edit preview stays under the trace instead
-  // of forming a diagonal wedge from endpoint baselines.
+  // Draw the manual-edit preview, also used for saved bounds without baseline
+  // data. This is a visual aid only, not a replacement for the calculated AUC.
   const curveAreaPath = (begin, end, scale, maxPoints = maxAreaPathPoints) => {
     const start = Math.max(0, Math.min(count - 1, begin));
     const stop = Math.max(start + 1, Math.min(count, end));
@@ -1188,29 +1197,15 @@ function renderTrace(
     }
   };
 
-  const integrations = [];
-  for (let peakIndex = 0; peakIndex < plot.pos_l.length; peakIndex += 2) {
-    const begin = Math.max(plot.pos_l[peakIndex] - 1, 0);
-    const end = Math.min(plot.pos_l[peakIndex + 1], count);
-    if (end <= begin) continue;
-    const color = d3.schemeCategory10[(peakIndex / 2) % 10];
-    const region = {
-      isomerIndex: peakIndex / 2,
-      begin,
-      end,
-      color,
-      baselineStart: plot.bl[0] != null ? (plot.bl[peakIndex] ?? 0) : null,
-      baselineEnd: plot.bl[0] != null ? (plot.bl[peakIndex + 1] ?? 0) : null,
-      area: null,
-      window: null,
-    };
-    if (region.baselineStart != null) {
-      region.area = plotLayer
-        .append("path")
-        .attr("class", "integration-area")
-        .attr("fill", color);
-      region.areaNode = region.area.node();
-    }
+  const integrations = savedIntegrationRegions(plot, count);
+  for (const region of integrations) {
+    const color = d3.schemeCategory10[region.isomerIndex % 10];
+    region.color = color;
+    region.area = plotLayer
+      .append("path")
+      .attr("class", "integration-area")
+      .attr("fill", color);
+    region.areaNode = region.area.node();
     region.window = plotLayer
       .append("rect")
       .attr("class", "integration-window")
@@ -1219,7 +1214,6 @@ function renderTrace(
       .attr("height", y.range()[0] - y.range()[1]);
     region.windowNode = region.window.node();
     drawRegion(region, x);
-    integrations.push(region);
   }
 
   let graph = null;
@@ -2212,6 +2206,8 @@ function pngSvgStyles() {
   const surface = themeColor("--surface", "#ffffff");
   const rose = themeColor("--rose", "#d45d79");
   const navy = themeColor("--navy-deep", "#172b4d");
+  const areaOpacity = themeColor("--plot-integration-area-opacity", "0.52");
+  const windowOpacity = themeColor("--plot-integration-window-opacity", "0.16");
   return `
     text { fill: ${ink}; stroke: none; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: calc(10px * var(--graph-font-scale, 1)); }
     .domain, .tick line { stroke: ${muted}; }
@@ -2223,8 +2219,8 @@ function pngSvgStyles() {
     .qc-tooltip text, .trace-tooltip text { fill: ${surface}; }
     .trace-tooltip circle { fill: ${ink}; stroke: none; }
     .trace-guide { stroke: ${muted}; stroke-width: 1.5; }
-    .integration-area { stroke: none; opacity: 0.52; }
-    .integration-window { stroke: none; opacity: 0.16; }
+    .integration-area { stroke: none; opacity: ${areaOpacity}; }
+    .integration-window { stroke: none; opacity: ${windowOpacity}; }
     .blank-label { fill: ${muted}; font-size: calc(54px * var(--graph-font-scale, 1)); opacity: 0.15; stroke: none; }
   `;
 }
@@ -3009,6 +3005,8 @@ async function renderSelected(options = {}) {
   const scrollY =
     options.scrollY ?? (options.preserveScroll ? window.scrollY : null);
   clearPlots();
+  elements.view.classList.add("has-plots");
+  elements.empty?.classList.add("hidden");
   state.loading = true;
   elements.transition.disabled = true;
   elements.refresh.disabled = true;
@@ -3080,13 +3078,21 @@ elements.refresh.addEventListener("click", () =>
 document.addEventListener("mrmhub-gui-scale-change", () => {
   applyVisualizerScale();
 });
+// Canvas pixels do not follow CSS theme changes. Repaint the mounted traces
+// using their current zoom and bounds, including cached plots just offscreen.
+// Unmounted virtualized plots pick up the current theme when they are created.
+function refreshTraceColors() {
+  for (const graph of state.traceGraphs) {
+    graph.applySampleTypeColor?.();
+  }
+}
+new MutationObserver(refreshTraceColors).observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ["data-theme"],
+});
 elements.colorSampleTypes.addEventListener("change", () => {
   applySampleTypeColorPreference(elements.colorSampleTypes.checked);
-  for (const graph of state.traceGraphs) {
-    if (!state.virtualizedTraces || graphNearViewport(graph)) {
-      graph.applySampleTypeColor?.();
-    }
-  }
+  refreshTraceColors();
 });
 elements.exportPngs.addEventListener("click", async () => {
   await exportRenderedPngs();

@@ -2053,12 +2053,12 @@ html[data-theme="dark"] .sling-link img {
 
 .visualizer-chart .integration-area {
   stroke: none;
-  opacity: 0.52;
+  opacity: var(--plot-integration-area-opacity, 0.52);
 }
 
 .visualizer-chart .integration-window {
   stroke: none;
-  opacity: 0.16;
+  opacity: var(--plot-integration-window-opacity, 0.16);
 }
 
 .visualizer-chart .chromatogram-points circle {
