@@ -10,6 +10,9 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::{AppHandle, Emitter, Manager, State, WindowEvent};
 
+mod quant;
+mod terminal;
+mod rename;
 mod visualizer;
 
 // names the backup folder stored directly inside each selected dataset
@@ -2190,13 +2193,32 @@ fn scratchpad_delete_note(app: AppHandle, id: String) -> Result<(), String> {
 fn main() {
     tauri::Builder::default()
         .manage(RunState(AtomicBool::new(false)))
+        .manage(quant::QuantState(AtomicBool::new(false)))
+        .manage(terminal::TerminalState::default())
         .plugin(tauri_plugin_dialog::init())
         .on_window_event(|window, event| {
             if matches!(event, WindowEvent::CloseRequested { .. }) {
                 log_exit_for_current_project(window.app_handle());
+                window.state::<terminal::TerminalState>().shutdown();
             }
         })
         .invoke_handler(tauri::generate_handler![
+            rename::rename_notice,
+            rename::rename_notice_acknowledge,
+            rename::rename_trash_old_app,
+            terminal::terminal_start,
+            terminal::terminal_write,
+            terminal::terminal_resize,
+            terminal::terminal_ack,
+            terminal::terminal_stop,
+            quant::quant_status,
+            quant::quant_setup,
+            quant::quant_history,
+            quant::quant_execute,
+            quant::quant_image,
+            quant::quant_save_artifact,
+            quant::quant_delete,
+            quant::quant_compact,
             load_startup_state,
             select_project,
             refresh_project,
@@ -2239,8 +2261,13 @@ fn main() {
             visualizer::visualizer_save_png,
             run_step
         ])
-        .run(tauri::generate_context!())
-        .expect("error while running mrmhub integrator");
+        .build(tauri::generate_context!())
+        .expect("error while building mrmhub integrator")
+        .run(|app, event| {
+            if matches!(event, tauri::RunEvent::Exit) {
+                app.state::<terminal::TerminalState>().shutdown();
+            }
+        });
 }
 
 #[cfg(test)]

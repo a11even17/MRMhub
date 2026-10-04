@@ -7,7 +7,7 @@
       name="description"
       content="graphical interface for mrmhub integrator peak detection and integration"
     />
-    <title>MRMhub Integrator GUI [v1.2.2]</title>
+    <title>MRMhub GUI</title>
     <script>
       try {
         document.documentElement.dataset.theme =
@@ -16,21 +16,23 @@
         document.documentElement.dataset.theme = "light";
       }
     </script>
-    <link rel="stylesheet" href="styles.css?v=1.2.2" />
-    <script src="app.js?v=1.2.2" defer></script>
+    <link rel="stylesheet" href="styles.css?v=1.2.3" />
+    <link rel="stylesheet" href="quant/quant.css" />
+    <link rel="stylesheet" href="quant/terminal.bundle.css" />
+    <script src="app.js?v=1.2.3" defer></script>
   </head>
   <body>
     <div class="app-shell">
       <header class="app-header">
         <div class="brand-cluster">
           <span class="status-dot" aria-label="application ready"></span>
-          <a class="brand" href="#" aria-label="mrmhub integrator home">
+        <a class="brand" href="#" aria-label="MRMhub GUI home">
             <span class="brand-mark" aria-hidden="true">
               <img src="assets/mrmhub-logo.png" alt="" />
             </span>
             <span>
               <strong>MRMhub</strong>
-              <small>Integrator <span class="brand-gui">GUI</span></small>
+            <small><span class="brand-gui">GUI</span> <span class="brand-version">[v1.2.3]</span></small>
             </span>
           </a>
           <label class="gui-scale-control" title="scale the entire application">
@@ -70,6 +72,7 @@
           >
             Scratchpad
           </button>
+          <button class="nav-item" id="quant-tab" type="button" title="quantitation, quality control, and reporting">QUANT</button>
         </nav>
 
         <div class="header-actions">
@@ -111,6 +114,7 @@
         </div>
       </header>
 
+      <main id="quant-view" class="hidden" aria-label="MRMhub QUANT"></main>
   <main id="integrator-view">
         <section class="project-panel" aria-labelledby="project-title">
           <div class="project-icon" aria-hidden="true">
@@ -195,7 +199,7 @@
                 </svg>
               </span>
               <h3>Validate data</h3>
-              <p>-</p>
+              <p>Check input files and transitions, then extract chromatograms for peak detection.</p>
               <div
                 class="step-progress hidden indeterminate"
                 data-step-progress
@@ -235,7 +239,7 @@
                 </svg>
               </span>
               <h3>Detect peaks</h3>
-              <p>-</p>
+              <p>Detect peaks and estimate retention-time shifts to create the RT matrix.</p>
               <div
                 class="step-progress hidden indeterminate"
                 data-step-progress
@@ -276,7 +280,7 @@
                 </svg>
               </span>
               <h3>Integrate peaks</h3>
-              <p>-</p>
+              <p>Calculate peak areas using the RT matrix’s integration bounds and export the results.</p>
               <div
                 class="step-progress hidden indeterminate"
                 data-step-progress
@@ -316,7 +320,7 @@
                 </svg>
               </span>
               <h3>Generate reports</h3>
-              <p>-</p>
+              <p>Create PDF chromatogram reports for each transition to review peak integration.</p>
               <div
                 class="step-progress hidden indeterminate"
                 data-step-progress
@@ -359,59 +363,6 @@
           </div>
         </section>
 
-        <section class="visualizer-panel" aria-labelledby="visualizer-title">
-          <div>
-            <span class="visualizer-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M4 19V5M4 19h16" />
-                <path d="m7 15 3-5 3 3 4-7" />
-              </svg>
-            </span>
-            <div>
-              <span class="eyebrow">available now</span>
-              <h2 id="visualizer-title">Interactive visualizer</h2>
-              <p>-</p>
-            </div>
-          </div>
-          <button
-            class="visualizer-button"
-            id="open-visualizer"
-            type="button"
-            title="open the interactive visualizer"
-          >
-            Open visualizer
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m9 6 6 6-6 6" />
-            </svg>
-          </button>
-        </section>
-
-        <section class="visualizer-panel scratchpad-panel-link" aria-labelledby="scratchpad-link-title">
-          <div>
-            <span class="visualizer-icon orange" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M5 4h14v16H5z" />
-                <path d="M8 8h8M8 12h8M8 16h5" />
-              </svg>
-            </span>
-            <div>
-              <span class="eyebrow">session notes</span>
-              <h2 id="scratchpad-link-title">Scratchpad</h2>
-              <p>-</p>
-            </div>
-          </div>
-          <button
-            class="visualizer-button"
-            id="open-scratchpad"
-            type="button"
-            title="open the scratchpad"
-          >
-            Open scratchpad
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m9 6 6 6-6 6" />
-            </svg>
-          </button>
-        </section>
       </main>
 
       <main class="visualizer-workspace hidden" id="visualizer-view">
@@ -739,7 +690,7 @@
       </main>
 
       <footer>
-        <span>MRMhub Integrator GUI [v1.2.2]</span>
+        <span>MRMhub GUI [v1.2.3]</span>
         <a
           class="external-sling-link"
           href="https://sling.sg/"
